@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>polar flows</title>
+    <meta name="description" content="Polar Flows website is currently under construction. Stay tuned for updates. Contact us at info@polarflows.com.">
+    <link rel="icon" href="./browser.png" type="image/png"> <!-- Favicon link -->
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: url('./background.jpeg') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff; /* Text color set to white for better contrast */
+        }
+        .container {
+            text-align: center;
+            background-color: rgba(18, 52, 86, 0.2); /* Increased transparency */
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 90%;
+            margin: 0 auto; /* Center the container horizontally */
+            backdrop-filter: blur(7px); /* Blur effect */
+            -webkit-backdrop-filter: blur(7px); /* For Safari support */
+            box-shadow: 0 0 10px rgba(0,0,0,0.3); /* Optional shadow for better visibility */
+        }
+        .container img.logo {
+            width: 400px;  /* Adjusted width to make the logo 4 times larger */
+            height: auto;
+            margin-bottom: 20px;
+            padding: 0 15px; /* Added padding on the left and right */
+        }
+        .container h1 {
+            font-size: 2em;
+            margin-bottom: 0.5em;
+        }
+        .container p {
+            font-size: 1em;
+            margin-bottom: 1em;
+        }
+        .container .email {
+            font-size: 1em;
+            margin-top: 2em;
+            color: #FFFFFF;
+        }
+        .container .email a {
+            text-decoration: none;
+            color: #FFFFFF;
+        }
+        @media (min-width: 600px) {
+            .container img.logo {
+                width: 600px;  /* Adjusted width for larger screens */
+            }
+            .container h1 {
+                font-size: 3em;
+            }
+            .container p {
+                font-size: 1.2em;
+            }
+        }
+        /* Additional mobile-specific adjustments */
+        @media (max-width: 599px) {
+            .container {
+                padding: 15px; /* Adjust padding for smaller screens */
+                margin: 0 5px; /* Adjust margin for better fit on mobile */
+            }
+            .container img.logo {
+                width: 300px; /* Reduce logo size for smaller screens */
+            }
+            .container h1 {
+                font-size: 1.5em;
+            }
+            .container p {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img class="logo" src="./logo.png" alt="Polar Flows Logo">
+        <h1>Stay Tuned!</h1>
+        <p>Our website is under construction.</p>
+        <p class="email">Reach us at <strong><a href="mailto:info@polarflows.com">info@polarflows.com</a></strong></p>
+    </div>
+</body>
+</html>
