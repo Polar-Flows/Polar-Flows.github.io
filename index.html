@@ -43,12 +43,20 @@
             font-size: 1em;
             margin-bottom: 1em;
         }
-        .container .email {
+        .container .contact {
             font-size: 1em;
             margin-top: 2em;
             color: #FFFFFF;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-        .container .email a {
+        .container .contact img {
+            width: 30px; /* Larger icon size (1.5x) */
+            height: 30px;
+            margin-right: 10px; /* Space between icon and link text */
+        }
+        .container .contact a {
             text-decoration: none;
             color: #FFFFFF;
         }
@@ -86,7 +94,14 @@
         <img class="logo" src="./logo.png" alt="Polar Flows Logo">
         <h1>Stay Tuned!</h1>
         <p>Our website is under construction.</p>
-        <p class="email">Reach us at <strong><a href="mailto:info@polarflows.com">info@polarflows.com</a></strong></p>
+        <div class="contact">
+            <img src="./email-icon.png" alt="Email Icon">
+            <a href="mailto:info@polarflows.com">info@polarflows.com</a>
+        </div>
+        <div class="contact">
+            <img src="./linkedin-icon.png" alt="LinkedIn Icon">
+            <a href="https://www.linkedin.com/company/polar-flows" target="_blank">linkedin/polar-flows</a>
+        </div>
     </div>
 </body>
 </html>
