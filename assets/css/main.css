@@ -266,7 +266,7 @@ a:focus {
   top: 0;
   left: 0;
   right: 0;
-  background-color: rgba(1, 45, 117, 0.8);
+  background-color: rgba(30, 80, 180, 0.9);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   z-index: var(--pf-z-sticky);
@@ -275,7 +275,7 @@ a:focus {
 }
 
 .navbar.nav--scrolled {
-  background-color: #012d75;
+  background-color: #1e50b4;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
@@ -293,7 +293,7 @@ a:focus {
   font-weight: var(--pf-font-weight-bold);
   color: #ffffff;
   text-decoration: none;
-  margin-left: calc(-1 * var(--pf-space-8xl));
+  margin-left: -10rem;
   /* Simple hover effect to change text color */
   transition: color var(--pf-transition-fast);
 }
@@ -316,7 +316,7 @@ a:focus {
   padding: 0;
   gap: var(--pf-space-xl);
   align-items: center;
-  margin-right: calc(-1 * var(--pf-space-8xl));
+  margin-right: -10rem;
 }
 
 .navbar-nav a {
@@ -1520,6 +1520,11 @@ html, body {
 
 /* Contact page hero title - white color */
 .contact-page .hero-title {
+  color: var(--pf-white);
+}
+
+/* Privacy policy page hero title - white color */
+.privacy-page .hero-title {
   color: var(--pf-white);
 }
 
