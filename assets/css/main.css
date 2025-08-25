@@ -266,17 +266,17 @@ a:focus {
   top: 0;
   left: 0;
   right: 0;
-  background-color: rgba(30, 80, 180, 0.9);
+  background-color: #ffffff;
   backdrop-filter: blur(8px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(30, 80, 180, 0.2);
   z-index: var(--pf-z-sticky);
   transition: all var(--pf-transition-normal);
-  color: #ffffff;
+  color: var(--pf-primary);
 }
 
 .navbar.nav--scrolled {
-  background-color: #1e50b4;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  background-color: #ffffff;
+  box-shadow: 0 6px 20px rgba(30, 80, 180, 0.1);
 }
 
 .navbar-container {
@@ -291,7 +291,7 @@ a:focus {
   align-items: center;
   font-size: var(--pf-font-size-3xl);
   font-weight: var(--pf-font-weight-bold);
-  color: #ffffff;
+  color: var(--pf-primary);
   text-decoration: none;
   margin-left: -10rem;
   /* Simple hover effect to change text color */
@@ -299,7 +299,7 @@ a:focus {
 }
 
 .navbar-brand:hover {
-  color: #ffffff;
+  color: var(--pf-primary-dark);
 }
 
 .navbar-logo {
@@ -320,7 +320,7 @@ a:focus {
 }
 
 .navbar-nav a {
-  color: #ffffff;
+  color: var(--pf-primary);
   text-decoration: none;
   font-size: var(--pf-font-size-xl);
   font-weight: var(--pf-font-weight-medium);
@@ -334,8 +334,8 @@ a:focus {
 
 .navbar-nav a:hover,
 .navbar-nav a:focus {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: #ffffff;
+  background-color: rgba(24, 126, 249, 0.1);
+  color: var(--pf-primary-dark);
 }
 
 .navbar-toggle {
@@ -374,7 +374,7 @@ a:focus {
     top: 100%;
     left: 0;
     right: 0;
-    background-color: var(--pf-bg-primary);
+    background-color: #ffffff;
     flex-direction: column;
     padding: var(--pf-space-lg);
     border-top: 1px solid var(--pf-border-light);
@@ -411,6 +411,7 @@ a:focus {
     font-size: var(--pf-font-size-lg);
     width: 100%;
     text-align: left;
+    color: var(--pf-primary);
   }
   
   /* Mobile brand adjustments */
