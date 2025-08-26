@@ -320,7 +320,7 @@ a:focus {
 }
 
 .navbar-nav a {
-  color: var(--pf-primary);
+  color: #000000;
   text-decoration: none;
   font-size: var(--pf-font-size-xl);
   font-weight: var(--pf-font-weight-medium);
@@ -334,8 +334,8 @@ a:focus {
 
 .navbar-nav a:hover,
 .navbar-nav a:focus {
-  background-color: rgba(24, 126, 249, 0.1);
-  color: var(--pf-primary-dark);
+  background-color: rgba(0, 0, 0, 0.1);
+  color: #000000;
 }
 
 .navbar-toggle {
@@ -411,7 +411,7 @@ a:focus {
     font-size: var(--pf-font-size-lg);
     width: 100%;
     text-align: left;
-    color: var(--pf-primary);
+    color: #000000;
   }
   
   /* Mobile brand adjustments */
@@ -774,7 +774,7 @@ a:focus {
 
 .about-logo-bg {
   position: absolute;
-  top: 50%;
+  top: 52%;
   right: 10%;
   transform: translateY(-50%);
   opacity: 0.15;
