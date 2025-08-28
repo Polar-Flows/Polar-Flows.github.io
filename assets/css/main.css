@@ -1532,6 +1532,13 @@ html, body {
   margin-top: var(--pf-space-xs);
 }
 
+.form-help {
+  color: var(--pf-text-secondary);
+  font-size: var(--pf-font-size-sm);
+  margin-top: var(--pf-space-xs);
+  font-style: italic;
+}
+
 .form-success {
   color: var(--pf-success);
   font-size: var(--pf-font-size-sm);

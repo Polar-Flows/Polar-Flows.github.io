@@ -70,8 +70,8 @@ export class Forms {
     
     this.validationRules.set('phone', {
       required: false,
-      pattern: /^[\+]?[1-9][\d]{0,15}$/,
-      message: 'Please enter a valid phone number'
+      pattern: /^[\+]?[0-9\s\-\(\)]{7,20}$/,
+      message: 'Please enter a valid phone number (Swedish: 07X XXX XX XX or international: +46)'
     });
   }
 

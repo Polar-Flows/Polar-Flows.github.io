@@ -111,10 +111,10 @@
                         <h2 id="contact-form-title">Send us a Message</h2>
                         <p>Fill out the form below and we'll get back to you within 24 hours.</p>
                         
-                        <form id="contact-form" class="contact-form" novalidate>
+                        <form id="contact-form" class="contact-form">
                             <div class="form-group">
-                                <label for="name" class="form-label">Full Name *</label>
-                                <input type="text" id="name" name="name" class="form-input" required aria-describedby="name-error">
+                                <label for="fullName" class="form-label">Full Name *</label>
+                                <input type="text" id="fullName" name="fullName" class="form-input" required aria-describedby="name-error">
                                 <div id="name-error" class="form-error" role="alert" aria-live="polite"></div>
                             </div>
                             
@@ -132,7 +132,11 @@
                             
                             <div class="form-group">
                                 <label for="phone" class="form-label">Phone Number</label>
-                                <input type="tel" id="phone" name="phone" class="form-input" aria-describedby="phone-error">
+                                <input type="tel" id="phone" name="phone" class="form-input" 
+                                       placeholder="e.g., 073 585 97 79 or +46 73 585 97 79" 
+                                       pattern="[\+]?[0-9\s\-\(\)]{7,20}"
+                                       aria-describedby="phone-error phone-help">
+                                <div id="phone-help" class="form-help">Format: Swedish mobile (07X XXX XX XX) or international (+46)</div>
                                 <div id="phone-error" class="form-error" role="alert" aria-live="polite"></div>
                             </div>
                             
@@ -312,6 +316,95 @@
     
     <!-- JavaScript -->
     <script type="module" src="assets/js/main.js"></script>
+    
+    <!-- Contact Form Submission Script -->
+    <script>
+    const LOGIC_APP_URL = "https://prod-129.westeurope.logic.azure.com:443/workflows/c7b3bf9aade34af395b1675e1df507ea/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=wcTbcjNOz3OHrqhvXcr90GkvI8ri7GPOfueMuuC5UyM";
+
+    document.getElementById('contact-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      // Get form data
+      const fullName = document.getElementById('fullName').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const company = document.getElementById('company').value.trim() || "";
+      const phone = document.getElementById('phone').value.trim() || "";
+      const service = document.getElementById('service').value || "";
+      const message = document.getElementById('message').value.trim();
+      
+      // Enhanced validation - check for any existing error messages
+      const hasErrors = document.querySelectorAll('.form-error').length > 0;
+      if (hasErrors) {
+        alert('Please correct the validation errors before submitting the form.');
+        return;
+      }
+      
+      // Basic required field validation
+      if (!fullName || !email || !message) {
+        alert('Please fill in all required fields (Full Name, Email, and Message).');
+        return;
+      }
+      
+      // Phone number validation (if provided)
+      if (phone) {
+        const phonePattern = /^[\+]?[0-9\s\-\(\)]{7,20}$/;
+        if (!phonePattern.test(phone)) {
+          alert('Please enter a valid phone number (Swedish: 07X XXX XX XX or international: +46)');
+          return;
+        }
+      }
+      
+      // Message length validation
+      if (message.length < 10) {
+        alert('Message must be at least 10 characters long.');
+        return;
+      }
+      
+      // Phone number formatting (optional)
+      let formattedPhone = phone;
+      if (phone) {
+        // Remove all non-digit characters except + for international format
+        const cleaned = phone.replace(/[^\d+]/g, '');
+        if (cleaned.startsWith('+')) {
+          formattedPhone = cleaned;
+        } else if (cleaned.startsWith('0') && cleaned.length === 10) {
+          // Swedish mobile format: 07X XXX XX XX
+          formattedPhone = cleaned.replace(/(\d{3})(\d{3})(\d{2})(\d{2})/, '$1 $2 $3 $4');
+        } else {
+          formattedPhone = cleaned;
+        }
+      }
+      
+      const data = {
+        fullName: fullName,
+        email: email,
+        company: company,
+        phone: formattedPhone,
+        service: service,
+        message: message
+      };
+      
+      try {
+        const res = await fetch(LOGIC_APP_URL, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(data)
+        });
+        
+        if (res.ok) {
+          alert('Thank you! Your message has been sent. We\'ll get back to you within 24 hours.');
+          document.getElementById('contact-form').reset();
+          // Clear any remaining error messages
+          document.querySelectorAll('.form-error').forEach(error => error.remove());
+        } else {
+          alert('Could not send message. Please try again or contact us directly at info@polarflows.com');
+        }
+      } catch (error) {
+        console.error('Form submission error:', error);
+        alert('An error occurred while sending your message. Please try again or contact us directly at info@polarflows.com');
+      }
+    });
+    </script>
     
     <!-- Fallback for non-JS users -->
     <noscript>
