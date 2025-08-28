@@ -297,7 +297,6 @@ a:focus {
   font-weight: var(--pf-font-weight-bold);
   color: var(--pf-primary);
   text-decoration: none;
-  margin-left: -10rem;
   /* Simple hover effect to change text color */
   transition: color var(--pf-transition-fast);
 }
@@ -320,7 +319,6 @@ a:focus {
   padding: 0;
   gap: var(--pf-space-xl);
   align-items: center;
-  margin-right: -10rem;
 }
 
 .navbar-nav a {
@@ -379,6 +377,48 @@ a:focus {
 
 .navbar-toggle.active span:nth-child(3) {
   transform: rotate(-45deg) translate(7px, -6px);
+}
+
+/* Small desktop navigation - narrow windows */
+@media (max-width: 1200px) and (min-width: 1024px) {
+  .navbar-container {
+    padding: var(--pf-space-sm) var(--pf-space-xl);
+  }
+  
+  .navbar-nav {
+    gap: var(--pf-space-lg);
+  }
+  
+  .navbar-nav a {
+    font-size: var(--pf-font-size-lg);
+    padding: var(--pf-space-sm) var(--pf-space-sm);
+  }
+}
+
+/* Tablet navigation - intermediate breakpoint */
+@media (max-width: 1023px) and (min-width: 768px) {
+  .navbar-container {
+    padding: var(--pf-space-sm) var(--pf-space-lg);
+  }
+  
+  .navbar-brand {
+    font-size: var(--pf-font-size-2xl);
+  }
+  
+  .navbar-logo {
+    width: 40px;
+    height: 40px;
+    margin-right: var(--pf-space-sm);
+  }
+  
+  .navbar-nav {
+    gap: var(--pf-space-lg);
+  }
+  
+  .navbar-nav a {
+    font-size: var(--pf-font-size-lg);
+    padding: var(--pf-space-sm) var(--pf-space-sm);
+  }
 }
 
 /* Mobile navigation */
