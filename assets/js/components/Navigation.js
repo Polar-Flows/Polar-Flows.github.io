@@ -78,6 +78,25 @@ export class Navigation {
       });
     }
 
+    // Brand link - handle navigation
+    const brandLink = document.querySelector('.navbar-brand');
+    if (brandLink) {
+      brandLink.addEventListener('click', (e) => {
+        const href = brandLink.getAttribute('href');
+        
+        // If it's a relative link to index.html, allow normal navigation
+        if (href === 'index.html' || href === './index.html' || href === '/') {
+          return; // Allow default navigation
+        }
+        
+        // If it's an anchor link (#top), prevent default and scroll
+        if (href && href.startsWith('#')) {
+          e.preventDefault();
+          this.scrollToTop();
+        }
+      });
+    }
+
     // Close mobile menu when clicking outside
     document.addEventListener('click', (e) => {
       if (this.isMobileMenuOpen && !this.navbar.contains(e.target)) {
@@ -231,6 +250,27 @@ export class Navigation {
     // Close mobile menu on larger screens
     if (window.innerWidth > 768 && this.isMobileMenuOpen) {
       this.closeMobileMenu();
+    }
+  }
+
+  /**
+   * Scroll to top of page
+   */
+  scrollToTop() {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+    
+    // Close mobile menu if open
+    if (this.isMobileMenuOpen) {
+      this.closeMobileMenu();
+    }
+    
+    // Focus the brand link for accessibility
+    const brandLink = document.querySelector('.navbar-brand');
+    if (brandLink) {
+      brandLink.focus();
     }
   }
 
