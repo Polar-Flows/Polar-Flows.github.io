@@ -1539,6 +1539,10 @@ html, body {
 }
 
 /* ===== Contact Page Styles ===== */
+.contact-page .grid.grid-2 {
+  gap: var(--pf-space-4xl);
+}
+
 .contact-page .contact-info {
   margin-bottom: var(--pf-space-2xl);
 }
