@@ -75,10 +75,11 @@
             </a>
             
             <ul class="navbar-nav" role="menubar">
-                <li role="none"><a href="index.html#services" role="menuitem">Services</a></li>
                 <li role="none"><a href="index.html#about" role="menuitem">About</a></li>
-                <li role="none"><a href="index.html#journey" role="menuitem">Journey</a></li>
+                <li role="none"><a href="index.html#services" role="menuitem">Services</a></li>
+                <li role="none"><a href="index.html#partnerships" role="menuitem">Expertise</a></li>
                 <li role="none"><a href="index.html#team" role="menuitem">Team</a></li>
+                <li role="none"><a href="index.html#journey" role="menuitem">Journey</a></li>
                 <li role="none"><a href="contact.html" role="menuitem" aria-current="page">Contact</a></li>
             </ul>
             
@@ -111,7 +112,7 @@
                         <h2 id="contact-form-title">Send us a Message</h2>
                         <p>Fill out the form below and we'll get back to you within 24 hours.</p>
                         
-                        <form id="contact-form" class="contact-form">
+                        <form id="contact-form" class="contact-form" lang="en" novalidate>
                             <div class="form-group">
                                 <label for="fullName" class="form-label">Full Name *</label>
                                 <input type="text" id="fullName" name="fullName" class="form-input" required aria-describedby="name-error">
@@ -342,6 +343,13 @@
       // Basic required field validation
       if (!fullName || !email || !message) {
         alert('Please fill in all required fields (Full Name, Email, and Message).');
+        return;
+      }
+      
+      // Email validation
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailPattern.test(email)) {
+        alert('Please enter a valid email address (e.g., user@example.com)');
         return;
       }
       

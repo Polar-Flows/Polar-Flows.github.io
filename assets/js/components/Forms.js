@@ -100,6 +100,15 @@ export class Forms {
    * Set up individual form
    */
   setupForm(form, formId) {
+    // Skip contact-form as it has its own Logic App submission handler
+    if (formId === 'contact-form') {
+      // Only set up validation and accessibility, not submission
+      this.setupRealTimeValidation(form);
+      this.setupFormReset(form);
+      this.addAccessibilityAttributes(form);
+      return;
+    }
+    
     // Add form ID if not present
     if (!form.id) {
       form.id = formId;
