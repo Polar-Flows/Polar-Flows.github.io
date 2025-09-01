@@ -216,6 +216,13 @@ a:focus {
     width: 100%; /* Full width on mobile */
     max-width: 300px; /* But not too wide */
   }
+
+  /* Ensure journey buttons are centered on the smallest screens */
+  .journey-card .btn {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 
 .btn-primary {
