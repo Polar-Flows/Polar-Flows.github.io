@@ -412,6 +412,119 @@
         alert('An error occurred while sending your message. Please try again or contact us directly at info@polarflows.com');
       }
     });
+    
+    // Fix autofill validation issue and ensure proper error messages
+    document.addEventListener('DOMContentLoaded', function() {
+      const formInputs = document.querySelectorAll('#contact-form input, #contact-form textarea, #contact-form select');
+      
+      function clearFieldError(input) {
+        input.classList.remove('error');
+        const errorElement = document.getElementById(input.getAttribute('aria-describedby'));
+        if (errorElement) {
+          errorElement.textContent = '';
+        }
+      }
+      
+      function validateField(input) {
+        const value = input.value.trim();
+        let isValid = true;
+        let errorMessage = '';
+        
+        // Clear any existing error first
+        clearFieldError(input);
+        
+        // Validate based on field type
+        if (input.hasAttribute('required') && !value) {
+          isValid = false;
+          errorMessage = 'This field is required';
+        } else if (input.type === 'email' && value) {
+          const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailPattern.test(value)) {
+            isValid = false;
+            errorMessage = 'Please enter a valid email address (e.g., user@example.com)';
+          }
+        } else if (input.name === 'phone' && value) {
+          const phonePattern = /^[\+]?[0-9\s\-\(\)]{7,20}$/;
+          if (!phonePattern.test(value)) {
+            isValid = false;
+            errorMessage = 'Please enter a valid phone number (Swedish: 07X XXX XX XX or international: +46)';
+          }
+        } else if (input.name === 'fullName' && value) {
+          if (value.length < 2) {
+            isValid = false;
+            errorMessage = 'Name must be at least 2 characters long';
+          } else if (!/^[a-zA-Z\s'-]+$/.test(value)) {
+            isValid = false;
+            errorMessage = 'Name can only contain letters, spaces, hyphens, and apostrophes';
+          }
+        } else if (input.name === 'message' && value) {
+          if (value.length < 10) {
+            isValid = false;
+            errorMessage = 'Message must be at least 10 characters long';
+          }
+        }
+        
+        // Show error if invalid
+        if (!isValid) {
+          input.classList.add('error');
+          const errorElement = document.getElementById(input.getAttribute('aria-describedby'));
+          if (errorElement) {
+            errorElement.textContent = errorMessage;
+          }
+        }
+        
+        return isValid;
+      }
+      
+      formInputs.forEach(input => {
+        // Listen for input events (triggers on autofill and typing)
+        input.addEventListener('input', function() {
+          validateField(this);
+        });
+        
+        // Listen for change events (backup for autofill)
+        input.addEventListener('change', function() {
+          validateField(this);
+        });
+        
+        // Listen for blur events (when user leaves field)
+        input.addEventListener('blur', function() {
+          validateField(this);
+        });
+        
+        // Listen for animationstart (triggers when autofill animation starts)
+        input.addEventListener('animationstart', function() {
+          setTimeout(() => validateField(this), 50);
+        });
+        
+        // Listen for webkitAnimationStart (for webkit browsers)
+        input.addEventListener('webkitAnimationStart', function() {
+          setTimeout(() => validateField(this), 50);
+        });
+      });
+      
+      // Check for autofilled values after a delay (fallback method)
+      setTimeout(function() {
+        formInputs.forEach(input => {
+          if (input.value && input.value.trim() !== '') {
+            validateField(input);
+          }
+        });
+      }, 200);
+      
+      // Also check when the page becomes visible (in case autofill happens after page load)
+      document.addEventListener('visibilitychange', function() {
+        if (!document.hidden) {
+          setTimeout(function() {
+            formInputs.forEach(input => {
+              if (input.value && input.value.trim() !== '') {
+                validateField(input);
+              }
+            });
+          }, 100);
+        }
+      });
+    });
     </script>
     
     <!-- Fallback for non-JS users -->
