@@ -1048,6 +1048,14 @@ a:focus {
   background-color: rgba(24, 126, 249, 0.1);
 }
 
+.team-card .team-bio {
+  margin-top: var(--pf-space-sm);
+  margin-bottom: var(--pf-space-sm);
+  color: #000000;
+  font-size: var(--pf-font-size-sm);
+  line-height: var(--pf-line-height-relaxed);
+}
+
 .team-card .team-linkedin {
   display: inline-block;
   margin-top: var(--pf-space-sm);
