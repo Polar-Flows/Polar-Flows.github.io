@@ -1044,15 +1044,13 @@ a:focus {
   transition: color var(--pf-transition-fast);
   /* Mobile optimization */
   display: block;
-  padding: var(--pf-space-sm);
-  border-radius: var(--pf-radius-md);
+  padding: var(--pf-space-xs) 0;
   -webkit-tap-highlight-color: transparent;
 }
 
 .team-card .team-email:hover {
   color: var(--pf-primary-light);
   text-decoration: underline;
-  background-color: rgba(24, 126, 249, 0.1);
 }
 
 .team-card .team-bio {
@@ -1071,14 +1069,12 @@ a:focus {
   text-decoration: none;
   transition: color var(--pf-transition-fast);
   /* Mobile optimization */
-  padding: var(--pf-space-sm);
-  border-radius: var(--pf-radius-md);
+  padding: var(--pf-space-xs) 0;
   -webkit-tap-highlight-color: transparent;
 }
 
 .team-card .team-linkedin:hover {
   color: var(--pf-primary);
-  background-color: rgba(24, 126, 249, 0.1);
 }
 
 /* Mobile team adjustments */
