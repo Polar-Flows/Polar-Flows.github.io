@@ -252,6 +252,20 @@ a:focus {
   text-decoration: none;
 }
 
+/* Back to Home Button */
+.back-to-home {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.back-to-home .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  padding: 0.75rem 1.5rem;
+}
+
 .btn-large {
   padding: var(--pf-space-lg) var(--pf-space-2xl);
   font-size: var(--pf-font-size-2xl);
