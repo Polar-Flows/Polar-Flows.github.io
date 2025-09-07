@@ -226,23 +226,22 @@ a:focus {
 }
 
 .btn-primary {
-  background-color: var(--pf-primary);
+  background-color: rgba(37, 99, 235, 0.8);
   color: var(--pf-white);
-  border-color: var(--pf-primary);
+  border: none;
 }
 
 .btn-primary:hover,
 .btn-primary:focus {
-  background-color: var(--pf-primary-dark);
-  border-color: var(--pf-primary-dark);
+  background-color: var(--pf-primary);
   color: var(--pf-white);
   text-decoration: none;
 }
 
 .btn-secondary {
-  background-color: rgba(255, 255, 255, 0.9);
-  color: var(--pf-primary);
-  border-color: var(--pf-primary);
+  background-color: rgba(37, 99, 235, 0.8);
+  color: var(--pf-white);
+  border: none;
 }
 
 .btn-secondary:hover,
