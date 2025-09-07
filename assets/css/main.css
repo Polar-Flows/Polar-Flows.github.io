@@ -559,30 +559,23 @@ a:focus {
 }
 
 .hero-title-highlight {
-  background: linear-gradient(135deg, var(--pf-primary) 0%, var(--pf-accent) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 0.05em 0.2em;
+  border-radius: 3px;
   font-size: 1.1em;
   font-weight: var(--pf-font-weight-black);
   position: relative;
   display: inline-block;
+  text-decoration: none;
 }
 
-.hero-title-highlight::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(135deg, var(--pf-primary) 0%, var(--pf-accent) 100%);
-  border-radius: 2px;
-  opacity: 0.6;
-  transform: scaleX(0);
-  transform-origin: left;
-  animation: highlightExpand 0.8s ease-out 0.5s forwards;
+.hero-title-sub {
+  font-size: 0.7em;
+  font-weight: var(--pf-font-weight-normal);
+  opacity: 0.9;
 }
+
 
 @keyframes highlightExpand {
   to {
