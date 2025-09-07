@@ -37,6 +37,9 @@ class PolarFlowsApp {
       // Set up global event listeners
       this.setupGlobalListeners();
       
+      // Initialize sliding background effect
+      this.initSlidingBackground();
+      
              // Team section is now handled directly in HTML
       
       // Mark as initialized
@@ -95,6 +98,40 @@ class PolarFlowsApp {
     
     // Handle resize events
     this.setupResizeHandling();
+  }
+
+  /**
+   * Initialize sliding background effect for hero section
+   */
+  initSlidingBackground() {
+    const hero = document.querySelector('.hero');
+    if (!hero) return;
+
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const heroHeight = hero.offsetHeight;
+      const maxScroll = heroHeight;
+      
+      // Calculate the background position based on scroll
+      // Start at top (0%) and move down as user scrolls
+      const backgroundPosition = Math.min(scrollY / maxScroll * 50, 50);
+      
+      // Apply the sliding effect
+      hero.style.backgroundPosition = `center ${backgroundPosition}%`;
+    };
+
+    // Initial call
+    handleScroll();
+    
+    // Add scroll listener with throttling
+    window.addEventListener('scroll', () => {
+      if (window.PolarFlowsUtils && window.PolarFlowsUtils.throttle) {
+        window.PolarFlowsUtils.throttle(handleScroll, 16);
+      } else {
+        // Fallback if utils not available
+        handleScroll();
+      }
+    });
   }
 
   /**

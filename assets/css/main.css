@@ -524,11 +524,30 @@ a:focus {
 
 /* ===== Hero Section ===== */
 .hero {
-  padding: calc(var(--pf-space-2xl) + 80px) 0 var(--pf-space-2xl);
-  background: linear-gradient(135deg, rgba(1, 45, 117, 0.6) 0%, rgba(14, 30, 58, 0.6) 100%), 
-              url('../img/polarflows/background_70.jpeg') center/cover no-repeat;
+  padding: calc(var(--pf-space-3xl) + 100px) 0 var(--pf-space-3xl);
+  background: linear-gradient(135deg, rgba(1, 45, 117, 0.3) 0%, rgba(14, 30, 58, 0.3) 100%), 
+              url('../img/polarflows/background_70.jpeg') center top/cover no-repeat;
+  background-attachment: fixed;
   text-align: center;
   position: relative;
+  overflow: hidden;
+  min-height: 80vh;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(1, 45, 117, 0.3) 0%, rgba(14, 30, 58, 0.3) 100%);
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
 }
 
 .hero-content {
@@ -592,7 +611,7 @@ a:focus {
 }
 
 .hero-subtitle {
-  font-size: var(--pf-font-size-lg);
+  font-size: var(--pf-font-size-2xl);
   color: var(--pf-white);
   margin-bottom: var(--pf-space-2xl);
   max-width: 600px;
@@ -630,7 +649,7 @@ a:focus {
   }
   
   .hero-subtitle {
-    font-size: var(--pf-font-size-xl);
+    font-size: var(--pf-font-size-3xl);
   }
   
   .hero-actions {
