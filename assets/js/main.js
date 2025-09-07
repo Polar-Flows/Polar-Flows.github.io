@@ -40,6 +40,9 @@ class PolarFlowsApp {
       // Initialize sliding background effect
       this.initSlidingBackground();
       
+      // Initialize scroll indicator
+      this.initScrollIndicator();
+      
              // Team section is now handled directly in HTML
       
       // Mark as initialized
@@ -116,8 +119,8 @@ class PolarFlowsApp {
       // Start at top (0%) and move down as user scrolls
       const backgroundPosition = Math.min(scrollY / maxScroll * 50, 50);
       
-      // Apply the sliding effect
-      hero.style.backgroundPosition = `center ${backgroundPosition}%`;
+      // Apply the sliding effect (maintain left alignment)
+      hero.style.backgroundPosition = `left ${backgroundPosition}%`;
     };
 
     // Initial call
@@ -129,6 +132,49 @@ class PolarFlowsApp {
         window.PolarFlowsUtils.throttle(handleScroll, 16);
       } else {
         // Fallback if utils not available
+        handleScroll();
+      }
+    });
+  }
+
+  /**
+   * Initialize scroll indicator functionality
+   */
+  initScrollIndicator() {
+    const scrollIndicator = document.querySelector('.scroll-indicator');
+    if (!scrollIndicator) return;
+
+    // Make scroll indicator clickable
+    scrollIndicator.addEventListener('click', () => {
+      const nextSection = document.querySelector('#about');
+      if (nextSection) {
+        nextSection.scrollIntoView({ 
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    });
+
+    // Hide scroll indicator when user starts scrolling
+    let hasScrolled = false;
+    const handleScroll = () => {
+      if (window.scrollY > 50 && !hasScrolled) {
+        hasScrolled = true;
+        scrollIndicator.style.opacity = '0';
+        scrollIndicator.style.transform = 'translateX(-50%) translateY(20px)';
+        scrollIndicator.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+      } else if (window.scrollY <= 50 && hasScrolled) {
+        hasScrolled = false;
+        scrollIndicator.style.opacity = '1';
+        scrollIndicator.style.transform = 'translateX(-50%) translateY(0)';
+      }
+    };
+
+    // Add scroll listener
+    window.addEventListener('scroll', () => {
+      if (window.PolarFlowsUtils && window.PolarFlowsUtils.throttle) {
+        window.PolarFlowsUtils.throttle(handleScroll, 16);
+      } else {
         handleScroll();
       }
     });
