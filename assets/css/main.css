@@ -669,7 +669,7 @@ a:focus {
 
 .value-prop-card {
   background-color: #e6f3ff;
-  padding: var(--pf-space-xl);
+  padding: var(--pf-space-lg);
   border-radius: var(--pf-radius-xl);
   box-shadow: var(--pf-shadow-sm);
   transition: all var(--pf-transition-normal);
@@ -714,7 +714,7 @@ a:focus {
   }
   
   .value-prop-card {
-    padding: var(--pf-space-2xl);
+    padding: var(--pf-space-xl);
   }
   
   .value-prop-title {
