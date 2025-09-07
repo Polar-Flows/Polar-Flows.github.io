@@ -526,7 +526,7 @@ a:focus {
 .hero {
   padding: calc(var(--pf-space-2xl) + 80px) 0 var(--pf-space-2xl);
   background: linear-gradient(135deg, rgba(1, 45, 117, 0.6) 0%, rgba(14, 30, 58, 0.6) 100%), 
-              url('../img/polarflows/background_v1.avif') center/cover no-repeat;
+              url('../img/polarflows/background_70.jpeg') center/cover no-repeat;
   text-align: center;
   position: relative;
 }
@@ -573,7 +573,9 @@ a:focus {
 .hero-title-sub {
   font-size: 0.7em;
   font-weight: var(--pf-font-weight-normal);
-  opacity: 0.9;
+  color: #ffffff;
+  opacity: 0.8;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 
