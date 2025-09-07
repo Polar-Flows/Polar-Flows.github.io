@@ -44,6 +44,12 @@ export class Testimonials {
       // Wait for DOM elements to be available
       await this.waitForElements();
       
+      // If no testimonials container found, skip initialization
+      if (!this.container) {
+        console.log('Testimonials container not found, skipping initialization');
+        return this;
+      }
+      
       // Set up testimonials
       this.setupTestimonials();
       
@@ -73,7 +79,7 @@ export class Testimonials {
    * Wait for required DOM elements to be available
    */
   async waitForElements() {
-    const maxAttempts = 50;
+    const maxAttempts = 10;
     let attempts = 0;
     
     while (attempts < maxAttempts) {
@@ -87,7 +93,9 @@ export class Testimonials {
       attempts++;
     }
     
-    throw new Error('Testimonials container not found');
+    // If container not found, return null instead of throwing error
+    this.container = null;
+    return;
   }
 
   /**
