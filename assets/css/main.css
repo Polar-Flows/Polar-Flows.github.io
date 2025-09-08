@@ -286,9 +286,9 @@ a:focus {
   top: 0;
   left: 0;
   right: 0;
-  background-color: rgba(34, 38, 70, 0.3);
+  background-color: rgba(40, 40, 88, 0.3);
   backdrop-filter: blur(8px);
-  border-bottom: 1px solid rgba(34, 38, 70, 0.2);
+  border-bottom: 1px solid rgba(40, 40, 88, 0.2);
   z-index: var(--pf-z-sticky);
   transition: all var(--pf-transition-normal);
   color: var(--pf-white);
@@ -296,8 +296,8 @@ a:focus {
 }
 
 .navbar.nav--scrolled {
-  background-color: rgba(34, 38, 70, 0.3);
-  box-shadow: 0 6px 20px rgba(34, 38, 70, 0.1);
+  background-color: rgb(40, 40, 88);
+  box-shadow: 0 6px 20px rgba(40, 40, 88, 0.1);
 }
 
 .navbar-container {
@@ -747,7 +747,7 @@ a:focus {
 }
 
 .hero-subtitle {
-  font-size: var(--pf-font-size-2xl);
+  font-size: var(--pf-font-size-xl);
   color: var(--pf-white);
   margin-bottom: var(--pf-space-lg);
   max-width: 600px;
@@ -757,6 +757,11 @@ a:focus {
   line-height: var(--pf-line-height-relaxed);
   opacity: 0.9;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
 }
 
 .hero-expertise {
@@ -797,7 +802,7 @@ a:focus {
   
   
   .hero-subtitle {
-    font-size: var(--pf-font-size-3xl);
+    font-size: var(--pf-font-size-2xl);
   }
   
   .hero-expertise {
@@ -1347,7 +1352,7 @@ a:focus {
 
 /* ===== Footer ===== */
 .footer {
-  background-color: rgba(34, 38, 70, 0.3);
+  background-color: rgb(40, 40, 88);
   color: var(--pf-white);
   padding: var(--pf-space-lg) 0 var(--pf-space-xs);
 }
