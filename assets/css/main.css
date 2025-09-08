@@ -531,10 +531,10 @@ a:focus {
   position: relative;
   overflow: hidden;
   height: 100vh;
+  min-height: 800px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: 600px;
 }
 
 .hero::before {
@@ -564,9 +564,9 @@ a:focus {
 }
 
 .hero-logo-img {
-  max-width: 600px;
   width: 100%;
-  max-width: min(600px, 90vw);
+  max-width: min(600px, 70vw);
+  min-width: 200px;
   height: auto;
   opacity: 0.95;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
@@ -667,6 +667,36 @@ a:focus {
   margin-bottom: var(--pf-space-sm);
 }
 
+.hero-title-first {
+  display: inline;
+}
+
+.hero-title-second {
+  display: inline;
+}
+
+/* Force single line on larger screens */
+@media (min-width: 769px) {
+  .hero-title-line {
+    white-space: nowrap;
+  }
+}
+
+/* Controlled line break on smaller screens */
+@media (max-width: 768px) {
+  .hero-title-line {
+    white-space: normal;
+  }
+  
+  .hero-title-first::after {
+    content: " ";
+  }
+  
+  .hero-title-second {
+    display: block;
+  }
+}
+
 .hero-title-line:first-child {
   color: var(--pf-white);
   font-size: 0.9em;
@@ -739,6 +769,14 @@ a:focus {
   flex-wrap: wrap;
 }
 
+.hero-actions .btn {
+  max-width: 250px;
+  width: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* Desktop hero adjustments */
 @media (min-width: 768px) {
   .hero {
@@ -773,106 +811,23 @@ a:focus {
 /* Mobile responsiveness for hero logo */
 @media (max-width: 768px) {
   .hero {
-    height: auto;
-    min-height: 100vh;
-    justify-content: flex-start;
-    padding: var(--pf-space-xl) 0;
+    min-height: 800px;
   }
   
   .hero-logo-img {
-    max-width: min(500px, 90vw);
-  }
-  
-  .hero-logo-top {
-    top: 2rem;
-    position: relative;
-    margin-bottom: var(--pf-space-lg);
-    padding: 0 var(--pf-space-md);
-  }
-  
-  .hero-content {
-    padding: var(--pf-space-lg) var(--pf-space-md);
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    max-width: 100%;
-  }
-  
-  .hero-title {
-    font-size: var(--pf-font-size-2xl);
-    margin-bottom: var(--pf-space-md);
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-  }
-  
-  .hero-subtitle {
-    font-size: var(--pf-font-size-lg);
-    margin-bottom: var(--pf-space-lg);
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-  }
-  
-  .hero-expertise {
-    font-size: var(--pf-font-size-base);
-    margin-bottom: var(--pf-space-lg);
-    word-wrap: break-word;
-    overflow-wrap: break-word;
+    min-width: 250px;
+    max-width: min(500px, 60vw);
   }
 }
 
 @media (max-width: 480px) {
   .hero {
-    padding: var(--pf-space-lg) 0;
+    min-height: 800px;
   }
   
   .hero-logo-img {
-    max-width: min(400px, 85vw);
-  }
-  
-  .hero-logo-top {
-    top: 1rem;
-    position: relative;
-    margin-bottom: var(--pf-space-md);
-    padding: 0 var(--pf-space-sm);
-  }
-  
-  .hero-content {
-    padding: var(--pf-space-md) var(--pf-space-sm);
-    max-width: 100%;
-  }
-  
-  .hero-title {
-    font-size: var(--pf-font-size-xl);
-    margin-bottom: var(--pf-space-sm);
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-  }
-  
-  .hero-subtitle {
-    font-size: var(--pf-font-size-base);
-    margin-bottom: var(--pf-space-md);
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-  }
-  
-  .hero-expertise {
-    font-size: var(--pf-font-size-sm);
-    margin-bottom: var(--pf-space-md);
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-  }
-  
-  .hero-actions {
-    flex-direction: column;
-    gap: var(--pf-space-sm);
-    width: 100%;
-  }
-  
-  .hero-actions .btn {
-    width: 100%;
-    max-width: 280px;
-    margin: 0 auto;
+    min-width: 200px;
+    max-width: min(400px, 55vw);
   }
 }
 
@@ -894,31 +849,10 @@ a:focus {
   }
 }
 
-/* Extra narrow screens */
-@media (max-width: 320px) {
-  .hero-logo-top {
-    padding: 0 var(--pf-space-xs);
-  }
-  
-  .hero-content {
-    padding: var(--pf-space-sm) var(--pf-space-xs);
-  }
-  
-  .hero-title {
-    font-size: var(--pf-font-size-lg);
-  }
-  
-  .hero-subtitle {
-    font-size: var(--pf-font-size-sm);
-  }
-  
-  .hero-expertise {
-    font-size: var(--pf-font-size-xs);
-  }
-  
-  .hero-actions .btn {
-    max-width: 250px;
-    font-size: var(--pf-font-size-sm);
+/* Short screens (low height) */
+@media (max-height: 600px) {
+  .hero {
+    min-height: 800px;
   }
 }
 
@@ -2269,4 +2203,5 @@ html, body {
     font-size: var(--pf-font-size-base);
   }
 }
+
 
