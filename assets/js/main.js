@@ -588,65 +588,39 @@ class PolarFlowsApp {
     window.addEventListener('scroll', handleScroll, { passive: true });
     
     // Add resize listener to recalculate positions when window is resized
-    const handleResize = window.PolarFlowsUtils?.throttle ? 
-      window.PolarFlowsUtils.throttle(() => {
+    const handleResize = () => {
         console.log('Window resized - following correct sequence');
         
         // Step 1: Scroll up to reset animation state
         window.scrollTo(0, 0);
         console.log('Step 1: Scrolled to top');
         
-        // Step 2: Reset animation to original position immediately
+        // Step 2: Recalculate positions and display immediately (no intermediate jump)
         if (transitionLogo) {
-          // Reset to original hero position and size
-          transitionLogo.style.top = '15%';
-          transitionLogo.style.left = '50%';
-          transitionLogo.style.transform = 'translate(-50%, -50%)';
-          transitionLogo.style.width = '100%';
-          transitionLogo.style.maxWidth = 'min(600px, 70vw)';
-          transitionLogo.style.minWidth = '200px';
-          transitionLogo.style.height = 'auto';
-          transitionLogo.style.opacity = '0.95';
-          console.log('Step 2: Reset animation to original position');
-        }
-        
-        // Step 3: Recalculate positions and display
-        setTimeout(() => {
           // Recalculate max scroll dynamically based on new viewport dimensions
           const newViewportHeight = window.innerHeight;
           const newMaxScroll = (maxScrollBase * (newViewportHeight / 800)) - earlyFinishPx;
           console.log(`New viewport height: ${newViewportHeight}px, New max scroll: ${newMaxScroll}px`);
           
-          // Recalculate all positions with new dimensions
-          const newNavbarPos = getNavbarLogoPosition();
-          const newHeroPos = getHeroLogoPosition();
+          // Use the same calculation as handleScroll for consistency
+          const newViewportWidth = window.innerWidth;
+          const newHeroSection = document.querySelector('.hero-section');
+          const newHeroSectionHeight = newHeroSection ? newHeroSection.offsetHeight : window.innerHeight;
+          const newLogoHeight = transitionLogo ? transitionLogo.offsetHeight : 0;
+          const newCssHeroTop = (newHeroSectionHeight * 0.15) + (newLogoHeight / 2);
+          const newCssHeroLeft = newViewportWidth * 0.5;
           
-          console.log(`New hero position: top=${newHeroPos.top}px, left=${newHeroPos.left}px`);
-          console.log(`New navbar position: top=${newNavbarPos.top}px, left=${newNavbarPos.left}px`);
+          console.log(`New calculated position: top=${newCssHeroTop}px, left=${newCssHeroLeft}px`);
           
-          // Apply new calculated positions
-          if (transitionLogo) {
-            transitionLogo.style.top = `${newHeroPos.top}px`;
-            transitionLogo.style.left = `${newHeroPos.left}px`;
-            console.log('Step 3: Applied new calculated positions');
-          }
+          // Apply new calculated positions immediately
+          transitionLogo.style.top = `${newCssHeroTop}px`;
+          transitionLogo.style.left = `${newCssHeroLeft}px`;
+          transitionLogo.style.transform = 'translate(-50%, -50%)';
+          console.log('Step 2: Applied new calculated positions immediately');
           
           console.log('Resize complete - all steps executed in correct order');
-        }, 100);
-        
-      }, 100) : () => {
-        console.log('Window resized - following correct sequence');
-        // Step 1: Scroll up
-        window.scrollTo(0, 0);
-        // Step 2: Reset animation
-        if (transitionLogo) {
-          transitionLogo.style.top = '15%';
-          transitionLogo.style.left = '50%';
-          transitionLogo.style.transform = 'translate(-50%, -50%)';
         }
-        // Step 3: Recalculate and display
-        setTimeout(() => setInitialPosition(), 100);
-      };
+    };
     
     window.addEventListener('resize', handleResize, { passive: true });
     
@@ -715,9 +689,20 @@ class PolarFlowsApp {
         
         console.log('Initial position set based on scroll position');
       } else {
-        // Page loaded at top - let CSS handle the initial position
-        // Don't override the CSS position, just make it visible
-        console.log('Page loaded at top - using CSS initial position');
+        // Page loaded at top - use calculated position (same as progress=0.00)
+        console.log('Page loaded at top - using calculated position');
+        
+        // Calculate the same position as progress=0.00 in handleScroll
+        const heroSection = document.querySelector('.hero-section');
+        const heroSectionHeight = heroSection ? heroSection.offsetHeight : window.innerHeight;
+        const logoHeight = transitionLogo ? transitionLogo.offsetHeight : 0;
+        const cssHeroTop = (heroSectionHeight * 0.15) + (logoHeight / 2);
+        const cssHeroLeft = window.innerWidth * 0.5;
+        
+        // Set the calculated position
+        transitionLogo.style.top = `${cssHeroTop}px`;
+        transitionLogo.style.left = `${cssHeroLeft}px`;
+        transitionLogo.style.transform = 'translate(-50%, -50%)';
       }
       
       // Always show the logo after position is calculated
