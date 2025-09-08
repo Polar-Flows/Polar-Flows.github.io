@@ -432,7 +432,8 @@ class PolarFlowsApp {
         // Fallback if hero section not found - use same logic as hero section
         const navbarHeight = 70; // Fixed navbar height from CSS
         const navbarBottom = navbarHeight + 50; // 50px padding below navbar
-        const textTop = window.innerHeight * 0.6; // Text is around 60% down
+        const cssHeroSectionHeight = 800; // CSS min-height: 800px
+        const textTop = cssHeroSectionHeight * 0.6; // Text is around 60% down in hero section
         const textTopWithPadding = textTop - 100; // 100px padding above text
         
         const safeAreaTop = navbarBottom;
@@ -449,15 +450,18 @@ class PolarFlowsApp {
         };
       }
       
-      const heroSectionHeight = heroSection.offsetHeight;
-      const heroSectionRect = heroSection.getBoundingClientRect();
+      // Use CSS-defined height instead of actual rendered height for consistent positioning
+      const cssHeroSectionHeight = 800; // CSS min-height: 800px
+      
+      // Calculate hero section position once and use fixed offset (consistent positioning)
+      const heroSectionTop = heroSection.offsetTop; // Use offsetTop instead of getBoundingClientRect
       
       // Get navbar height to ensure no overlap
       const navbarHeight = 70; // Fixed navbar height from CSS
       
       // Calculate safe area: below navbar + padding, above text + padding
       const navbarBottom = navbarHeight + 50; // 50px padding below navbar
-      const textTop = heroSectionRect.top + (heroSectionHeight * 0.6); // Text is around 60% down in hero section
+      const textTop = heroSectionTop + (cssHeroSectionHeight * 0.6); // Text is around 60% down in hero section
       const textTopWithPadding = textTop - 100; // 100px padding above text
       
       // Calculate the middle of the safe area (between navbar and text)
@@ -514,13 +518,11 @@ class PolarFlowsApp {
       // Get the CSS-defined initial position (15% from top, 50% from left)
       const viewportWidth = window.innerWidth;
       
-      // Use hero section height for positioning calculations
-      const heroSection = document.querySelector('.hero-section');
-      const heroSectionHeight = heroSection ? heroSection.offsetHeight : window.innerHeight;
-      const heroSectionRect = heroSection ? heroSection.getBoundingClientRect() : { top: 0 };
-      
-      // Position relative to hero section: 15% from top of hero section
-      const cssHeroTop = heroSectionRect.top + (heroSectionHeight * 0.15); // 15% from top of hero section
+      // Dynamic approach: navbar bottom + padding + actual logo height
+      const navbar = document.querySelector('.navbar');
+      const navbarRect = navbar ? navbar.getBoundingClientRect() : { bottom: 70 };
+      const logoHeight = transitionLogo ? transitionLogo.offsetHeight : 0;
+      const cssHeroTop = navbarRect.bottom + 15 + (logoHeight / 2); // 15px padding + half logo height
       const cssHeroLeft = viewportWidth * 0.5; // CSS position: 50% from left
       
       // Use linear progress for both position and size (smoother overall animation)
@@ -528,6 +530,7 @@ class PolarFlowsApp {
       const sizeProgress = scrollProgress;
       
       // Interpolate between CSS hero position and navbar positions with linear movement
+      // Start at navbar bottom + padding, end at navbar logo center
       const currentTop = cssHeroTop + (navbarPos.top - cssHeroTop) * positionProgress;
       const currentLeft = cssHeroLeft + (navbarPos.left - cssHeroLeft) * positionProgress;
       
