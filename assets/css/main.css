@@ -564,6 +564,8 @@ a:focus {
 
 .hero-logo-img {
   max-width: 600px;
+  width: 100%;
+  max-width: min(600px, 90vw);
   height: auto;
   opacity: 0.95;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
@@ -761,6 +763,19 @@ a:focus {
   
   .hero-logo-img {
     max-width: 750px;
+  }
+}
+
+/* Mobile responsiveness for hero logo */
+@media (max-width: 768px) {
+  .hero-logo-img {
+    max-width: min(500px, 90vw);
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-logo-img {
+    max-width: min(400px, 85vw);
   }
   
   .hero-actions {
@@ -997,7 +1012,7 @@ a:focus {
   top: 52%;
   right: 10%;
   transform: translateY(-50%);
-  opacity: 0.15;
+  opacity: 0.25;
   z-index: 1;
   pointer-events: none;
 }
@@ -1031,7 +1046,7 @@ a:focus {
 @media (max-width: 767px) {
   .about-logo-bg {
     right: 5%;
-    opacity: 0.1;
+    opacity: 0.2;
   }
   
   .about-logo-bg img {
@@ -1762,6 +1777,19 @@ html, body {
 /* Privacy policy page hero title - white color */
 .privacy-page .hero-title {
   color: var(--pf-white);
+}
+
+/* Smaller hero sections for contact and privacy pages */
+.contact-page .hero,
+.privacy-page .hero {
+  height: 40vh;
+  min-height: 300px;
+}
+
+/* Smaller subtitle for contact and privacy pages */
+.contact-page .hero-subtitle,
+.privacy-page .hero-subtitle {
+  font-size: var(--pf-font-size-lg);
 }
 
 /* Mobile contact adjustments */
