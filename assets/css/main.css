@@ -286,17 +286,17 @@ a:focus {
   top: 0;
   left: 0;
   right: 0;
-  background-color: #ffffff;
+  background-color: rgba(34, 38, 70, 0.3);
   backdrop-filter: blur(8px);
-  border-bottom: 1px solid rgba(30, 80, 180, 0.2);
+  border-bottom: 1px solid rgba(34, 38, 70, 0.2);
   z-index: var(--pf-z-sticky);
   transition: all var(--pf-transition-normal);
-  color: var(--pf-primary);
+  color: var(--pf-white);
 }
 
 .navbar.nav--scrolled {
-  background-color: #ffffff;
-  box-shadow: 0 6px 20px rgba(30, 80, 180, 0.1);
+  background-color: rgba(34, 38, 70, 0.3);
+  box-shadow: 0 6px 20px rgba(34, 38, 70, 0.1);
 }
 
 .navbar-container {
@@ -315,14 +315,14 @@ a:focus {
   align-items: center;
   font-size: var(--pf-font-size-3xl);
   font-weight: var(--pf-font-weight-bold);
-  color: var(--pf-primary);
+  color: var(--pf-white);
   text-decoration: none;
   /* Simple hover effect to change text color */
   transition: color var(--pf-transition-fast);
 }
 
 .navbar-brand:hover {
-  color: var(--pf-primary-dark);
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .navbar-logo {
@@ -342,7 +342,7 @@ a:focus {
 }
 
 .navbar-nav a {
-  color: #000000;
+  color: var(--pf-white);
   text-decoration: none;
   font-size: var(--pf-font-size-xl);
   font-weight: var(--pf-font-weight-medium);
@@ -356,8 +356,8 @@ a:focus {
 
 .navbar-nav a:hover,
 .navbar-nav a:focus {
-  background-color: rgba(0, 0, 0, 0.1);
-  color: #000000;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--pf-white);
 }
 
 .navbar-toggle {
@@ -381,7 +381,7 @@ a:focus {
 .navbar-toggle span {
   width: 25px;
   height: 3px;
-  background-color: var(--pf-primary);
+  background-color: var(--pf-white);
   margin: 2px 0;
   transition: var(--pf-transition-fast);
   border-radius: 2px;
@@ -1346,8 +1346,8 @@ a:focus {
 
 /* ===== Footer ===== */
 .footer {
-  background-color: var(--pf-bg-dark);
-  color: var(--pf-text-light);
+  background-color: rgba(34, 38, 70, 0.3);
+  color: var(--pf-white);
   padding: var(--pf-space-lg) 0 var(--pf-space-xs);
 }
 
@@ -1359,14 +1359,14 @@ a:focus {
 }
 
 .footer-section h3 {
-  color: var(--pf-text-light);
+  color: var(--pf-white);
   margin-bottom: var(--pf-space-sm);
   font-size: var(--pf-font-size-base);
 }
 
 .footer-section p,
 .footer-section a {
-  color: var(--pf-text-light);
+  color: var(--pf-white);
   opacity: 0.8;
   margin-bottom: var(--pf-space-xs);
   /* Mobile optimization */
@@ -1379,10 +1379,10 @@ a:focus {
 }
 
 .footer-bottom {
-  border-top: 1px solid var(--pf-border-medium);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
   padding-top: var(--pf-space-sm);
   text-align: center;
-  color: var(--pf-text-light);
+  color: var(--pf-white);
   opacity: 0.8;
 }
 

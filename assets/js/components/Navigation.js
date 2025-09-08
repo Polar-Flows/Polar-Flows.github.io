@@ -146,7 +146,6 @@ export class Navigation {
    */
   handleScrollUpdate() {
     const currentScrollY = window.scrollY;
-    const scrollDirection = currentScrollY > this.lastScrollY ? 'down' : 'up';
     
     // Update navbar appearance based on scroll
     if (currentScrollY > this.scrollThreshold) {
@@ -155,12 +154,8 @@ export class Navigation {
       this.navbar.classList.remove('scrolled');
     }
     
-    // Auto-hide navbar on scroll down (optional)
-    if (scrollDirection === 'down' && currentScrollY > 100) {
-      this.navbar.style.transform = 'translateY(-100%)';
-    } else {
-      this.navbar.style.transform = 'translateY(0)';
-    }
+    // Keep navbar always visible
+    this.navbar.style.transform = 'translateY(0)';
     
     this.lastScrollY = currentScrollY;
   }
