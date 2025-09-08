@@ -31,6 +31,9 @@ class PolarFlowsApp {
         });
       }
 
+      // Initialize logo transformation FIRST - prioritize logo appearance
+      this.initLogoTransformation();
+      
       // Initialize all components
       await this.initializeComponents();
       
@@ -377,6 +380,205 @@ class PolarFlowsApp {
     this.isInitialized = false;
     
     console.log('Polar Flows website destroyed');
+  }
+
+  /**
+   * Initialize logo transformation effect
+   */
+  initLogoTransformation() {
+    console.log('Initializing logo transformation...');
+    
+    // Only apply to main page
+    if (!document.body.classList.contains('home-page')) {
+      console.log('Not home page, skipping logo transformation');
+      return;
+    }
+
+    const transitionLogo = document.querySelector('.transition-logo');
+    const navbarLogo = document.querySelector('.navbar-logo');
+    const navbarBrand = document.querySelector('.navbar-brand');
+    
+    console.log('Transition logo found:', !!transitionLogo);
+    console.log('Navbar logo found:', !!navbarLogo);
+    console.log('Navbar brand found:', !!navbarBrand);
+    
+    if (!transitionLogo || !navbarLogo || !navbarBrand) {
+      console.log('Missing logo elements, skipping transformation');
+      return;
+    }
+
+    // Get navbar logo dimensions and position dynamically
+    const getNavbarLogoPosition = () => {
+      const navbarRect = navbarBrand.getBoundingClientRect();
+      const navbarHeight = navbarRect.height;
+      const navbarTop = navbarRect.top + (navbarHeight / 2); // Center vertically
+      const navbarLeft = navbarRect.left + (navbarRect.width / 2); // Center horizontally
+      
+      return {
+        top: navbarTop,
+        left: navbarLeft,
+        height: navbarHeight,
+        width: navbarRect.width
+      };
+    };
+
+    // Get hero logo initial position (convert to pixels)
+    const getHeroLogoPosition = () => {
+      const viewportHeight = window.innerHeight;
+      const viewportWidth = window.innerWidth;
+      
+      return {
+        top: viewportHeight * 0.15, // 15% from top in pixels (even higher up)
+        left: viewportWidth * 0.5, // 50% from left in pixels
+        size: 100 // 100% width
+      };
+    };
+
+    // Calculate the total height (hero section + navbar)
+    const navbarHeight = 70; // Fixed navbar height from CSS
+    const heroSectionHeight = window.innerHeight;
+    const totalHeight = heroSectionHeight + navbarHeight;
+    
+    // Dynamic maxScroll - calculate based on viewport dimensions
+    // Animation completes when user scrolls a percentage of the viewport height
+    const viewportHeight = window.innerHeight;
+    const maxScroll = viewportHeight * 0.4; // Animation completes at 40% of viewport height
+    let isTransforming = false;
+
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const scrollProgress = Math.min(scrollY / maxScroll, 1); // 0 to 1
+      
+      console.log(`Scroll: ${scrollY}px, Progress: ${scrollProgress.toFixed(2)}, MaxScroll: ${maxScroll}px`);
+      
+      if (scrollY > 0 && !isTransforming) {
+        console.log('Starting transformation');
+        isTransforming = true;
+        navbarLogo.style.opacity = '0';
+        navbarLogo.style.visibility = 'hidden';
+      } else if (scrollY <= 0 && isTransforming) {
+        console.log('Stopping transformation');
+        isTransforming = false;
+        navbarLogo.style.opacity = '0';
+        navbarLogo.style.visibility = 'hidden';
+      }
+      
+      // Get current positions dynamically
+      const heroPos = getHeroLogoPosition();
+      const navbarPos = getNavbarLogoPosition();
+      
+      // Use linear progress for both position and size (smoother overall animation)
+      const positionProgress = scrollProgress;
+      const sizeProgress = scrollProgress;
+      
+      // Interpolate between hero and navbar positions with linear movement
+      const currentTop = heroPos.top + (navbarPos.top - heroPos.top) * positionProgress;
+      const currentLeft = heroPos.left + (navbarPos.left - heroPos.left) * positionProgress;
+      
+      // Apply the calculated values
+      transitionLogo.style.top = `${currentTop}px`;
+      transitionLogo.style.left = `${currentLeft}px`;
+      transitionLogo.style.transform = 'translate(-50%, -50%)';
+      
+      // Calculate size based on linear scroll progress - smooth reduction from big to small
+      const heroSize = 100; // 100% width initially
+      const navbarSize = navbarPos.height; // Final navbar height
+      
+      // Linear interpolation from hero size to navbar size (always decreasing)
+      const currentSize = heroSize - (heroSize - (navbarSize / window.innerWidth * 100)) * sizeProgress;
+      
+      // Always use width-based sizing to maintain smooth size reduction
+      // Convert navbar height to equivalent width percentage for smooth transition
+      const finalWidthPercent = (navbarSize / window.innerWidth) * 100;
+      const smoothSize = Math.max(heroSize - (heroSize - finalWidthPercent) * sizeProgress, 2);
+      
+      transitionLogo.style.width = `${smoothSize}%`;
+      transitionLogo.style.height = 'auto';
+      transitionLogo.style.maxWidth = 'min(600px, 70vw)';
+      transitionLogo.style.minWidth = '200px';
+    };
+
+    // Use throttled version if available, otherwise use regular
+    const throttledHandleScroll = window.PolarFlowsUtils?.throttle ? 
+      window.PolarFlowsUtils.throttle(handleScroll, 16) : handleScroll;
+
+    // Add multiple scroll event listeners to ensure we catch all scroll events
+    window.addEventListener('scroll', throttledHandleScroll, { passive: true });
+    document.addEventListener('scroll', throttledHandleScroll, { passive: true });
+    
+    // Also add a direct scroll listener as backup
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    // Add resize listener to recalculate positions when window is resized
+    const handleResize = window.PolarFlowsUtils?.throttle ? 
+      window.PolarFlowsUtils.throttle(() => {
+        // Recalculate max scroll dynamically based on new viewport dimensions
+        const newViewportHeight = window.innerHeight;
+        const newMaxScroll = newViewportHeight * 0.4; // Dynamic calculation - 40% of viewport height
+        console.log('Window resized - recalculating positions');
+        console.log(`New viewport height: ${newViewportHeight}px, New max scroll: ${newMaxScroll}px`);
+      }, 100) : () => {
+        console.log('Window resized - recalculating positions');
+      };
+    
+    window.addEventListener('resize', handleResize, { passive: true });
+    
+    // Set initial position based on current scroll position
+    const setInitialPosition = () => {
+      const currentScrollY = window.scrollY;
+      const currentScrollProgress = Math.min(currentScrollY / maxScroll, 1);
+      
+      console.log(`Initial scroll: ${currentScrollY}px, Progress: ${currentScrollProgress.toFixed(2)}`);
+      
+      if (currentScrollProgress > 0) {
+        // Page was refreshed while scrolled - hide navbar logo and position transition logo
+        navbarLogo.style.opacity = '0';
+        navbarLogo.style.visibility = 'hidden';
+        isTransforming = true;
+        
+        // Get current positions and apply them immediately
+        const heroPos = getHeroLogoPosition();
+        const navbarPos = getNavbarLogoPosition();
+        
+        // Use linear progress for both position and size
+        const positionProgress = currentScrollProgress;
+        const sizeProgress = currentScrollProgress;
+        
+        // Calculate and apply position
+        const currentTop = heroPos.top + (navbarPos.top - heroPos.top) * positionProgress;
+        const currentLeft = heroPos.left + (navbarPos.left - heroPos.left) * positionProgress;
+        
+        transitionLogo.style.top = `${currentTop}px`;
+        transitionLogo.style.left = `${currentLeft}px`;
+        transitionLogo.style.transform = 'translate(-50%, -50%)';
+        
+        // Calculate and apply size
+        const heroSize = 100; // 100% width initially
+        const navbarSize = navbarPos.height; // Final navbar height
+        
+        // Always use width-based sizing to maintain smooth size reduction
+        // Convert navbar height to equivalent width percentage for smooth transition
+        const finalWidthPercent = (navbarSize / window.innerWidth) * 100;
+        const smoothSize = Math.max(heroSize - (heroSize - finalWidthPercent) * sizeProgress, 2);
+        
+        transitionLogo.style.width = `${smoothSize}%`;
+        transitionLogo.style.height = 'auto';
+        transitionLogo.style.maxWidth = 'min(600px, 70vw)';
+        transitionLogo.style.minWidth = '200px';
+        
+        console.log('Initial position set based on scroll position');
+      }
+      
+      // Always show the logo after position is calculated
+      transitionLogo.style.opacity = '0.95';
+    };
+    
+    // Set initial position immediately - prioritize logo appearance
+    setInitialPosition();
+    
+    console.log('Logo transformation initialized successfully');
+    console.log(`Hero height: ${heroSectionHeight}px, Navbar height: ${navbarHeight}px, Total height: ${totalHeight}px, Max scroll: ${maxScroll}px`);
+    
   }
 }
 

@@ -280,6 +280,59 @@ a:focus {
   }
 }
 
+/* ===== Logo Transition Container ===== */
+.logo-transition-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 1021;
+}
+
+.transition-logo {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: min(600px, 70vw);
+  min-width: 200px;
+  height: auto;
+  opacity: 0; /* Initially hidden until JavaScript calculates position */
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  /* No CSS transition - handled by JavaScript for scroll-based animation */
+}
+
+/* Initial state - logo in hero position (higher up) */
+.transition-logo.in-hero {
+  top: 15%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: min(600px, 70vw);
+  min-width: 200px;
+  height: auto;
+}
+
+
+.transition-logo.in-navbar {
+  top: 10px;
+  left: 20px;
+  transform: translateX(0);
+  width: auto;
+  height: 60px;
+  max-width: none;
+  min-width: auto;
+}
+
+/* Hide navbar logo when transition logo is active */
+.transition-logo.in-navbar ~ * .navbar-logo {
+  opacity: 0;
+  visibility: hidden;
+}
+
 /* ===== Navigation ===== */
 .navbar {
   position: fixed;
@@ -334,6 +387,9 @@ a:focus {
   padding: 10px 0 0 0;
   display: flex;
   align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all var(--pf-transition-normal);
 }
 
 .navbar-nav {
@@ -440,6 +496,13 @@ a:focus {
     align-items: center;
   }
   
+  
+  .transition-logo.in-navbar {
+    height: 55px;
+    top: 8px;
+    left: 15px;
+  }
+  
   .navbar-nav {
     gap: var(--pf-space-lg);
   }
@@ -527,6 +590,13 @@ a:focus {
     align-items: center;
   }
   
+  
+  .transition-logo.in-navbar {
+    height: 50px;
+    top: 6px;
+    left: 10px;
+  }
+  
   /* Mobile navbar container adjustments */
   .navbar-container {
     padding: 0 var(--pf-space-md);
@@ -583,7 +653,10 @@ a:focus {
   height: auto;
   opacity: 0.95;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+
 
 /* Scroll Indicator */
 .scroll-indicator {

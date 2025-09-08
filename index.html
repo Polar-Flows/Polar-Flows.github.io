@@ -82,10 +82,15 @@
     }
     </script>
 </head>
-<body id="top">
+<body id="top" class="home-page">
     <!-- Skip to content link for accessibility -->
     <a href="#main-content" class="skip-link">Skip to main content</a>
     
+    <!-- Logo Transition Container -->
+    <div class="logo-transition-container">
+        <img src="assets/img/polarflows/logo_v2_full_white.png" alt="Polar Flows Logo" class="transition-logo in-hero">
+    </div>
+
     <!-- Navigation -->
     <nav class="navbar" role="navigation" aria-label="Main navigation">
         <div class="container navbar-container">
@@ -114,11 +119,6 @@
     <main id="main-content">
         <!-- Hero Section -->
         <section class="hero" aria-labelledby="hero-title">
-            <!-- Hero Logo at Top -->
-            <div class="hero-logo-top">
-                <img src="assets/img/polarflows/logo_v2_full_white.png" alt="Polar Flows Logo" class="hero-logo-img">
-            </div>
-            
             <div class="container">
                 <div class="hero-content scroll-animate">
                     <h1 id="hero-title" class="hero-title">
@@ -472,5 +472,24 @@
             <p>This website requires JavaScript to function properly. Please enable JavaScript in your browser.</p>
         </div>
     </noscript>
+    
+    <!-- Force scroll to top on page reload -->
+    <script>
+        // Force scroll to top when page is reloaded
+        window.addEventListener('beforeunload', function() {
+            window.scrollTo(0, 0);
+        });
+        
+        // Force scroll to top after logo positioning is calculated
+        window.addEventListener('load', function() {
+            // Small delay to ensure logo positioning is done first
+            setTimeout(() => {
+                window.scrollTo(0, 0);
+            }, 100);
+        });
+        
+        // Force scroll to top immediately (before any other scripts)
+        window.scrollTo(0, 0);
+    </script>
 </body>
 </html>
