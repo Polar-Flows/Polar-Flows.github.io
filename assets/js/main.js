@@ -518,12 +518,12 @@ class PolarFlowsApp {
       // Get the CSS-defined initial position (15% from top, 50% from left)
       const viewportWidth = window.innerWidth;
       
-      // Dynamic approach: navbar bottom + padding + actual logo height
-      const navbar = document.querySelector('.navbar');
-      const navbarRect = navbar ? navbar.getBoundingClientRect() : { bottom: 70 };
+      // Use CSS initial position (15% from top, 50% from left) for progress = 0, moved down by half logo height
+      const heroSection = document.querySelector('.hero-section');
+      const heroSectionHeight = heroSection ? heroSection.offsetHeight : window.innerHeight;
       const logoHeight = transitionLogo ? transitionLogo.offsetHeight : 0;
-      const cssHeroTop = navbarRect.bottom + 15 + (logoHeight / 2); // 15px padding + half logo height
-      const cssHeroLeft = viewportWidth * 0.5; // CSS position: 50% from left
+      const cssHeroTop = (heroSectionHeight * 0.15) + (logoHeight / 2); // CSS: top: 15% + half logo height
+      const cssHeroLeft = viewportWidth * 0.5; // CSS: left: 50%
       
       // Use linear progress for both position and size (smoother overall animation)
       const positionProgress = scrollProgress;
