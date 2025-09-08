@@ -497,7 +497,7 @@ class PolarFlowsApp {
     const maxScroll = (heroSectionHeight * dynamicPercentage) - earlyFinishPx;
     let isTransforming = false;
 
-    const handleScroll = () => {
+    this.handleScroll = () => {
       const scrollY = window.scrollY;
       
       // Calculate maxScroll dynamically to respond to window size changes
@@ -587,14 +587,14 @@ class PolarFlowsApp {
 
     // Use throttled version if available, otherwise use regular
     const throttledHandleScroll = window.PolarFlowsUtils?.throttle ? 
-      window.PolarFlowsUtils.throttle(handleScroll, 16) : handleScroll;
+      window.PolarFlowsUtils.throttle(this.handleScroll, 16) : this.handleScroll;
 
     // Add multiple scroll event listeners to ensure we catch all scroll events
     window.addEventListener('scroll', throttledHandleScroll, { passive: true });
     document.addEventListener('scroll', throttledHandleScroll, { passive: true });
     
     // Also add a direct scroll listener as backup
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('scroll', this.handleScroll, { passive: true });
     
     // Add resize listener to recalculate positions when window is resized
     const handleResize = () => {
@@ -723,92 +723,335 @@ class PolarFlowsApp {
     // Set initial position immediately - prioritize logo appearance
     setInitialPosition();
     
-    // Monitor navbar menu state - when active, set animation progress to 1.00
-    const navbarNav = document.querySelector('.navbar-nav');
-    if (navbarNav) {
-      const observer = new MutationObserver((mutations) => {
-        mutations.forEach((mutation) => {
-          if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-            const isActive = navbarNav.classList.contains('active');
-            if (isActive) {
-              // Navbar menu is open - force animation to progress 1.00
-              console.log('Navbar menu active - setting animation progress to 1.00');
-              
-              // Get current positions
-              const navbarPos = getNavbarLogoPosition();
-              const viewportWidth = window.innerWidth;
-              
-              // Set logo to final navbar position
-              transitionLogo.style.top = `${navbarPos.top}px`;
-              transitionLogo.style.left = `${navbarPos.left}px`;
-              transitionLogo.style.transform = 'translate(-50%, -50%)';
-              
-              // Set logo to final size
-              const navbarSize = navbarPos.height;
-              const navbarWidth = navbarPos.width;
-              const navbarPadding = 20;
-              const maxSafeWidth = navbarWidth - navbarPadding;
-              const maxSafeWidthPercent = (maxSafeWidth / window.innerWidth) * 100;
-              const calculatedSize = Math.max((navbarSize / window.innerWidth) * 100 * 2.5, 8); // Larger final size
-              const finalWidthPercent = Math.min(calculatedSize, maxSafeWidthPercent);
-              
-              transitionLogo.style.width = `${finalWidthPercent}%`;
-              transitionLogo.style.height = 'auto';
-              transitionLogo.style.maxWidth = 'none';
-              transitionLogo.style.minWidth = 'auto';
-              transitionLogo.style.flexShrink = '0';
-              transitionLogo.style.flexGrow = '0';
-              
-              // Hide navbar logo and show transition logo
-              navbarLogo.style.opacity = '0';
-              navbarLogo.style.visibility = 'hidden';
-              isTransforming = true;
-            } else {
-              // Navbar menu is closed - revert to progress 0.00 (if no scroll)
-              const currentScrollY = window.scrollY;
-              if (currentScrollY === 0) {
-                console.log('Navbar menu closed - reverting to progress 0.00');
-                
-                // Calculate initial position (same as progress 0.00)
-                const currentViewportWidth = window.innerWidth;
-                const currentHeroSection = document.querySelector('.hero-section');
-                const currentHeroSectionHeight = currentHeroSection ? currentHeroSection.offsetHeight : window.innerHeight;
-                const currentLogoHeight = transitionLogo ? transitionLogo.offsetHeight : 0;
-                const cssHeroTop = (currentHeroSectionHeight * 0.15) + (currentLogoHeight / 2);
-                const cssHeroLeft = currentViewportWidth * 0.5;
-                
-                // Set logo to initial position
-                transitionLogo.style.top = `${cssHeroTop}px`;
-                transitionLogo.style.left = `${cssHeroLeft}px`;
-                transitionLogo.style.transform = 'translate(-50%, -50%)';
-                
-                // Set logo to initial size
-                const maxWidthPx = Math.min(600, currentViewportWidth * 0.7);
-                const heroSize = (maxWidthPx / currentViewportWidth) * 100;
-                
-                transitionLogo.style.width = `${heroSize}%`;
-                transitionLogo.style.height = 'auto';
-                transitionLogo.style.maxWidth = 'min(600px, 70vw)';
-                transitionLogo.style.minWidth = '200px';
-                transitionLogo.style.flexShrink = '0';
-                transitionLogo.style.flexGrow = '0';
-                
-                // Show navbar logo and hide transition logo
-                navbarLogo.style.opacity = '1';
-                navbarLogo.style.visibility = 'visible';
-                isTransforming = false;
-              }
-            }
-          }
-        });
-      });
-      
-      observer.observe(navbarNav, { attributes: true, attributeFilter: ['class'] });
-    }
+    
+    // Prevent scrolling and resizing when navbar menu is open
+    this.preventScrollAndResizeWhenMenuOpen();
     
     console.log('Logo transformation initialized successfully');
     console.log(`Hero height: ${heroSectionHeight}px, Navbar height: ${navbarHeight}px, Total height: ${totalHeight}px, Max scroll: ${maxScroll}px`);
     
+  }
+
+  /**
+   * Prevent scrolling and resizing when navbar menu is open
+   */
+  preventScrollAndResizeWhenMenuOpen() {
+    const navbarNav = document.querySelector('.navbar-nav');
+    if (!navbarNav) return;
+
+    let isMenuOpen = false;
+    let originalScrollY = 0;
+    let originalOverflow = '';
+
+    // Function to prevent scrolling
+    const preventScroll = (e) => {
+      if (isMenuOpen) {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        return false;
+      }
+    };
+
+    // Function to prevent resizing
+    const preventResize = (e) => {
+      if (isMenuOpen) {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        return false;
+      }
+    };
+
+    // Function to create temporary background
+    const createTempBackground = () => {
+      const tempBackground = document.createElement('div');
+      tempBackground.className = 'temp-navbar-background';
+      tempBackground.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: url('assets/img/polarflows/Stockholm_modif.jpg');
+        background-size: cover;
+        background-position: left center;
+        background-attachment: fixed;
+        z-index: 1015;
+        pointer-events: none;
+      `;
+      
+      // Add the same overlay as hero section
+      const overlay = document.createElement('div');
+      overlay.className = 'temp-background-overlay';
+      overlay.style.cssText = `
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(1, 45, 117, 0.3) 0%, rgba(14, 30, 58, 0.3) 100%);
+        z-index: 1;
+      `;
+      tempBackground.appendChild(overlay);
+      document.body.appendChild(tempBackground);
+      
+      // Hide the big logo completely by setting opacity to 0
+      const transitionLogo = document.querySelector('.transition-logo');
+      if (transitionLogo) {
+        transitionLogo.style.setProperty('opacity', '0', 'important');
+        transitionLogo.style.setProperty('visibility', 'hidden', 'important');
+      }
+      
+      return tempBackground;
+    };
+
+    // Function to create temporary logo
+    const createTempLogo = () => {
+      const tempLogo = document.createElement('img');
+      tempLogo.className = 'temp-navbar-logo';
+      tempLogo.src = 'assets/img/polarflows/logo_v2_full_white.png';
+      tempLogo.alt = 'Polar Flows';
+      
+      // Get the real navbar logo properties to match exactly
+      const realNavbarLogo = document.querySelector('.navbar-logo');
+      let logoHeight = 60; // Default height
+      let logoTop = 10; // Default top padding
+      let logoOpacity = 1; // Default opacity
+      
+      if (realNavbarLogo) {
+        // Temporarily make the real logo visible to get accurate dimensions
+        const originalOpacity = realNavbarLogo.style.opacity;
+        const originalVisibility = realNavbarLogo.style.visibility;
+        realNavbarLogo.style.opacity = '1';
+        realNavbarLogo.style.visibility = 'visible';
+        
+        // Force a reflow to ensure dimensions are calculated
+        realNavbarLogo.offsetHeight;
+        
+        const computedStyle = window.getComputedStyle(realNavbarLogo);
+        const fullHeight = parseInt(computedStyle.height) || 60;
+        const fullWidth = parseInt(computedStyle.width) || 0;
+        const paddingTop = parseInt(computedStyle.paddingTop) || 10;
+        const paddingBottom = parseInt(computedStyle.paddingBottom) || 0;
+        const paddingLeft = parseInt(computedStyle.paddingLeft) || 0;
+        const paddingRight = parseInt(computedStyle.paddingRight) || 0;
+        
+        // Calculate actual image dimensions (excluding padding)
+        logoHeight = fullHeight - paddingTop - paddingBottom;
+        logoTop = parseInt(computedStyle.paddingTop) || 10;
+        logoOpacity = parseFloat(computedStyle.opacity) || 1;
+        
+        // Restore original visibility
+        realNavbarLogo.style.opacity = originalOpacity;
+        realNavbarLogo.style.visibility = originalVisibility;
+        
+        console.log('Fake logo size:', logoHeight, 'px (full height:', fullHeight, 'px - padding:', paddingTop, 'px)');
+        console.log('Real logo computed dimensions:', {
+          height: fullHeight,
+          width: fullWidth,
+          paddingTop,
+          paddingBottom,
+          paddingLeft,
+          paddingRight
+        });
+      }
+      
+      // Get navbar brand position to match exactly
+      const navbarBrand = document.querySelector('.navbar-brand');
+      let leftPosition = 80; // Default padding
+      let topPosition = logoTop;
+      
+      if (navbarBrand) {
+        const brandRect = navbarBrand.getBoundingClientRect();
+        leftPosition = brandRect.left;
+        topPosition = brandRect.top + (brandRect.height - logoHeight) / 2; // Center vertically
+      } else {
+        // Fallback to navbar container padding
+        const navbarContainer = document.querySelector('.navbar-container');
+        if (navbarContainer) {
+          const computedStyle = window.getComputedStyle(navbarContainer);
+          leftPosition = parseInt(computedStyle.paddingLeft) || 80;
+        }
+      }
+      
+      tempLogo.style.cssText = `
+        position: fixed;
+        top: ${topPosition}px;
+        left: ${leftPosition}px;
+        height: ${logoHeight}px;
+        width: auto;
+        opacity: ${logoOpacity};
+        z-index: 1020;
+        pointer-events: none;
+      `;
+      document.body.appendChild(tempLogo);
+      
+      return tempLogo;
+    };
+
+    // Function to close menu and clean up
+    const closeMenuAndCleanup = () => {
+      if (isMenuOpen) {
+        // Remove temporary background
+        const tempBackground = document.querySelector('.temp-navbar-background');
+        if (tempBackground) {
+          tempBackground.remove();
+        }
+        
+        // Remove temporary logo
+        const tempLogo = document.querySelector('.temp-navbar-logo');
+        if (tempLogo) {
+          tempLogo.remove();
+        }
+        
+        // Restore the big logo visibility
+        const transitionLogo = document.querySelector('.transition-logo');
+        if (transitionLogo) {
+          transitionLogo.style.removeProperty('opacity');
+          transitionLogo.style.removeProperty('visibility');
+          // Ensure it's visible again
+          transitionLogo.style.opacity = '0.95';
+          transitionLogo.style.visibility = 'visible';
+        }
+        
+        // Close the navbar menu
+        navbarNav.classList.remove('active');
+        
+        isMenuOpen = false;
+        console.log('Menu closed and cleanup completed');
+      }
+    };
+
+    // Observe navbar menu state changes
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+          const isActive = navbarNav.classList.contains('active');
+          
+          if (isActive && !isMenuOpen) {
+            // Menu just opened
+            isMenuOpen = true;
+            originalScrollY = window.scrollY;
+            originalOverflow = document.body.style.overflow;
+            
+            console.log('Menu opened - creating visual illusion');
+            
+            // 1. Menu is already expanded (handled by CSS)
+            
+            // 2. Make menu always in front
+            navbarNav.style.zIndex = '1030';
+            
+            // 3. Add temporary background (second in order, behind menu)
+            const tempBackground = createTempBackground();
+            
+            // 4. Add temporary logo (third in order, behind menu but in front of background)
+            const tempLogo = createTempLogo();
+            
+            // 5. Add scroll lock
+            document.addEventListener('wheel', preventScroll, { passive: false, capture: true });
+            document.addEventListener('touchmove', preventScroll, { passive: false, capture: true });
+            document.addEventListener('scroll', preventScroll, { passive: false, capture: true });
+            document.addEventListener('keydown', (e) => {
+              if (isMenuOpen && (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'PageUp' || e.key === 'PageDown' || e.key === 'Home' || e.key === 'End' || e.key === ' ')) {
+                e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+                return false;
+              }
+            }, { passive: false, capture: true });
+            
+            // Prevent resizing
+            window.addEventListener('resize', preventResize, { passive: false, capture: true });
+            
+            // Add click handlers to menu options
+            const menuLinks = navbarNav.querySelectorAll('a');
+            menuLinks.forEach(link => {
+              link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const href = link.getAttribute('href');
+                
+                // Remove scroll lock
+                document.removeEventListener('wheel', preventScroll, { capture: true });
+                document.removeEventListener('touchmove', preventScroll, { capture: true });
+                document.removeEventListener('scroll', preventScroll, { capture: true });
+                window.removeEventListener('resize', preventResize, { capture: true });
+                
+                // Remove temp background and temp logo
+                tempBackground.remove();
+                tempLogo.remove();
+                
+                // Close menu
+                navbarNav.classList.remove('active');
+                navbarNav.style.zIndex = '';
+                
+                isMenuOpen = false;
+                
+                // Then navigate to the section
+                setTimeout(() => {
+                  if (href && href.startsWith('#')) {
+                    const targetElement = document.querySelector(href);
+                    if (targetElement) {
+                      targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }
+                }, 100);
+                
+                console.log('Menu option clicked - navigating to section');
+              });
+            });
+            
+            // Disable scrolling by setting overflow hidden
+            document.body.style.overflow = 'hidden';
+            document.documentElement.style.overflow = 'hidden';
+            
+            console.log('Menu opened - visual illusion created, scrolling locked');
+            
+          } else if (!isActive && isMenuOpen) {
+            // Menu just closed
+            isMenuOpen = false;
+            
+            // Remove scroll lock
+            document.removeEventListener('wheel', preventScroll, { capture: true });
+            document.removeEventListener('touchmove', preventScroll, { capture: true });
+            document.removeEventListener('scroll', preventScroll, { capture: true });
+            window.removeEventListener('resize', preventResize, { capture: true });
+            
+            // Remove temp background and temp logo
+            const tempBackground = document.querySelector('.temp-navbar-background');
+            if (tempBackground) {
+              tempBackground.remove();
+            }
+            
+            const tempLogo = document.querySelector('.temp-navbar-logo');
+            if (tempLogo) {
+              tempLogo.remove();
+            }
+            
+            // Restore the big logo visibility
+            const transitionLogo = document.querySelector('.transition-logo');
+            if (transitionLogo) {
+              transitionLogo.style.removeProperty('opacity');
+              transitionLogo.style.removeProperty('visibility');
+              // Ensure it's visible again
+              transitionLogo.style.opacity = '0.95';
+              transitionLogo.style.visibility = 'visible';
+            }
+            
+            // Reset navbar z-index
+            navbarNav.style.zIndex = '';
+            
+            // Restore scrolling
+            document.body.style.overflow = originalOverflow;
+            document.documentElement.style.overflow = '';
+            
+            console.log('Menu closed - visual illusion removed, scrolling restored');
+          }
+        }
+      });
+    });
+
+    observer.observe(navbarNav, { attributes: true, attributeFilter: ['class'] });
   }
 }
 
