@@ -293,7 +293,7 @@ a:focus {
 
 .transition-logo {
   position: absolute;
-  top: 15%;
+  top: 15%; /* Adjusted to ensure upward-only movement */
   left: 50%;
   transform: translate(-50%, -50%);
   width: 100%;

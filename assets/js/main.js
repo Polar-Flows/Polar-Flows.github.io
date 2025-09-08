@@ -440,16 +440,17 @@ class PolarFlowsApp {
     const totalHeight = heroSectionHeight + navbarHeight;
     
     // Dynamic maxScroll - calculate based on viewport dimensions
-    // Animation completes when user scrolls a percentage of the viewport height
+    // Animation completes when user scrolls a percentage of the viewport height, minus a small amount
     const viewportHeight = window.innerHeight;
-    const maxScroll = viewportHeight * 0.4; // Animation completes at 40% of viewport height
+    const earlyFinishPx = 10; // Finish 10px sooner (a bit sooner)
+    // Calculate proportional maxScroll: 350px at your resolution, scaled to current viewport
+    const maxScrollBase = 350; // Your desired maxScroll at your resolution (reduced from 500)
+    const maxScroll = (maxScrollBase * (viewportHeight / 800)) - earlyFinishPx; // Proportional to viewport heightI
     let isTransforming = false;
 
     const handleScroll = () => {
       const scrollY = window.scrollY;
       const scrollProgress = Math.min(scrollY / maxScroll, 1); // 0 to 1
-      
-      console.log(`Scroll: ${scrollY}px, Progress: ${scrollProgress.toFixed(2)}, MaxScroll: ${maxScroll}px`);
       
       if (scrollY > 0 && !isTransforming) {
         console.log('Starting transformation');
@@ -481,21 +482,34 @@ class PolarFlowsApp {
       transitionLogo.style.transform = 'translate(-50%, -50%)';
       
       // Calculate size based on linear scroll progress - smooth reduction from big to small
-      const heroSize = 100; // 100% width initially
+      // Start from the same size as CSS (100% with max-width constraint)
+      const viewportWidth = window.innerWidth;
+      const maxWidthPx = Math.min(600, viewportWidth * 0.7); // Same as CSS: min(600px, 70vw)
+      const heroSize = (maxWidthPx / viewportWidth) * 100; // Convert to percentage
+      
       const navbarSize = navbarPos.height; // Final navbar height
       
-      // Linear interpolation from hero size to navbar size (always decreasing)
-      const currentSize = heroSize - (heroSize - (navbarSize / window.innerWidth * 100)) * sizeProgress;
+      // Convert navbar height to equivalent width percentage, but make it larger
+      const finalWidthPercent = Math.max((navbarSize / window.innerWidth) * 100 * 2.0, 12); // Make final size bigger (2.0x multiplier, min 12%)
       
-      // Always use width-based sizing to maintain smooth size reduction
-      // Convert navbar height to equivalent width percentage for smooth transition
-      const finalWidthPercent = (navbarSize / window.innerWidth) * 100;
-      const smoothSize = Math.max(heroSize - (heroSize - finalWidthPercent) * sizeProgress, 2);
+      // Size decreases linearly from start, reaches final size by progress = 0.7
+      // Simple linear scaling: starts immediately, reaches final at 0.7
+      const adjustedProgress = Math.min(sizeProgress / 0.7, 1); // Linear scaling to reach 1 at 0.7
+      const smoothSize = heroSize - (heroSize - finalWidthPercent) * adjustedProgress;
       
-      transitionLogo.style.width = `${smoothSize}%`;
+      // Ensure minimum size and apply
+      const finalSize = Math.max(smoothSize, 2);
+      
+      // Log the size information with CSS debugging
+      console.log(`Scroll: ${scrollY}px, Progress: ${scrollProgress.toFixed(2)}, MaxScroll: ${maxScroll}px, Size: ${finalSize.toFixed(1)}%`);
+      
+      // Apply size with more specific CSS overrides
+      transitionLogo.style.width = `${finalSize}%`;
       transitionLogo.style.height = 'auto';
-      transitionLogo.style.maxWidth = 'min(600px, 70vw)';
-      transitionLogo.style.minWidth = '200px';
+      transitionLogo.style.maxWidth = 'none'; // Remove max-width constraint
+      transitionLogo.style.minWidth = 'auto'; // Remove min-width constraint
+      transitionLogo.style.flexShrink = '0'; // Prevent flex shrinking
+      transitionLogo.style.flexGrow = '0'; // Prevent flex growing
     };
 
     // Use throttled version if available, otherwise use regular
@@ -514,7 +528,7 @@ class PolarFlowsApp {
       window.PolarFlowsUtils.throttle(() => {
         // Recalculate max scroll dynamically based on new viewport dimensions
         const newViewportHeight = window.innerHeight;
-        const newMaxScroll = newViewportHeight * 0.4; // Dynamic calculation - 40% of viewport height
+        const newMaxScroll = (maxScrollBase * (newViewportHeight / 800)) - earlyFinishPx; // Proportional to viewport height minus 10px
         console.log('Window resized - recalculating positions');
         console.log(`New viewport height: ${newViewportHeight}px, New max scroll: ${newMaxScroll}px`);
       }, 100) : () => {
@@ -553,18 +567,31 @@ class PolarFlowsApp {
         transitionLogo.style.transform = 'translate(-50%, -50%)';
         
         // Calculate and apply size
-        const heroSize = 100; // 100% width initially
+        // Start from the same size as CSS (100% with max-width constraint)
+        const viewportWidth = window.innerWidth;
+        const maxWidthPx = Math.min(600, viewportWidth * 0.7); // Same as CSS: min(600px, 70vw)
+        const heroSize = (maxWidthPx / viewportWidth) * 100; // Convert to percentage
+        
         const navbarSize = navbarPos.height; // Final navbar height
         
-        // Always use width-based sizing to maintain smooth size reduction
-        // Convert navbar height to equivalent width percentage for smooth transition
-        const finalWidthPercent = (navbarSize / window.innerWidth) * 100;
-        const smoothSize = Math.max(heroSize - (heroSize - finalWidthPercent) * sizeProgress, 2);
+        // Convert navbar height to equivalent width percentage, but make it larger
+        const finalWidthPercent = Math.max((navbarSize / window.innerWidth) * 100 * 2.0, 12); // Make final size bigger (2.0x multiplier, min 12%)
         
-        transitionLogo.style.width = `${smoothSize}%`;
+        // Size decreases linearly from start, reaches final size by progress = 0.7
+        // Simple linear scaling: starts immediately, reaches final at 0.7
+        const adjustedProgress = Math.min(sizeProgress / 0.7, 1); // Linear scaling to reach 1 at 0.7
+        const smoothSize = heroSize - (heroSize - finalWidthPercent) * adjustedProgress;
+        
+        // Ensure minimum size and apply
+        const finalSize = Math.max(smoothSize, 2);
+        
+        // Apply size with more specific CSS overrides
+        transitionLogo.style.width = `${finalSize}%`;
         transitionLogo.style.height = 'auto';
-        transitionLogo.style.maxWidth = 'min(600px, 70vw)';
-        transitionLogo.style.minWidth = '200px';
+        transitionLogo.style.maxWidth = 'none'; // Remove max-width constraint
+        transitionLogo.style.minWidth = 'auto'; // Remove min-width constraint
+        transitionLogo.style.flexShrink = '0'; // Prevent flex shrinking
+        transitionLogo.style.flexGrow = '0'; // Prevent flex growing
         
         console.log('Initial position set based on scroll position');
       }
