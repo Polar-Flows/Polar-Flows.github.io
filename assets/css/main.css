@@ -302,6 +302,7 @@ a:focus {
   height: auto;
   opacity: 0; /* Initially hidden until JavaScript calculates position */
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  z-index: 500; /* Much lower than navbar (1020) and mobile menu (1030) */
   /* No CSS transition - handled by JavaScript for scroll-based animation */
 }
 
@@ -537,7 +538,7 @@ a:focus {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     margin-right: 0;
-    z-index: 1000;
+    z-index: 1030; /* Higher than navbar (1020) and transition logo (1010) */
     /* Ensure proper positioning */
     width: 100%;
     box-sizing: border-box;

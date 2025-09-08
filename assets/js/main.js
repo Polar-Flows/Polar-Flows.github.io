@@ -491,14 +491,23 @@ class PolarFlowsApp {
     // Animation completes when user scrolls a percentage of the viewport height, minus a small amount
     const viewportHeight = window.innerHeight;
     const earlyFinishPx = 10; // Finish 10px sooner (a bit sooner)
-    // Calculate proportional maxScroll: 350px at your resolution, scaled to current viewport
-    const maxScrollBase = 350; // Your desired maxScroll at your resolution (reduced from 500)
-    const maxScroll = (maxScrollBase * (viewportHeight / 800)) - earlyFinishPx; // Proportional to viewport heightI
+    // Animation finishes much faster for smaller window heights - ultra-aggressive scaling (2x faster)
+    // For 800px+ window height use 45%, for smaller windows use much less (down to 5% for very small)
+    const dynamicPercentage = Math.max(0.05, 0.45 - (Math.max(0, 800 - viewportHeight) * 0.004));
+    const maxScroll = (heroSectionHeight * dynamicPercentage) - earlyFinishPx;
     let isTransforming = false;
 
     const handleScroll = () => {
       const scrollY = window.scrollY;
-      const scrollProgress = Math.min(scrollY / maxScroll, 1); // 0 to 1
+      
+      // Calculate maxScroll dynamically to respond to window size changes
+      const currentViewportHeight = window.innerHeight;
+      const currentHeroSection = document.querySelector('.hero-section');
+      const currentHeroSectionHeight = currentHeroSection ? currentHeroSection.offsetHeight : window.innerHeight;
+      const currentDynamicPercentage = Math.max(0.05, 0.45 - (Math.max(0, 800 - currentViewportHeight) * 0.004));
+      const currentMaxScroll = (currentHeroSectionHeight * currentDynamicPercentage) - earlyFinishPx;
+      
+      const scrollProgress = Math.min(scrollY / currentMaxScroll, 1); // 0 to 1
       
       if (scrollY > 0 && !isTransforming) {
         console.log('Starting transformation');
@@ -553,7 +562,7 @@ class PolarFlowsApp {
       const maxSafeWidthPercent = (maxSafeWidth / window.innerWidth) * 100; // Convert to percentage
       
       // Use the smaller of: calculated size or maximum safe size
-      const calculatedSize = Math.max((navbarSize / window.innerWidth) * 100 * 2.0, 8); // Minimum 8%
+      const calculatedSize = Math.max((navbarSize / window.innerWidth) * 100 * 2.5, 8); // Minimum 8%, larger final size
       const finalWidthPercent = Math.min(calculatedSize, maxSafeWidthPercent); // Ensure it fits with padding
       
       // Size decreases linearly from start, reaches final size by progress = 0.7
@@ -597,15 +606,17 @@ class PolarFlowsApp {
         
         // Step 2: Recalculate positions and display immediately (no intermediate jump)
         if (transitionLogo) {
-          // Recalculate max scroll dynamically based on new viewport dimensions
+          // Recalculate max scroll dynamically based on new hero section dimensions
           const newViewportHeight = window.innerHeight;
-          const newMaxScroll = (maxScrollBase * (newViewportHeight / 800)) - earlyFinishPx;
-          console.log(`New viewport height: ${newViewportHeight}px, New max scroll: ${newMaxScroll}px`);
+          const newHeroSection = document.querySelector('.hero-section');
+          const newHeroSectionHeight = newHeroSection ? newHeroSection.offsetHeight : window.innerHeight;
+          // Use same dynamic percentage calculation (ultra-aggressive for smaller window heights - 2x faster)
+          const newDynamicPercentage = Math.max(0.05, 0.45 - (Math.max(0, 800 - newViewportHeight) * 0.004));
+          const newMaxScroll = (newHeroSectionHeight * newDynamicPercentage) - earlyFinishPx;
+          console.log(`New hero section height: ${newHeroSectionHeight}px, New max scroll: ${newMaxScroll}px`);
           
           // Use the same calculation as handleScroll for consistency
           const newViewportWidth = window.innerWidth;
-          const newHeroSection = document.querySelector('.hero-section');
-          const newHeroSectionHeight = newHeroSection ? newHeroSection.offsetHeight : window.innerHeight;
           const newLogoHeight = transitionLogo ? transitionLogo.offsetHeight : 0;
           const newCssHeroTop = (newHeroSectionHeight * 0.15) + (newLogoHeight / 2);
           const newCssHeroLeft = newViewportWidth * 0.5;
@@ -668,7 +679,7 @@ class PolarFlowsApp {
         const maxSafeWidthPercent = (maxSafeWidth / window.innerWidth) * 100; // Convert to percentage
         
         // Use the smaller of: calculated size or maximum safe size
-        const calculatedSize = Math.max((navbarSize / window.innerWidth) * 100 * 2.0, 8); // Minimum 8%
+        const calculatedSize = Math.max((navbarSize / window.innerWidth) * 100 * 2.5, 8); // Minimum 8%, larger final size
         const finalWidthPercent = Math.min(calculatedSize, maxSafeWidthPercent); // Ensure it fits with padding
         
         // Size decreases linearly from start, reaches final size by progress = 0.7
@@ -711,6 +722,89 @@ class PolarFlowsApp {
     
     // Set initial position immediately - prioritize logo appearance
     setInitialPosition();
+    
+    // Monitor navbar menu state - when active, set animation progress to 1.00
+    const navbarNav = document.querySelector('.navbar-nav');
+    if (navbarNav) {
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+            const isActive = navbarNav.classList.contains('active');
+            if (isActive) {
+              // Navbar menu is open - force animation to progress 1.00
+              console.log('Navbar menu active - setting animation progress to 1.00');
+              
+              // Get current positions
+              const navbarPos = getNavbarLogoPosition();
+              const viewportWidth = window.innerWidth;
+              
+              // Set logo to final navbar position
+              transitionLogo.style.top = `${navbarPos.top}px`;
+              transitionLogo.style.left = `${navbarPos.left}px`;
+              transitionLogo.style.transform = 'translate(-50%, -50%)';
+              
+              // Set logo to final size
+              const navbarSize = navbarPos.height;
+              const navbarWidth = navbarPos.width;
+              const navbarPadding = 20;
+              const maxSafeWidth = navbarWidth - navbarPadding;
+              const maxSafeWidthPercent = (maxSafeWidth / window.innerWidth) * 100;
+              const calculatedSize = Math.max((navbarSize / window.innerWidth) * 100 * 2.5, 8); // Larger final size
+              const finalWidthPercent = Math.min(calculatedSize, maxSafeWidthPercent);
+              
+              transitionLogo.style.width = `${finalWidthPercent}%`;
+              transitionLogo.style.height = 'auto';
+              transitionLogo.style.maxWidth = 'none';
+              transitionLogo.style.minWidth = 'auto';
+              transitionLogo.style.flexShrink = '0';
+              transitionLogo.style.flexGrow = '0';
+              
+              // Hide navbar logo and show transition logo
+              navbarLogo.style.opacity = '0';
+              navbarLogo.style.visibility = 'hidden';
+              isTransforming = true;
+            } else {
+              // Navbar menu is closed - revert to progress 0.00 (if no scroll)
+              const currentScrollY = window.scrollY;
+              if (currentScrollY === 0) {
+                console.log('Navbar menu closed - reverting to progress 0.00');
+                
+                // Calculate initial position (same as progress 0.00)
+                const currentViewportWidth = window.innerWidth;
+                const currentHeroSection = document.querySelector('.hero-section');
+                const currentHeroSectionHeight = currentHeroSection ? currentHeroSection.offsetHeight : window.innerHeight;
+                const currentLogoHeight = transitionLogo ? transitionLogo.offsetHeight : 0;
+                const cssHeroTop = (currentHeroSectionHeight * 0.15) + (currentLogoHeight / 2);
+                const cssHeroLeft = currentViewportWidth * 0.5;
+                
+                // Set logo to initial position
+                transitionLogo.style.top = `${cssHeroTop}px`;
+                transitionLogo.style.left = `${cssHeroLeft}px`;
+                transitionLogo.style.transform = 'translate(-50%, -50%)';
+                
+                // Set logo to initial size
+                const maxWidthPx = Math.min(600, currentViewportWidth * 0.7);
+                const heroSize = (maxWidthPx / currentViewportWidth) * 100;
+                
+                transitionLogo.style.width = `${heroSize}%`;
+                transitionLogo.style.height = 'auto';
+                transitionLogo.style.maxWidth = 'min(600px, 70vw)';
+                transitionLogo.style.minWidth = '200px';
+                transitionLogo.style.flexShrink = '0';
+                transitionLogo.style.flexGrow = '0';
+                
+                // Show navbar logo and hide transition logo
+                navbarLogo.style.opacity = '1';
+                navbarLogo.style.visibility = 'visible';
+                isTransforming = false;
+              }
+            }
+          }
+        });
+      });
+      
+      observer.observe(navbarNav, { attributes: true, attributeFilter: ['class'] });
+    }
     
     console.log('Logo transformation initialized successfully');
     console.log(`Hero height: ${heroSectionHeight}px, Navbar height: ${navbarHeight}px, Total height: ${totalHeight}px, Max scroll: ${maxScroll}px`);
