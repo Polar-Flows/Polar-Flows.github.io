@@ -293,7 +293,7 @@ a:focus {
 
 .transition-logo {
   position: absolute;
-  top: 15%; /* Adjusted to ensure upward-only movement */
+  top: 15%; /* Default position - JavaScript will override with safe position */
   left: 50%;
   transform: translate(-50%, -50%);
   width: 100%;
@@ -307,7 +307,7 @@ a:focus {
 
 /* Initial state - logo in hero position (higher up) */
 .transition-logo.in-hero {
-  top: 15%;
+  top: 15%; /* Default position - JavaScript will override with safe position */
   left: 50%;
   transform: translate(-50%, -50%);
   width: 100%;

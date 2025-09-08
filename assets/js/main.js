@@ -427,8 +427,27 @@ class PolarFlowsApp {
       const viewportHeight = window.innerHeight;
       const viewportWidth = window.innerWidth;
       
+      // Get navbar height to ensure no overlap
+      const navbarHeight = 70; // Fixed navbar height from CSS
+      
+      // Calculate safe area: below navbar + padding, above text + padding
+      const navbarBottom = navbarHeight + 50; // 50px padding below navbar
+      const textTop = viewportHeight * 0.6; // Text is around 60% down
+      const textTopWithPadding = textTop - 100; // 100px padding above text
+      
+      // Calculate the middle of the safe area (between navbar and text)
+      const safeAreaTop = navbarBottom;
+      const safeAreaBottom = textTopWithPadding;
+      const safeAreaHeight = safeAreaBottom - safeAreaTop;
+      
+      // Position logo in the bottom part of the safe area (75% down in safe area)
+      const logoPositionInSafeArea = 0.75; // 75% down in the safe area
+      const safeTop = safeAreaTop + (safeAreaHeight * logoPositionInSafeArea);
+      
+      console.log(`Dynamic positioning: Navbar bottom: ${navbarBottom}px, Text top: ${textTopWithPadding}px, Safe area: ${safeAreaHeight}px, Logo position: ${safeTop}px`);
+      
       return {
-        top: viewportHeight * 0.15, // 15% from top in pixels (even higher up)
+        top: safeTop, // Positioned in bottom part of safe area
         left: viewportWidth * 0.5, // 50% from left in pixels
         size: 100 // 100% width
       };
@@ -465,16 +484,21 @@ class PolarFlowsApp {
       }
       
       // Get current positions dynamically
-      const heroPos = getHeroLogoPosition();
       const navbarPos = getNavbarLogoPosition();
+      
+      // Get the CSS-defined initial position (15% from top, 50% from left)
+      const viewportHeight = window.innerHeight;
+      const viewportWidth = window.innerWidth;
+      const cssHeroTop = viewportHeight * 0.15; // CSS position: 15% from top
+      const cssHeroLeft = viewportWidth * 0.5; // CSS position: 50% from left
       
       // Use linear progress for both position and size (smoother overall animation)
       const positionProgress = scrollProgress;
       const sizeProgress = scrollProgress;
       
-      // Interpolate between hero and navbar positions with linear movement
-      const currentTop = heroPos.top + (navbarPos.top - heroPos.top) * positionProgress;
-      const currentLeft = heroPos.left + (navbarPos.left - heroPos.left) * positionProgress;
+      // Interpolate between CSS hero position and navbar positions with linear movement
+      const currentTop = cssHeroTop + (navbarPos.top - cssHeroTop) * positionProgress;
+      const currentLeft = cssHeroLeft + (navbarPos.left - cssHeroLeft) * positionProgress;
       
       // Apply the calculated values
       transitionLogo.style.top = `${currentTop}px`;
@@ -483,7 +507,6 @@ class PolarFlowsApp {
       
       // Calculate size based on linear scroll progress - smooth reduction from big to small
       // Start from the same size as CSS (100% with max-width constraint)
-      const viewportWidth = window.innerWidth;
       const maxWidthPx = Math.min(600, viewportWidth * 0.7); // Same as CSS: min(600px, 70vw)
       const heroSize = (maxWidthPx / viewportWidth) * 100; // Convert to percentage
       
@@ -526,13 +549,62 @@ class PolarFlowsApp {
     // Add resize listener to recalculate positions when window is resized
     const handleResize = window.PolarFlowsUtils?.throttle ? 
       window.PolarFlowsUtils.throttle(() => {
-        // Recalculate max scroll dynamically based on new viewport dimensions
-        const newViewportHeight = window.innerHeight;
-        const newMaxScroll = (maxScrollBase * (newViewportHeight / 800)) - earlyFinishPx; // Proportional to viewport height minus 10px
-        console.log('Window resized - recalculating positions');
-        console.log(`New viewport height: ${newViewportHeight}px, New max scroll: ${newMaxScroll}px`);
+        console.log('Window resized - following correct sequence');
+        
+        // Step 1: Scroll up to reset animation state
+        window.scrollTo(0, 0);
+        console.log('Step 1: Scrolled to top');
+        
+        // Step 2: Reset animation to original position immediately
+        if (transitionLogo) {
+          // Reset to original hero position and size
+          transitionLogo.style.top = '15%';
+          transitionLogo.style.left = '50%';
+          transitionLogo.style.transform = 'translate(-50%, -50%)';
+          transitionLogo.style.width = '100%';
+          transitionLogo.style.maxWidth = 'min(600px, 70vw)';
+          transitionLogo.style.minWidth = '200px';
+          transitionLogo.style.height = 'auto';
+          transitionLogo.style.opacity = '0.95';
+          console.log('Step 2: Reset animation to original position');
+        }
+        
+        // Step 3: Recalculate positions and display
+        setTimeout(() => {
+          // Recalculate max scroll dynamically based on new viewport dimensions
+          const newViewportHeight = window.innerHeight;
+          const newMaxScroll = (maxScrollBase * (newViewportHeight / 800)) - earlyFinishPx;
+          console.log(`New viewport height: ${newViewportHeight}px, New max scroll: ${newMaxScroll}px`);
+          
+          // Recalculate all positions with new dimensions
+          const newNavbarPos = getNavbarLogoPosition();
+          const newHeroPos = getHeroLogoPosition();
+          
+          console.log(`New hero position: top=${newHeroPos.top}px, left=${newHeroPos.left}px`);
+          console.log(`New navbar position: top=${newNavbarPos.top}px, left=${newNavbarPos.left}px`);
+          
+          // Apply new calculated positions
+          if (transitionLogo) {
+            transitionLogo.style.top = `${newHeroPos.top}px`;
+            transitionLogo.style.left = `${newHeroPos.left}px`;
+            console.log('Step 3: Applied new calculated positions');
+          }
+          
+          console.log('Resize complete - all steps executed in correct order');
+        }, 100);
+        
       }, 100) : () => {
-        console.log('Window resized - recalculating positions');
+        console.log('Window resized - following correct sequence');
+        // Step 1: Scroll up
+        window.scrollTo(0, 0);
+        // Step 2: Reset animation
+        if (transitionLogo) {
+          transitionLogo.style.top = '15%';
+          transitionLogo.style.left = '50%';
+          transitionLogo.style.transform = 'translate(-50%, -50%)';
+        }
+        // Step 3: Recalculate and display
+        setTimeout(() => setInitialPosition(), 100);
       };
     
     window.addEventListener('resize', handleResize, { passive: true });
@@ -594,6 +666,10 @@ class PolarFlowsApp {
         transitionLogo.style.flexGrow = '0'; // Prevent flex growing
         
         console.log('Initial position set based on scroll position');
+      } else {
+        // Page loaded at top - let CSS handle the initial position
+        // Don't override the CSS position, just make it visible
+        console.log('Page loaded at top - using CSS initial position');
       }
       
       // Always show the logo after position is calculated
