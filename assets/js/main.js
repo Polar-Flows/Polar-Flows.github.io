@@ -424,15 +424,40 @@ class PolarFlowsApp {
 
     // Get hero logo initial position (convert to pixels)
     const getHeroLogoPosition = () => {
-      const viewportHeight = window.innerHeight;
       const viewportWidth = window.innerWidth;
+      
+      // Get the actual hero section dimensions
+      const heroSection = document.querySelector('.hero-section');
+      if (!heroSection) {
+        // Fallback if hero section not found - use same logic as hero section
+        const navbarHeight = 70; // Fixed navbar height from CSS
+        const navbarBottom = navbarHeight + 50; // 50px padding below navbar
+        const textTop = window.innerHeight * 0.6; // Text is around 60% down
+        const textTopWithPadding = textTop - 100; // 100px padding above text
+        
+        const safeAreaTop = navbarBottom;
+        const safeAreaBottom = textTopWithPadding;
+        const safeAreaHeight = safeAreaBottom - safeAreaTop;
+        
+        const logoPositionInSafeArea = 0.75; // 75% down in the safe area
+        const safeTop = safeAreaTop + (safeAreaHeight * logoPositionInSafeArea);
+        
+        return {
+          top: safeTop, // Same positioning logic as hero section
+          left: viewportWidth * 0.5,
+          size: 100
+        };
+      }
+      
+      const heroSectionHeight = heroSection.offsetHeight;
+      const heroSectionRect = heroSection.getBoundingClientRect();
       
       // Get navbar height to ensure no overlap
       const navbarHeight = 70; // Fixed navbar height from CSS
       
       // Calculate safe area: below navbar + padding, above text + padding
       const navbarBottom = navbarHeight + 50; // 50px padding below navbar
-      const textTop = viewportHeight * 0.6; // Text is around 60% down
+      const textTop = heroSectionRect.top + (heroSectionHeight * 0.6); // Text is around 60% down in hero section
       const textTopWithPadding = textTop - 100; // 100px padding above text
       
       // Calculate the middle of the safe area (between navbar and text)
@@ -444,7 +469,7 @@ class PolarFlowsApp {
       const logoPositionInSafeArea = 0.75; // 75% down in the safe area
       const safeTop = safeAreaTop + (safeAreaHeight * logoPositionInSafeArea);
       
-      console.log(`Dynamic positioning: Navbar bottom: ${navbarBottom}px, Text top: ${textTopWithPadding}px, Safe area: ${safeAreaHeight}px, Logo position: ${safeTop}px`);
+      console.log(`Dynamic positioning: Hero height: ${heroSectionHeight}px, Navbar bottom: ${navbarBottom}px, Text top: ${textTopWithPadding}px, Safe area: ${safeAreaHeight}px, Logo position: ${safeTop}px`);
       
       return {
         top: safeTop, // Positioned in bottom part of safe area
@@ -487,9 +512,15 @@ class PolarFlowsApp {
       const navbarPos = getNavbarLogoPosition();
       
       // Get the CSS-defined initial position (15% from top, 50% from left)
-      const viewportHeight = window.innerHeight;
       const viewportWidth = window.innerWidth;
-      const cssHeroTop = viewportHeight * 0.15; // CSS position: 15% from top
+      
+      // Use hero section height for positioning calculations
+      const heroSection = document.querySelector('.hero-section');
+      const heroSectionHeight = heroSection ? heroSection.offsetHeight : window.innerHeight;
+      const heroSectionRect = heroSection ? heroSection.getBoundingClientRect() : { top: 0 };
+      
+      // Position relative to hero section: 15% from top of hero section
+      const cssHeroTop = heroSectionRect.top + (heroSectionHeight * 0.15); // 15% from top of hero section
       const cssHeroLeft = viewportWidth * 0.5; // CSS position: 50% from left
       
       // Use linear progress for both position and size (smoother overall animation)
@@ -511,9 +542,16 @@ class PolarFlowsApp {
       const heroSize = (maxWidthPx / viewportWidth) * 100; // Convert to percentage
       
       const navbarSize = navbarPos.height; // Final navbar height
+      const navbarWidth = navbarPos.width; // Final navbar width
       
-      // Convert navbar height to equivalent width percentage, but make it larger
-      const finalWidthPercent = Math.max((navbarSize / window.innerWidth) * 100 * 2.0, 12); // Make final size bigger (2.0x multiplier, min 12%)
+      // Calculate maximum safe size that fits in navbar with padding
+      const navbarPadding = 20; // 10px padding on each side
+      const maxSafeWidth = navbarWidth - navbarPadding; // Available width minus padding
+      const maxSafeWidthPercent = (maxSafeWidth / window.innerWidth) * 100; // Convert to percentage
+      
+      // Use the smaller of: calculated size or maximum safe size
+      const calculatedSize = Math.max((navbarSize / window.innerWidth) * 100 * 2.0, 8); // Minimum 8%
+      const finalWidthPercent = Math.min(calculatedSize, maxSafeWidthPercent); // Ensure it fits with padding
       
       // Size decreases linearly from start, reaches final size by progress = 0.7
       // Simple linear scaling: starts immediately, reaches final at 0.7
@@ -645,9 +683,16 @@ class PolarFlowsApp {
         const heroSize = (maxWidthPx / viewportWidth) * 100; // Convert to percentage
         
         const navbarSize = navbarPos.height; // Final navbar height
+        const navbarWidth = navbarPos.width; // Final navbar width
         
-        // Convert navbar height to equivalent width percentage, but make it larger
-        const finalWidthPercent = Math.max((navbarSize / window.innerWidth) * 100 * 2.0, 12); // Make final size bigger (2.0x multiplier, min 12%)
+        // Calculate maximum safe size that fits in navbar with padding
+        const navbarPadding = 20; // 10px padding on each side
+        const maxSafeWidth = navbarWidth - navbarPadding; // Available width minus padding
+        const maxSafeWidthPercent = (maxSafeWidth / window.innerWidth) * 100; // Convert to percentage
+        
+        // Use the smaller of: calculated size or maximum safe size
+        const calculatedSize = Math.max((navbarSize / window.innerWidth) * 100 * 2.0, 8); // Minimum 8%
+        const finalWidthPercent = Math.min(calculatedSize, maxSafeWidthPercent); // Ensure it fits with padding
         
         // Size decreases linearly from start, reaches final size by progress = 0.7
         // Simple linear scaling: starts immediately, reaches final at 0.7
