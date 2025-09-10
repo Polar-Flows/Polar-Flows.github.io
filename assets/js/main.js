@@ -867,58 +867,18 @@ class PolarFlowsApp {
 
     // Note: Fake logo creation removed - now using programmatic scroll approach
 
-    // Function to close menu and clean up
-    const closeMenuAndCleanup = () => {
-      if (isMenuOpen) {
-        // No fake background to remove
-        
-        // Show menu options again
-        navbarNav.style.display = '';
-        
-        // Restore logo's original z-index only
-        // Let the normal animation system control opacity and visibility
-        const transitionLogo = document.querySelector('.transition-logo');
-        if (transitionLogo) {
-          transitionLogo.style.removeProperty('z-index');
-          // Don't remove opacity and visibility - let animation system control them
-          console.log('Logo z-index restored, opacity/visibility left to animation system');
-        }
-        
-        // Resume animation system when menu is closed
-        window.menuOpen = false;
-        window.menuAnimationPaused = false;
-        console.log('Menu closed - animation system resumed');
-        
-        // Trigger recalculation of logo position
-        // Use a small delay to ensure the animation system is fully resumed
-        setTimeout(() => {
-          // Trigger a scroll event to recalculate logo position
-          window.dispatchEvent(new Event('scroll'));
-          console.log('Logo position recalculated after menu close');
-          
-          // Wait a bit more for the scroll event to be processed, then always scroll to top
-          setTimeout(() => {
-            // Always scroll to top when menu closes
-            window.scrollTo({
-              top: 0,
-              behavior: 'smooth'
-            });
-            console.log('Menu closed - scrolling to top');
-          }, 100); // Additional delay to ensure scroll event is processed
-        }, 50);
-        
-        // Close the navbar menu
-        navbarNav.classList.remove('active');
-        
-        isMenuOpen = false;
-        console.log('Menu closed and cleanup completed');
-      }
-    };
+    // Flag to prevent observer from reacting to our own class changes
+    let isUpdatingMenuClass = false;
+    
+    // Parameterized padding for About section scroll positioning
+    const ABOUT_SECTION_PADDING = 60; // px - padding above About section for title visibility
+
+    // Note: closeMenuAndCleanup function removed - logic moved inline to observer to prevent infinite loops
 
     // Observe navbar menu state changes
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
-        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'class' && !isUpdatingMenuClass) {
           const isActive = navbarNav.classList.contains('active');
           
           if (isActive && !isMenuOpen) {
@@ -934,8 +894,8 @@ class PolarFlowsApp {
             
             console.log('Menu opened - checking scroll state');
             
-            // 1. Hide menu options initially (we'll show them in next step)
-            navbarNav.style.display = 'none';
+            // 1. Menu is already active from the button click, keep it that way
+            // The CSS will handle the slide-in animation when active class is present
             
             // 2. Make menu always in front when visible
             navbarNav.style.zIndex = '1030';
@@ -961,33 +921,110 @@ class PolarFlowsApp {
                 currentProgress: currentProgress
               });
               
-              if (currentProgress < 1) {
-                // Progress is less than 1, scroll to make it 1
-                // Use the same calculation as the animation system
-                const currentViewportHeight = window.innerHeight;
-                const currentDynamicPercentage = Math.max(0.05, 0.45 - (Math.max(0, 800 - currentViewportHeight) * 0.004));
-                const earlyFinishPx = 10;
-                const targetScrollY = (heroHeight * currentDynamicPercentage) - earlyFinishPx;
+              // Only scroll to About section if user is above it
+              const aboutSection = document.getElementById('about');
+              if (aboutSection) {
+                const aboutSectionTop = aboutSection.offsetTop;
+                const currentScrollY = window.scrollY;
                 
-                window.scrollTo({
-                  top: targetScrollY,
-                  behavior: 'smooth'
-                });
-                console.log('Scrolling to position:', targetScrollY, 'to reach progress = 1 (calculated maxScroll)');
+                // Only scroll if user is above the About section
+                if (currentScrollY < aboutSectionTop) {
+                  // Scroll to show the title with padding from top
+                  const targetScrollY = aboutSectionTop - ABOUT_SECTION_PADDING;
+                  window.scrollTo({
+                    top: targetScrollY,
+                    behavior: 'smooth'
+                  });
+                  console.log('Scrolling to About section title at position:', targetScrollY);
+                } else {
+                  console.log('User is already at or below About section, no scrolling needed');
+                }
               } else {
-                // Progress is already 1, do nothing
-                console.log('Progress is already 1, no scrolling needed');
+                // Fallback to progress = 1 if About section not found
+                if (currentProgress < 1) {
+                  const currentViewportHeight = window.innerHeight;
+                  const currentDynamicPercentage = Math.max(0.05, 0.45 - (Math.max(0, 800 - currentViewportHeight) * 0.004));
+                  const earlyFinishPx = 10;
+                  const targetScrollY = (heroHeight * currentDynamicPercentage) - earlyFinishPx;
+                  
+                  window.scrollTo({
+                    top: targetScrollY,
+                    behavior: 'smooth'
+                  });
+                  console.log('About section not found, scrolling to progress = 1 at position:', targetScrollY);
+                } else {
+                  console.log('Progress is already 1, no scrolling needed');
+                }
               }
             }
             
             // Set menu open flag for animation system to detect
             window.menuOpen = true;
-            console.log('Menu opened - waiting for scroll to finish before pausing animation');
-          } else if (!isActive && isMenuOpen) {
-            // Menu just closed
-            closeMenuAndCleanup();
+            console.log('Menu opened - scroll and slide animations starting simultaneously');
             
-            // No scroll restoration needed - simplified approach
+            // Menu is already active, CSS will handle the slide-in animation
+            console.log('Menu options sliding in from right');
+          } else if (!isActive && isMenuOpen) {
+            // Menu just closed - set flag to prevent further observer reactions
+            isUpdatingMenuClass = true;
+            isMenuOpen = false; // Set this immediately to prevent re-triggering
+            
+            // Start slide-out animation for menu options
+            console.log('Menu options sliding out to right');
+            
+            // Start logo animation immediately (simultaneously with slide-out)
+            // Restore logo's original z-index only
+            // Let the normal animation system control opacity and visibility
+            const transitionLogo = document.querySelector('.transition-logo');
+            if (transitionLogo) {
+              transitionLogo.style.removeProperty('z-index');
+              // Don't remove opacity and visibility - let animation system control them
+              console.log('Logo z-index restored, opacity/visibility left to animation system');
+            }
+            
+            // Resume animation system when menu is closed
+            window.menuOpen = false;
+            window.menuAnimationPaused = false;
+            console.log('Menu closed - animation system resumed');
+            
+            // Trigger recalculation of logo position and scroll to top immediately
+            setTimeout(() => {
+              // Trigger a scroll event to recalculate logo position
+              window.dispatchEvent(new Event('scroll'));
+              console.log('Logo position recalculated after menu close');
+              
+              // Only scroll up if user is above About section (with padding)
+              const aboutSection = document.getElementById('about');
+              if (aboutSection) {
+                const aboutSectionTop = aboutSection.offsetTop;
+                const aboutSectionWithPadding = aboutSectionTop - ABOUT_SECTION_PADDING;
+                const currentScrollY = window.scrollY;
+                
+                if (currentScrollY < aboutSectionWithPadding) {
+                  // User is above About section (with padding), scroll to top
+                  window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                  });
+                  console.log('Menu closed - scrolling to top (user was above About section with padding)');
+                } else {
+                  console.log('Menu closed - no scrolling needed (user is at or below About section with padding)');
+                }
+              } else {
+                // Fallback: scroll to top if About section not found
+                window.scrollTo({
+                  top: 0,
+                  behavior: 'smooth'
+                });
+                console.log('Menu closed - scrolling to top (About section not found, fallback)');
+              }
+            }, 50);
+            
+            // Wait for slide-out animation to complete before re-enabling observer
+            setTimeout(() => {
+              console.log('Menu closed and cleanup completed');
+              isUpdatingMenuClass = false; // Re-enable observer
+            }, 300); // Wait for slide-out animation to complete (CSS transition is 0.3s)
           }
         }
       });
