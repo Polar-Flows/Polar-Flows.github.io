@@ -1047,13 +1047,14 @@ window.getFinalLogoProperties = function() {
 
   // Get the navbar brand position and dimensions
   const brandRect = navbarBrand.getBoundingClientRect();
-  const navbarHeight = 70; // Fixed navbar height from CSS
+  const navbar = document.querySelector('.navbar');
+  const actualNavbarHeight = navbar ? navbar.offsetHeight : 70; // Get actual navbar height
   
-  // Calculate appropriate logo dimensions based on navbar height
-  const marginTop = 10; // Small margin from top
-  const marginBottom = 10; // Small margin from bottom
-  const maxLogoHeight = navbarHeight - marginTop - marginBottom;
-  const logoHeight = Math.min(maxLogoHeight, 55); // Cap at 55px for consistency
+  // Calculate appropriate logo dimensions based on actual navbar height
+  const marginTop = 3; // Small margin from top
+  const marginBottom = 3; // Small margin from bottom
+  const maxLogoHeight = actualNavbarHeight - marginTop - marginBottom;
+  const logoHeight = Math.min(maxLogoHeight, 65); // Set to 65px for bigger logo
   const logoWidth = (logoHeight * 202.797) / 55; // Maintain aspect ratio
   
   // Position the logo within the navbar brand area with proper margins
@@ -1063,7 +1064,7 @@ window.getFinalLogoProperties = function() {
   
   // Position from the left edge of the navbar brand with margin
   // Since transform centers the logo, we position the center point
-  const marginLeft = 16; // Small margin from left
+  const marginLeft = 8; // Reduced margin from left for more left positioning
   const finalLeft = brandRect.left + marginLeft + (logoWidth / 2); // Position center of logo
   
   const result = {
@@ -1075,7 +1076,7 @@ window.getFinalLogoProperties = function() {
   };
   
   console.log('getFinalLogoProperties calculated:', result);
-  console.log('Brand rect:', brandRect, 'Navbar height:', navbarHeight);
+  console.log('Brand rect:', brandRect, 'Actual navbar height:', actualNavbarHeight, 'Logo height:', logoHeight);
   
   return result;
 };

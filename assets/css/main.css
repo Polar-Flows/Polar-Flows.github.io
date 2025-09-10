@@ -546,7 +546,7 @@ body:not(.home-page) .navbar-small-logo {
 }
 
 /* Tablet navigation - intermediate breakpoint */
-@media (max-width: 1023px) and (min-width: 768px) {
+@media (max-width: 1023px) and (min-width: 901px) {
   .navbar-container {
     padding: 0 var(--pf-space-lg);
     height: 70px;
@@ -583,7 +583,7 @@ body:not(.home-page) .navbar-small-logo {
 }
 
 /* Mobile navigation */
-@media (max-width: 767px) {
+@media (max-width: 900px) {
   .navbar-toggle {
     display: flex;
   }
