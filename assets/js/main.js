@@ -295,6 +295,11 @@ class PolarFlowsApp {
     const handleResize = () => {
       clearTimeout(resizeTimeout);
       resizeTimeout = setTimeout(() => {
+        // Clear cached logo properties on resize since dimensions may have changed
+        if (window.clearFinalLogoProperties) {
+          window.clearFinalLogoProperties();
+        }
+        
         this.dispatchEvent('app:resize', {
           width: window.innerWidth,
           height: window.innerHeight
@@ -680,7 +685,7 @@ class PolarFlowsApp {
         
         // Clear stored final logo properties since dimensions have changed
         finalLogoProperties = null;
-        window.finalLogoProperties = null;
+        window.clearFinalLogoProperties(); // Use the global function to clear cache
         console.log('Cleared stored final logo properties due to resize');
         
         // Step 1: Scroll up to reset animation state
@@ -897,9 +902,13 @@ class PolarFlowsApp {
       tempLogo.src = 'assets/img/polarflows/logo_v2_full_white.png';
       tempLogo.alt = 'Polar Flows';
       
+      // Clear any cached properties to ensure fresh calculation
+      window.clearFinalLogoProperties();
+      
       // Use the global function to get consistent logo properties
       const logoProps = window.getFinalLogoProperties();
       console.log('Fake logo using global logo properties:', logoProps);
+      console.log('Fake logo dimensions - width:', logoProps.width, 'height:', logoProps.height);
       
       tempLogo.style.cssText = `
         position: fixed;
@@ -908,13 +917,38 @@ class PolarFlowsApp {
         width: ${logoProps.width}px;
         height: ${logoProps.height}px;
         opacity: ${logoProps.opacity};
+        transform: translate(-50%, -50%);
         z-index: 1020;
         pointer-events: none;
-        padding: 0 !important;
+        padding: 10px 0 0 0 !important;
         margin: 0 !important;
+        border: none !important;
+        outline: none !important;
         box-sizing: border-box !important;
+        display: block !important;
+        object-fit: contain !important;
+        max-width: none !important;
+        min-width: auto !important;
+        max-height: none !important;
+        min-height: auto !important;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3)) !important;
       `;
       document.body.appendChild(tempLogo);
+      
+      // Debug: Check actual rendered dimensions
+      setTimeout(() => {
+        const rect = tempLogo.getBoundingClientRect();
+        console.log('Fake logo actual rendered dimensions:', {
+          expectedWidth: logoProps.width,
+          expectedHeight: logoProps.height,
+          actualWidth: rect.width,
+          actualHeight: rect.height,
+          difference: {
+            width: rect.width - logoProps.width,
+            height: rect.height - logoProps.height
+          }
+        });
+      }, 100);
       
       return tempLogo;
     };
@@ -935,6 +969,7 @@ class PolarFlowsApp {
         }
         
         // Restore the big logo visibility
+        const transitionLogo = document.querySelector('.transition-logo');
         if (transitionLogo) {
           transitionLogo.style.opacity = '0.95';
           transitionLogo.style.visibility = 'visible';
@@ -974,6 +1009,7 @@ class PolarFlowsApp {
             const tempLogo = createTempLogo();
             
             // 5. Hide the big logo (behind everything)
+            const transitionLogo = document.querySelector('.transition-logo');
             if (transitionLogo) {
               transitionLogo.style.setProperty('opacity', '0', 'important');
               transitionLogo.style.visibility = 'hidden';
@@ -1031,53 +1067,96 @@ class PolarFlowsApp {
   }
 }
 
+// Global variable to store final logo properties for reuse
+window.finalLogoProperties = null;
+
 // Global function to get consistent logo dimensions and position
 // Used by: final logo position, fake logo, and small logo on non-home pages
 window.getFinalLogoProperties = function() {
+  // Return cached result if available
+  if (window.finalLogoProperties) {
+    return window.finalLogoProperties;
+  }
+
   const navbarBrand = document.querySelector('.navbar-brand');
   if (!navbarBrand) {
-    return {
+    const fallbackResult = {
       top: 12.5,
       left: 16,
       height: 55,
       width: 202.797,
       opacity: 1
     };
+    window.finalLogoProperties = fallbackResult;
+    return fallbackResult;
   }
 
-  // Get the navbar brand position and dimensions
-  const brandRect = navbarBrand.getBoundingClientRect();
+  // Get the actual logo image element inside navbar-brand
+  const logoImg = navbarBrand.querySelector('.navbar-logo');
+  if (!logoImg) {
+    const fallbackResult = {
+      top: 12.5,
+      left: 16,
+      height: 55,
+      width: 202.797,
+      opacity: 1
+    };
+    window.finalLogoProperties = fallbackResult;
+    return fallbackResult;
+  }
+  
+  // Get the actual logo image dimensions and position
+  const logoRect = logoImg.getBoundingClientRect();
   const navbar = document.querySelector('.navbar');
   const actualNavbarHeight = navbar ? navbar.offsetHeight : 70; // Get actual navbar height
   
-  // Calculate appropriate logo dimensions based on actual navbar height
-  const marginTop = 3; // Small margin from top
-  const marginBottom = 3; // Small margin from bottom
-  const maxLogoHeight = actualNavbarHeight - marginTop - marginBottom;
-  const logoHeight = Math.min(maxLogoHeight, 65); // Set to 65px for bigger logo
-  const logoWidth = (logoHeight * 202.797) / 55; // Maintain aspect ratio
+  // Use the actual logo image dimensions
+  const logoHeight = logoRect.height;
+  const logoWidth = logoRect.width;
   
-  // Position the logo within the navbar brand area with proper margins
+  // Position the logo using the actual logo image position
   // The animation uses transform: translate(-50%, -50%), so we need to position the center of the logo
-  const brandCenterY = brandRect.top + (brandRect.height / 2);
-  const finalTop = brandCenterY; // Center vertically in the navbar brand
+  const logoCenterY = logoRect.top + (logoRect.height / 2);
+  const finalTop = logoCenterY; // Center vertically based on actual logo position
   
-  // Position from the left edge of the navbar brand with margin
+  // Position from the left edge of the actual logo with margin
   // Since transform centers the logo, we position the center point
-  const marginLeft = 8; // Reduced margin from left for more left positioning
-  const finalLeft = brandRect.left + marginLeft + (logoWidth / 2); // Position center of logo
+  // Use negative margin on smaller screens for more left positioning
+  const marginLeft = window.innerWidth <= 900 ? -16 : 4; // -16px margin on mobile (moves left), 4px on larger screens
+  const finalLeft = logoRect.left + marginLeft + (logoWidth / 2); // Position center of logo
   
   const result = {
     top: finalTop,
     left: finalLeft,
     height: logoHeight,
     width: logoWidth,
-    opacity: 1
+    opacity: 1,
+    // Include screen size info for debugging
+    screenWidth: window.innerWidth,
+    screenHeight: window.innerHeight,
+    calculatedAt: Date.now()
   };
   
-  console.log('getFinalLogoProperties calculated:', result);
-  console.log('Brand rect:', brandRect, 'Actual navbar height:', actualNavbarHeight, 'Logo height:', logoHeight);
+  // Cache the result for reuse
+  window.finalLogoProperties = result;
   
+  console.log('getFinalLogoProperties calculated and cached:', result);
+  console.log('Logo rect:', logoRect, 'Actual navbar height:', actualNavbarHeight, 'Logo height:', logoHeight);
+  
+  return result;
+};
+
+// Function to clear the cached logo properties (useful for window resize)
+window.clearFinalLogoProperties = function() {
+  window.finalLogoProperties = null;
+  console.log('Final logo properties cache cleared');
+};
+
+// Function to force recalculation of logo properties (bypasses cache)
+window.recalculateFinalLogoProperties = function() {
+  window.finalLogoProperties = null; // Clear cache first
+  const result = window.getFinalLogoProperties(); // Force recalculation
+  console.log('Final logo properties recalculated:', result);
   return result;
 };
 
