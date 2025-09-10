@@ -599,8 +599,10 @@ class PolarFlowsApp {
       
       // Interpolate between CSS hero position and navbar positions with linear movement
       // Start at navbar bottom + padding, end at navbar logo center
-      const currentTop = cssHeroTop + (navbarPos.top - cssHeroTop) * positionProgress;
-      const currentLeft = cssHeroLeft + (navbarPos.left - cssHeroLeft) * positionProgress;
+      // Use global function for final position to ensure consistency
+      const globalLogoProps = window.getFinalLogoProperties();
+      const currentTop = cssHeroTop + (globalLogoProps.top - cssHeroTop) * positionProgress;
+      const currentLeft = cssHeroLeft + (globalLogoProps.left - cssHeroLeft) * positionProgress;
       
       // Apply the calculated values
       transitionLogo.style.top = `${currentTop}px`;
@@ -612,8 +614,9 @@ class PolarFlowsApp {
       const maxWidthPx = Math.min(600, viewportWidth * 0.7); // Same as CSS: min(600px, 70vw)
       const heroSize = (maxWidthPx / viewportWidth) * 100; // Convert to percentage
       
-      const navbarSize = navbarPos.height; // Final navbar height
-      const navbarWidth = navbarPos.width; // Final navbar width
+      // Use the same global function result for consistent final dimensions
+      const navbarSize = globalLogoProps.height; // Final navbar height
+      const navbarWidth = globalLogoProps.width; // Final navbar width
       
       // Calculate maximum safe size that fits in navbar with padding
       const navbarPadding = 20; // 10px padding on each side
@@ -634,16 +637,18 @@ class PolarFlowsApp {
       
       // Store final properties when progress = 1.00
       if (scrollProgress >= 1.00 && !finalLogoProperties) {
+        // Use the global function to get consistent final logo properties
+        const globalLogoProps = window.getFinalLogoProperties();
         finalLogoProperties = {
-          top: currentTop,
-          left: currentLeft,
+          top: globalLogoProps.top,
+          left: globalLogoProps.left,
           size: finalSize,
-          height: transitionLogo ? transitionLogo.offsetHeight : 0,
-          width: transitionLogo ? transitionLogo.offsetWidth : 0
+          height: globalLogoProps.height,
+          width: globalLogoProps.width
         };
         // Update the global reference
         window.finalLogoProperties = finalLogoProperties;
-        console.log('Stored final logo properties:', finalLogoProperties);
+        console.log('Stored final logo properties using global function:', finalLogoProperties);
       }
       
       // Log the size information with CSS debugging
@@ -728,15 +733,15 @@ class PolarFlowsApp {
         
         // Get current positions and apply them immediately
         const heroPos = getHeroLogoPosition();
-        const navbarPos = getNavbarLogoPosition();
+        const globalLogoProps = window.getFinalLogoProperties();
         
         // Use linear progress for both position and size
         const positionProgress = currentScrollProgress;
         const sizeProgress = currentScrollProgress;
         
-        // Calculate and apply position
-        const currentTop = heroPos.top + (navbarPos.top - heroPos.top) * positionProgress;
-        const currentLeft = heroPos.left + (navbarPos.left - heroPos.left) * positionProgress;
+        // Calculate and apply position using global function for consistency
+        const currentTop = heroPos.top + (globalLogoProps.top - heroPos.top) * positionProgress;
+        const currentLeft = heroPos.left + (globalLogoProps.left - heroPos.left) * positionProgress;
         
         transitionLogo.style.top = `${currentTop}px`;
         transitionLogo.style.left = `${currentLeft}px`;
@@ -748,8 +753,9 @@ class PolarFlowsApp {
         const maxWidthPx = Math.min(600, viewportWidth * 0.7); // Same as CSS: min(600px, 70vw)
         const heroSize = (maxWidthPx / viewportWidth) * 100; // Convert to percentage
         
-        const navbarSize = navbarPos.height; // Final navbar height
-        const navbarWidth = navbarPos.width; // Final navbar width
+        // Use global function for consistent final dimensions
+        const navbarSize = globalLogoProps.height; // Final navbar height
+        const navbarWidth = globalLogoProps.width; // Final navbar width
         
         // Calculate maximum safe size that fits in navbar with padding
         const navbarPadding = 20; // 10px padding on each side
@@ -893,7 +899,7 @@ class PolarFlowsApp {
       
       // Use the global function to get consistent logo properties
       const logoProps = window.getFinalLogoProperties();
-      console.log('Using global logo properties:', logoProps);
+      console.log('Fake logo using global logo properties:', logoProps);
       
       tempLogo.style.cssText = `
         position: fixed;
@@ -1028,8 +1034,8 @@ class PolarFlowsApp {
 // Global function to get consistent logo dimensions and position
 // Used by: final logo position, fake logo, and small logo on non-home pages
 window.getFinalLogoProperties = function() {
-  const realNavbarLogo = document.querySelector('.navbar-logo');
-  if (!realNavbarLogo) {
+  const navbarBrand = document.querySelector('.navbar-brand');
+  if (!navbarBrand) {
     return {
       top: 12.5,
       left: 16,
@@ -1039,40 +1045,39 @@ window.getFinalLogoProperties = function() {
     };
   }
 
-  // Temporarily make the real logo visible to get accurate dimensions
-  const originalOpacity = realNavbarLogo.style.opacity;
-  const originalVisibility = realNavbarLogo.style.visibility;
-  realNavbarLogo.style.opacity = '1';
-  realNavbarLogo.style.visibility = 'visible';
+  // Get the navbar brand position and dimensions
+  const brandRect = navbarBrand.getBoundingClientRect();
+  const navbarHeight = 70; // Fixed navbar height from CSS
   
-  // Force a reflow to ensure dimensions are calculated
-  realNavbarLogo.offsetHeight;
+  // Calculate appropriate logo dimensions based on navbar height
+  const marginTop = 10; // Small margin from top
+  const marginBottom = 10; // Small margin from bottom
+  const maxLogoHeight = navbarHeight - marginTop - marginBottom;
+  const logoHeight = Math.min(maxLogoHeight, 55); // Cap at 55px for consistency
+  const logoWidth = (logoHeight * 202.797) / 55; // Maintain aspect ratio
   
-  const computedStyle = window.getComputedStyle(realNavbarLogo);
-  const rect = realNavbarLogo.getBoundingClientRect();
+  // Position the logo within the navbar brand area with proper margins
+  // The animation uses transform: translate(-50%, -50%), so we need to position the center of the logo
+  const brandCenterY = brandRect.top + (brandRect.height / 2);
+  const finalTop = brandCenterY; // Center vertically in the navbar brand
   
-  // Get the actual image dimensions (excluding padding)
-  const paddingTop = parseInt(computedStyle.paddingTop) || 10;
-  const paddingBottom = parseInt(computedStyle.paddingBottom) || 0;
+  // Position from the left edge of the navbar brand with margin
+  // Since transform centers the logo, we position the center point
+  const marginLeft = 16; // Small margin from left
+  const finalLeft = brandRect.left + marginLeft + (logoWidth / 2); // Position center of logo
   
-  // Calculate final properties
-  const imageHeight = rect.height - paddingTop - paddingBottom; // Image height only
-  const imageWidth = rect.width; // Use exact width to match aspect ratio
-  const finalTop = rect.top + paddingTop; // Visual top position
-  const finalLeft = rect.left;
-  const finalOpacity = parseFloat(computedStyle.opacity) || 1;
-  
-  // Restore original visibility
-  realNavbarLogo.style.opacity = originalOpacity;
-  realNavbarLogo.style.visibility = originalVisibility;
-  
-  return {
+  const result = {
     top: finalTop,
     left: finalLeft,
-    height: imageHeight,
-    width: imageWidth,
-    opacity: finalOpacity
+    height: logoHeight,
+    width: logoWidth,
+    opacity: 1
   };
+  
+  console.log('getFinalLogoProperties calculated:', result);
+  console.log('Brand rect:', brandRect, 'Navbar height:', navbarHeight);
+  
+  return result;
 };
 
 /**

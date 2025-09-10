@@ -289,6 +289,7 @@
             setTimeout(() => {
                 if (window.getFinalLogoProperties) {
                     const logoProps = window.getFinalLogoProperties();
+                    console.log('Privacy page small logo using global logo properties:', logoProps);
                     const smallLogo = document.getElementById('navbar-small-logo');
                     if (smallLogo) {
                         smallLogo.style.top = `${logoProps.top}px`;
