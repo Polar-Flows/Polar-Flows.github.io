@@ -383,6 +383,59 @@ class PolarFlowsApp {
   }
 
   /**
+   * Global function to get consistent logo dimensions and position
+   * Used by: final logo position, fake logo, and small logo on non-home pages
+   */
+  getFinalLogoProperties() {
+    const realNavbarLogo = document.querySelector('.navbar-logo');
+    if (!realNavbarLogo) {
+      return {
+        top: 12.5,
+        left: 16,
+        height: 55,
+        width: 202.797,
+        opacity: 1
+      };
+    }
+
+    // Temporarily make the real logo visible to get accurate dimensions
+    const originalOpacity = realNavbarLogo.style.opacity;
+    const originalVisibility = realNavbarLogo.style.visibility;
+    realNavbarLogo.style.opacity = '1';
+    realNavbarLogo.style.visibility = 'visible';
+    
+    // Force a reflow to ensure dimensions are calculated
+    realNavbarLogo.offsetHeight;
+    
+    const computedStyle = window.getComputedStyle(realNavbarLogo);
+    const rect = realNavbarLogo.getBoundingClientRect();
+    
+    // Get the actual image dimensions (excluding padding)
+    const paddingTop = parseInt(computedStyle.paddingTop) || 10;
+    const paddingBottom = parseInt(computedStyle.paddingBottom) || 0;
+    
+    // Calculate final properties
+    const imageHeight = rect.height - paddingTop - paddingBottom; // Image height only
+    const imageWidth = rect.width; // Use exact width to match aspect ratio
+    const finalTop = rect.top + paddingTop; // Visual top position
+    const finalLeft = rect.left;
+    const finalOpacity = parseFloat(computedStyle.opacity) || 1;
+    
+    // Restore original visibility
+    realNavbarLogo.style.opacity = originalOpacity;
+    realNavbarLogo.style.visibility = originalVisibility;
+    
+    return {
+      top: finalTop,
+      left: finalLeft,
+      height: imageHeight,
+      width: imageWidth,
+      opacity: finalOpacity
+    };
+  }
+
+
+  /**
    * Initialize logo transformation effect
    */
   initLogoTransformation() {
@@ -397,6 +450,12 @@ class PolarFlowsApp {
     const transitionLogo = document.querySelector('.transition-logo');
     const navbarLogo = document.querySelector('.navbar-logo');
     const navbarBrand = document.querySelector('.navbar-brand');
+    
+    // Store the final logo properties (when progress = 1.00)
+    let finalLogoProperties = null;
+    
+    // Make finalLogoProperties accessible to createTempLogo
+    window.finalLogoProperties = finalLogoProperties;
     
     console.log('Transition logo found:', !!transitionLogo);
     console.log('Navbar logo found:', !!navbarLogo);
@@ -573,6 +632,20 @@ class PolarFlowsApp {
       // Ensure minimum size and apply
       const finalSize = Math.max(smoothSize, 2);
       
+      // Store final properties when progress = 1.00
+      if (scrollProgress >= 1.00 && !finalLogoProperties) {
+        finalLogoProperties = {
+          top: currentTop,
+          left: currentLeft,
+          size: finalSize,
+          height: transitionLogo ? transitionLogo.offsetHeight : 0,
+          width: transitionLogo ? transitionLogo.offsetWidth : 0
+        };
+        // Update the global reference
+        window.finalLogoProperties = finalLogoProperties;
+        console.log('Stored final logo properties:', finalLogoProperties);
+      }
+      
       // Log the size information with CSS debugging
       console.log(`Scroll: ${scrollY}px, Progress: ${scrollProgress.toFixed(2)}, MaxScroll: ${maxScroll}px, Size: ${finalSize.toFixed(1)}%`);
       
@@ -599,6 +672,11 @@ class PolarFlowsApp {
     // Add resize listener to recalculate positions when window is resized
     const handleResize = () => {
         console.log('Window resized - following correct sequence');
+        
+        // Clear stored final logo properties since dimensions have changed
+        finalLogoProperties = null;
+        window.finalLogoProperties = null;
+        console.log('Cleared stored final logo properties due to resize');
         
         // Step 1: Scroll up to reset animation state
         window.scrollTo(0, 0);
@@ -813,77 +891,22 @@ class PolarFlowsApp {
       tempLogo.src = 'assets/img/polarflows/logo_v2_full_white.png';
       tempLogo.alt = 'Polar Flows';
       
-      // Get the real navbar logo properties to match exactly
-      const realNavbarLogo = document.querySelector('.navbar-logo');
-      let logoHeight = 60; // Default height
-      let logoTop = 10; // Default top padding
-      let logoOpacity = 1; // Default opacity
-      
-      if (realNavbarLogo) {
-        // Temporarily make the real logo visible to get accurate dimensions
-        const originalOpacity = realNavbarLogo.style.opacity;
-        const originalVisibility = realNavbarLogo.style.visibility;
-        realNavbarLogo.style.opacity = '1';
-        realNavbarLogo.style.visibility = 'visible';
-        
-        // Force a reflow to ensure dimensions are calculated
-        realNavbarLogo.offsetHeight;
-        
-        const computedStyle = window.getComputedStyle(realNavbarLogo);
-        const fullHeight = parseInt(computedStyle.height) || 60;
-        const fullWidth = parseInt(computedStyle.width) || 0;
-        const paddingTop = parseInt(computedStyle.paddingTop) || 10;
-        const paddingBottom = parseInt(computedStyle.paddingBottom) || 0;
-        const paddingLeft = parseInt(computedStyle.paddingLeft) || 0;
-        const paddingRight = parseInt(computedStyle.paddingRight) || 0;
-        
-        // Calculate actual image dimensions (excluding padding)
-        logoHeight = fullHeight - paddingTop - paddingBottom;
-        logoTop = parseInt(computedStyle.paddingTop) || 10;
-        logoOpacity = parseFloat(computedStyle.opacity) || 1;
-        
-        // Restore original visibility
-        realNavbarLogo.style.opacity = originalOpacity;
-        realNavbarLogo.style.visibility = originalVisibility;
-        
-        console.log('Fake logo size:', logoHeight, 'px (full height:', fullHeight, 'px - padding:', paddingTop, 'px)');
-        console.log('Real logo computed dimensions:', {
-          height: fullHeight,
-          width: fullWidth,
-          paddingTop,
-          paddingBottom,
-          paddingLeft,
-          paddingRight
-        });
-      }
-      
-      // Get navbar brand position to match exactly
-      const navbarBrand = document.querySelector('.navbar-brand');
-      let leftPosition = 80; // Default padding
-      let topPosition = logoTop;
-      
-      if (navbarBrand) {
-        const brandRect = navbarBrand.getBoundingClientRect();
-        leftPosition = brandRect.left;
-        topPosition = brandRect.top + (brandRect.height - logoHeight) / 2; // Center vertically
-      } else {
-        // Fallback to navbar container padding
-        const navbarContainer = document.querySelector('.navbar-container');
-        if (navbarContainer) {
-          const computedStyle = window.getComputedStyle(navbarContainer);
-          leftPosition = parseInt(computedStyle.paddingLeft) || 80;
-        }
-      }
+      // Use the global function to get consistent logo properties
+      const logoProps = window.getFinalLogoProperties();
+      console.log('Using global logo properties:', logoProps);
       
       tempLogo.style.cssText = `
         position: fixed;
-        top: ${topPosition}px;
-        left: ${leftPosition}px;
-        height: ${logoHeight}px;
-        width: auto;
-        opacity: ${logoOpacity};
+        top: ${logoProps.top}px;
+        left: ${logoProps.left}px;
+        width: ${logoProps.width}px;
+        height: ${logoProps.height}px;
+        opacity: ${logoProps.opacity};
         z-index: 1020;
         pointer-events: none;
+        padding: 0 !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
       `;
       document.body.appendChild(tempLogo);
       
@@ -906,11 +929,7 @@ class PolarFlowsApp {
         }
         
         // Restore the big logo visibility
-        const transitionLogo = document.querySelector('.transition-logo');
         if (transitionLogo) {
-          transitionLogo.style.removeProperty('opacity');
-          transitionLogo.style.removeProperty('visibility');
-          // Ensure it's visible again
           transitionLogo.style.opacity = '0.95';
           transitionLogo.style.visibility = 'visible';
         }
@@ -945,105 +964,55 @@ class PolarFlowsApp {
             // 3. Add temporary background (second in order, behind menu)
             const tempBackground = createTempBackground();
             
-            // 4. Add temporary logo (third in order, behind menu but in front of background)
+            // 4. Add temporary logo (third in order, behind background)
             const tempLogo = createTempLogo();
             
-            // 5. Add scroll lock
-            document.addEventListener('wheel', preventScroll, { passive: false, capture: true });
-            document.addEventListener('touchmove', preventScroll, { passive: false, capture: true });
-            document.addEventListener('scroll', preventScroll, { passive: false, capture: true });
-            document.addEventListener('keydown', (e) => {
-              if (isMenuOpen && (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'PageUp' || e.key === 'PageDown' || e.key === 'Home' || e.key === 'End' || e.key === ' ')) {
-                e.preventDefault();
-                e.stopPropagation();
-                e.stopImmediatePropagation();
-                return false;
-              }
-            }, { passive: false, capture: true });
+            // 5. Hide the big logo (behind everything)
+            if (transitionLogo) {
+              transitionLogo.style.setProperty('opacity', '0', 'important');
+              transitionLogo.style.visibility = 'hidden';
+            }
             
-            // Prevent resizing
-            window.addEventListener('resize', preventResize, { passive: false, capture: true });
-            
-            // Add click handlers to menu options
-            const menuLinks = navbarNav.querySelectorAll('a');
-            menuLinks.forEach(link => {
-              link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const href = link.getAttribute('href');
-                
-                // Remove scroll lock
-                document.removeEventListener('wheel', preventScroll, { capture: true });
-                document.removeEventListener('touchmove', preventScroll, { capture: true });
-                document.removeEventListener('scroll', preventScroll, { capture: true });
-                window.removeEventListener('resize', preventResize, { capture: true });
-                
-                // Remove temp background and temp logo
-                tempBackground.remove();
-                tempLogo.remove();
-                
-                // Close menu
-                navbarNav.classList.remove('active');
-                navbarNav.style.zIndex = '';
-                
-                isMenuOpen = false;
-                
-                // Then navigate to the section
-                setTimeout(() => {
-                  if (href && href.startsWith('#')) {
-                    const targetElement = document.querySelector(href);
-                    if (targetElement) {
-                      targetElement.scrollIntoView({ behavior: 'smooth' });
-                    }
-                  }
-                }, 100);
-                
-                console.log('Menu option clicked - navigating to section');
-              });
-            });
-            
-            // Disable scrolling by setting overflow hidden
+            // 6. Lock scrolling and resizing
             document.body.style.overflow = 'hidden';
             document.documentElement.style.overflow = 'hidden';
             
-            console.log('Menu opened - visual illusion created, scrolling locked');
+            // Add event listeners to prevent scrolling and resizing
+            const preventScroll = (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              return false;
+            };
             
+            const preventResize = (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              return false;
+            };
+            
+            window.addEventListener('wheel', preventScroll, { passive: false });
+            window.addEventListener('touchmove', preventScroll, { passive: false });
+            window.addEventListener('keydown', (e) => {
+              if ([32, 33, 34, 35, 36, 37, 38, 39, 40].includes(e.keyCode)) {
+                preventScroll(e);
+              }
+            });
+            window.addEventListener('resize', preventResize);
+            
+            console.log('Menu opened - visual illusion created, scrolling locked');
           } else if (!isActive && isMenuOpen) {
             // Menu just closed
-            isMenuOpen = false;
-            
-            // Remove scroll lock
-            document.removeEventListener('wheel', preventScroll, { capture: true });
-            document.removeEventListener('touchmove', preventScroll, { capture: true });
-            document.removeEventListener('scroll', preventScroll, { capture: true });
-            window.removeEventListener('resize', preventResize, { capture: true });
-            
-            // Remove temp background and temp logo
-            const tempBackground = document.querySelector('.temp-navbar-background');
-            if (tempBackground) {
-              tempBackground.remove();
-            }
-            
-            const tempLogo = document.querySelector('.temp-navbar-logo');
-            if (tempLogo) {
-              tempLogo.remove();
-            }
-            
-            // Restore the big logo visibility
-            const transitionLogo = document.querySelector('.transition-logo');
-            if (transitionLogo) {
-              transitionLogo.style.removeProperty('opacity');
-              transitionLogo.style.removeProperty('visibility');
-              // Ensure it's visible again
-              transitionLogo.style.opacity = '0.95';
-              transitionLogo.style.visibility = 'visible';
-            }
-            
-            // Reset navbar z-index
-            navbarNav.style.zIndex = '';
+            closeMenuAndCleanup();
             
             // Restore scrolling
-            document.body.style.overflow = originalOverflow;
-            document.documentElement.style.overflow = '';
+            document.body.style.overflow = originalOverflow || '';
+            document.documentElement.style.overflow = originalOverflow || '';
+            
+            // Remove event listeners
+            window.removeEventListener('wheel', preventScroll);
+            window.removeEventListener('touchmove', preventScroll);
+            window.removeEventListener('keydown', preventScroll);
+            window.removeEventListener('resize', preventResize);
             
             console.log('Menu closed - visual illusion removed, scrolling restored');
           }
@@ -1051,9 +1020,60 @@ class PolarFlowsApp {
       });
     });
 
+    // Start observing navbar menu state changes
     observer.observe(navbarNav, { attributes: true, attributeFilter: ['class'] });
   }
 }
+
+// Global function to get consistent logo dimensions and position
+// Used by: final logo position, fake logo, and small logo on non-home pages
+window.getFinalLogoProperties = function() {
+  const realNavbarLogo = document.querySelector('.navbar-logo');
+  if (!realNavbarLogo) {
+    return {
+      top: 12.5,
+      left: 16,
+      height: 55,
+      width: 202.797,
+      opacity: 1
+    };
+  }
+
+  // Temporarily make the real logo visible to get accurate dimensions
+  const originalOpacity = realNavbarLogo.style.opacity;
+  const originalVisibility = realNavbarLogo.style.visibility;
+  realNavbarLogo.style.opacity = '1';
+  realNavbarLogo.style.visibility = 'visible';
+  
+  // Force a reflow to ensure dimensions are calculated
+  realNavbarLogo.offsetHeight;
+  
+  const computedStyle = window.getComputedStyle(realNavbarLogo);
+  const rect = realNavbarLogo.getBoundingClientRect();
+  
+  // Get the actual image dimensions (excluding padding)
+  const paddingTop = parseInt(computedStyle.paddingTop) || 10;
+  const paddingBottom = parseInt(computedStyle.paddingBottom) || 0;
+  
+  // Calculate final properties
+  const imageHeight = rect.height - paddingTop - paddingBottom; // Image height only
+  const imageWidth = rect.width; // Use exact width to match aspect ratio
+  const finalTop = rect.top + paddingTop; // Visual top position
+  const finalLeft = rect.left;
+  const finalOpacity = parseFloat(computedStyle.opacity) || 1;
+  
+  // Restore original visibility
+  realNavbarLogo.style.opacity = originalOpacity;
+  realNavbarLogo.style.visibility = originalVisibility;
+  
+  return {
+    top: finalTop,
+    left: finalLeft,
+    height: imageHeight,
+    width: imageWidth,
+    opacity: finalOpacity
+  };
+};
 
 /**
  * Performance monitoring

@@ -53,7 +53,7 @@ export class Navigation {
     
     while (attempts < maxAttempts) {
       this.navbar = document.querySelector('.navbar');
-      this.navbarToggle = document.querySelector('.navbar-toggle');
+      this.navbarToggle = document.querySelector('.navbar-toggle') || document.querySelector('.navbar-back-home');
       this.navbarNav = document.querySelector('.navbar-nav');
       
       if (this.navbar && this.navbarToggle && this.navbarNav) {
@@ -71,11 +71,17 @@ export class Navigation {
    * Set up event listeners
    */
   setupEventListeners() {
-    // Mobile menu toggle
+    // Mobile menu toggle or back button
     if (this.navbarToggle) {
-      this.navbarToggle.addEventListener('click', () => {
-        this.toggleMobileMenu();
-      });
+      if (this.navbarToggle.classList.contains('navbar-back-home')) {
+        // Back button - navigation is handled by onclick attribute
+        console.log('Back to home button found, navigation handled by onclick');
+      } else {
+        // Mobile menu toggle
+        this.navbarToggle.addEventListener('click', () => {
+          this.toggleMobileMenu();
+        });
+      }
     }
 
     // Brand link - handle navigation
@@ -422,5 +428,10 @@ export class Navigation {
  */
 export async function initNavigation() {
   const navigation = new Navigation();
-  return await navigation.init();
+  await navigation.init();
+  
+  // Make navigation globally accessible
+  window.navigation = navigation;
+  
+  return navigation;
 }
