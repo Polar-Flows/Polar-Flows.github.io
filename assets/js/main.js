@@ -562,6 +562,11 @@ class PolarFlowsApp {
     let isTransforming = false;
 
     this.handleScroll = () => {
+      // Check if animation is paused (menu is open)
+      if (window.menuAnimationPaused) {
+        return; // Don't update animation when menu is open
+      }
+      
       const scrollY = window.scrollY;
       
       // Calculate maxScroll dynamically to respond to window size changes
@@ -572,6 +577,12 @@ class PolarFlowsApp {
       const currentMaxScroll = (currentHeroSectionHeight * currentDynamicPercentage) - earlyFinishPx;
       
       const scrollProgress = Math.min(scrollY / currentMaxScroll, 1); // 0 to 1
+      
+      // Check if we should pause animation (menu is open and progress = 1)
+      if (window.menuOpen && scrollProgress >= 1.00 && !window.menuAnimationPaused) {
+        window.menuAnimationPaused = true;
+        console.log('Animation paused - menu open and progress reached 1.00');
+      }
       
       if (scrollY > 0 && !isTransforming) {
         console.log('Starting transformation');
@@ -852,128 +863,49 @@ class PolarFlowsApp {
       }
     };
 
-    // Function to create temporary background
-    const createTempBackground = () => {
-      const tempBackground = document.createElement('div');
-      tempBackground.className = 'temp-navbar-background';
-      tempBackground.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-image: url('assets/img/polarflows/Stockholm_modif.jpg');
-        background-size: cover;
-        background-position: left center;
-        background-attachment: fixed;
-        z-index: 1015;
-        pointer-events: none;
-      `;
-      
-      // Add the same overlay as hero section
-      const overlay = document.createElement('div');
-      overlay.className = 'temp-background-overlay';
-      overlay.style.cssText = `
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(135deg, rgba(1, 45, 117, 0.3) 0%, rgba(14, 30, 58, 0.3) 100%);
-        z-index: 1;
-      `;
-      tempBackground.appendChild(overlay);
-      document.body.appendChild(tempBackground);
-      
-      // Hide the big logo completely by setting opacity to 0
-      const transitionLogo = document.querySelector('.transition-logo');
-      if (transitionLogo) {
-        transitionLogo.style.setProperty('opacity', '0', 'important');
-        transitionLogo.style.setProperty('visibility', 'hidden', 'important');
-      }
-      
-      return tempBackground;
-    };
+    // Note: Fake background creation removed - simplified approach
 
-    // Function to create temporary logo
-    const createTempLogo = () => {
-      const tempLogo = document.createElement('img');
-      tempLogo.className = 'temp-navbar-logo';
-      tempLogo.src = 'assets/img/polarflows/logo_v2_full_white.png';
-      tempLogo.alt = 'Polar Flows';
-      
-      // Clear any cached properties to ensure fresh calculation
-      window.clearFinalLogoProperties();
-      
-      // Use the global function to get consistent logo properties
-      const logoProps = window.getFinalLogoProperties();
-      console.log('Fake logo using global logo properties:', logoProps);
-      console.log('Fake logo dimensions - width:', logoProps.width, 'height:', logoProps.height);
-      
-      tempLogo.style.cssText = `
-        position: fixed;
-        top: ${logoProps.top}px;
-        left: ${logoProps.left}px;
-        width: ${logoProps.width}px;
-        height: ${logoProps.height}px;
-        opacity: ${logoProps.opacity};
-        transform: translate(-50%, -50%);
-        z-index: 1020;
-        pointer-events: none;
-        padding: 10px 0 0 0 !important;
-        margin: 0 !important;
-        border: none !important;
-        outline: none !important;
-        box-sizing: border-box !important;
-        display: block !important;
-        object-fit: contain !important;
-        max-width: none !important;
-        min-width: auto !important;
-        max-height: none !important;
-        min-height: auto !important;
-        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3)) !important;
-      `;
-      document.body.appendChild(tempLogo);
-      
-      // Debug: Check actual rendered dimensions
-      setTimeout(() => {
-        const rect = tempLogo.getBoundingClientRect();
-        console.log('Fake logo actual rendered dimensions:', {
-          expectedWidth: logoProps.width,
-          expectedHeight: logoProps.height,
-          actualWidth: rect.width,
-          actualHeight: rect.height,
-          difference: {
-            width: rect.width - logoProps.width,
-            height: rect.height - logoProps.height
-          }
-        });
-      }, 100);
-      
-      return tempLogo;
-    };
+    // Note: Fake logo creation removed - now using programmatic scroll approach
 
     // Function to close menu and clean up
     const closeMenuAndCleanup = () => {
       if (isMenuOpen) {
-        // Remove temporary background
-        const tempBackground = document.querySelector('.temp-navbar-background');
-        if (tempBackground) {
-          tempBackground.remove();
-        }
+        // No fake background to remove
         
-        // Remove temporary logo
-        const tempLogo = document.querySelector('.temp-navbar-logo');
-        if (tempLogo) {
-          tempLogo.remove();
-        }
+        // Show menu options again
+        navbarNav.style.display = '';
         
-        // Restore the big logo visibility
+        // Restore logo's original z-index only
+        // Let the normal animation system control opacity and visibility
         const transitionLogo = document.querySelector('.transition-logo');
         if (transitionLogo) {
-          transitionLogo.style.opacity = '0.95';
-          transitionLogo.style.visibility = 'visible';
+          transitionLogo.style.removeProperty('z-index');
+          // Don't remove opacity and visibility - let animation system control them
+          console.log('Logo z-index restored, opacity/visibility left to animation system');
         }
+        
+        // Resume animation system when menu is closed
+        window.menuOpen = false;
+        window.menuAnimationPaused = false;
+        console.log('Menu closed - animation system resumed');
+        
+        // Trigger recalculation of logo position
+        // Use a small delay to ensure the animation system is fully resumed
+        setTimeout(() => {
+          // Trigger a scroll event to recalculate logo position
+          window.dispatchEvent(new Event('scroll'));
+          console.log('Logo position recalculated after menu close');
+          
+          // Wait a bit more for the scroll event to be processed, then always scroll to top
+          setTimeout(() => {
+            // Always scroll to top when menu closes
+            window.scrollTo({
+              top: 0,
+              behavior: 'smooth'
+            });
+            console.log('Menu closed - scrolling to top');
+          }, 100); // Additional delay to ensure scroll event is processed
+        }, 50);
         
         // Close the navbar menu
         navbarNav.classList.remove('active');
@@ -993,70 +925,69 @@ class PolarFlowsApp {
             // Menu just opened
             isMenuOpen = true;
             originalScrollY = window.scrollY;
-            originalOverflow = document.body.style.overflow;
             
-            console.log('Menu opened - creating visual illusion');
+            // Store original overflow BEFORE we change it
+            originalOverflow = document.body.style.overflow || '';
             
-            // 1. Menu is already expanded (handled by CSS)
+            // Store original scroll position for restoration
+            window.menuOriginalScrollY = window.scrollY;
             
-            // 2. Make menu always in front
+            console.log('Menu opened - checking scroll state');
+            
+            // 1. Hide menu options initially (we'll show them in next step)
+            navbarNav.style.display = 'none';
+            
+            // 2. Make menu always in front when visible
             navbarNav.style.zIndex = '1030';
             
-            // 3. Add temporary background (second in order, behind menu)
-            const tempBackground = createTempBackground();
-            
-            // 4. Add temporary logo (third in order, behind background)
-            const tempLogo = createTempLogo();
-            
-            // 5. Hide the big logo (behind everything)
+            // 3. Ensure logo is visible above everything
             const transitionLogo = document.querySelector('.transition-logo');
             if (transitionLogo) {
-              transitionLogo.style.setProperty('opacity', '0', 'important');
-              transitionLogo.style.visibility = 'hidden';
+              transitionLogo.style.setProperty('z-index', '1025', 'important');
+              transitionLogo.style.setProperty('opacity', '1', 'important');
+              transitionLogo.style.setProperty('visibility', 'visible', 'important');
             }
             
-            // 6. Lock scrolling and resizing
-            document.body.style.overflow = 'hidden';
-            document.documentElement.style.overflow = 'hidden';
-            
-            // Add event listeners to prevent scrolling and resizing
-            const preventScroll = (e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              return false;
-            };
-            
-            const preventResize = (e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              return false;
-            };
-            
-            window.addEventListener('wheel', preventScroll, { passive: false });
-            window.addEventListener('touchmove', preventScroll, { passive: false });
-            window.addEventListener('keydown', (e) => {
-              if ([32, 33, 34, 35, 36, 37, 38, 39, 40].includes(e.keyCode)) {
-                preventScroll(e);
+            // 4. Check current scroll progress and conditionally scroll
+            const heroSection = document.querySelector('.hero');
+            if (heroSection) {
+              const heroHeight = heroSection.offsetHeight;
+              const currentScrollY = window.scrollY;
+              const currentProgress = Math.min(currentScrollY / heroHeight, 1);
+              
+              console.log('Current scroll state:', {
+                currentScrollY: currentScrollY,
+                heroHeight: heroHeight,
+                currentProgress: currentProgress
+              });
+              
+              if (currentProgress < 1) {
+                // Progress is less than 1, scroll to make it 1
+                // Use the same calculation as the animation system
+                const currentViewportHeight = window.innerHeight;
+                const currentDynamicPercentage = Math.max(0.05, 0.45 - (Math.max(0, 800 - currentViewportHeight) * 0.004));
+                const earlyFinishPx = 10;
+                const targetScrollY = (heroHeight * currentDynamicPercentage) - earlyFinishPx;
+                
+                window.scrollTo({
+                  top: targetScrollY,
+                  behavior: 'smooth'
+                });
+                console.log('Scrolling to position:', targetScrollY, 'to reach progress = 1 (calculated maxScroll)');
+              } else {
+                // Progress is already 1, do nothing
+                console.log('Progress is already 1, no scrolling needed');
               }
-            });
-            window.addEventListener('resize', preventResize);
+            }
             
-            console.log('Menu opened - visual illusion created, scrolling locked');
+            // Set menu open flag for animation system to detect
+            window.menuOpen = true;
+            console.log('Menu opened - waiting for scroll to finish before pausing animation');
           } else if (!isActive && isMenuOpen) {
             // Menu just closed
             closeMenuAndCleanup();
             
-            // Restore scrolling
-            document.body.style.overflow = originalOverflow || '';
-            document.documentElement.style.overflow = originalOverflow || '';
-            
-            // Remove event listeners
-            window.removeEventListener('wheel', preventScroll);
-            window.removeEventListener('touchmove', preventScroll);
-            window.removeEventListener('keydown', preventScroll);
-            window.removeEventListener('resize', preventResize);
-            
-            console.log('Menu closed - visual illusion removed, scrolling restored');
+            // No scroll restoration needed - simplified approach
           }
         }
       });
