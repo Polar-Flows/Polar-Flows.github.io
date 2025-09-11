@@ -1043,7 +1043,6 @@ body:not(.home-page) .navbar-small-logo {
 .value-prop-icon {
   width: 60px;
   height: 60px;
-  background-color: var(--pf-primary);
   border-radius: var(--pf-radius-lg);
   display: flex;
   align-items: center;
@@ -1051,7 +1050,6 @@ body:not(.home-page) .navbar-small-logo {
   margin-bottom: var(--pf-space-lg);
   color: var(--pf-white);
   font-size: var(--pf-font-size-2xl);
-  filter: grayscale(100%) contrast(1.2);
 }
 
 .value-prop-title {
@@ -2299,7 +2297,6 @@ html, body {
   height: 80px;
   object-fit: contain;
   margin-bottom: var(--pf-space-md);
-  filter: grayscale(100%);
   transition: filter var(--pf-transition-fast);
 }
 
@@ -2310,7 +2307,7 @@ html, body {
 .partnership-name {
   font-size: var(--pf-font-size-sm);
   font-weight: var(--pf-font-weight-medium);
-  color: var(--pf-text-secondary);
+  color: #000000;
   transition: color var(--pf-transition-fast);
 }
 
