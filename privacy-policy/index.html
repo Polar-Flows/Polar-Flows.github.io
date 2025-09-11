@@ -69,33 +69,6 @@
     <!-- Skip to content link for accessibility -->
     <a href="#main-content" class="skip-link">Skip to main content</a>
     
-    <!-- Navigation -->
-    <nav class="navbar" role="navigation" aria-label="Main navigation">
-        <div class="container navbar-container">
-            <a href="../" class="navbar-brand" aria-label="Polar Flows Home">
-                <img src="../assets/img/polarflows/logo_v2_full_white.png" alt="Polar Flows Logo" class="navbar-logo">
-            </a>
-            
-            <!-- Small logo for non-home pages -->
-            <div class="navbar-small-logo" id="navbar-small-logo">
-                <img src="../assets/img/polarflows/logo_v2_full_white.png" alt="Polar Flows" class="small-logo">
-            </div>
-            
-            <ul class="navbar-nav" role="menubar">
-                <li role="none"><a href="../#services" role="menuitem">Services</a></li>
-                <li role="none"><a href="../#about" role="menuitem">About</a></li>
-                <li role="none"><a href="../#journey" role="menuitem">Journey</a></li>
-                <li role="none"><a href="../#team" role="menuitem">Team</a></li>
-                <li role="none"><a href="../contact/" role="menuitem">Contact</a></li>
-            </ul>
-            
-            <button class="navbar-back-home" aria-label="Back to home page" onclick="window.location.href='../index.html'">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M19 12H5M12 19L5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </button>
-        </div>
-    </nav>
 
     <!-- Main content -->
     <main id="main-content" class="privacy-page">
@@ -261,7 +234,7 @@
     </footer>
 
     <!-- Back to top button -->
-    <a href="#main-content" class="back-to-top" aria-label="Back to top">&larr;†‘</a>
+    <a href="#main-content" class="back-to-top" aria-label="Back to top">&larr;ï¿½ï¿½</a>
 
     <!-- Scripts -->
     <script type="module" src="../assets/js/main.js"></script>
@@ -284,22 +257,6 @@
         // Force scroll to top immediately (before any other scripts)
         window.scrollTo(0, 0);
 
-        // Set small logo dimensions using global function
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                if (window.getFinalLogoProperties) {
-                    const logoProps = window.getFinalLogoProperties();
-                    console.log('Privacy page small logo using global logo properties:', logoProps);
-                    const smallLogo = document.getElementById('navbar-small-logo');
-                    if (smallLogo) {
-                        smallLogo.style.top = `${logoProps.top}px`;
-                        smallLogo.style.left = `${logoProps.left}px`;
-                        smallLogo.style.width = `${logoProps.width}px`;
-                        smallLogo.style.height = `${logoProps.height}px`;
-                    }
-                }
-            }, 200);
-        });
     </script>
 </body>
 </html>

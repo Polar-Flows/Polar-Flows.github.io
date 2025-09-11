@@ -1455,6 +1455,9 @@ body:not(.home-page) .navbar-small-logo {
   padding: var(--pf-space-lg);
   text-align: center;
   transition: all var(--pf-transition-normal);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .team-card:hover {
@@ -1524,6 +1527,50 @@ body:not(.home-page) .navbar-small-logo {
   color: var(--pf-primary);
 }
 
+/* Team contact styling */
+.team-bio {
+  flex-grow: 1;
+  margin-bottom: var(--pf-space-md);
+}
+
+.team-contact {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pf-space-sm);
+  margin-top: auto;
+  align-items: flex-start;
+}
+
+.team-email,
+.team-linkedin {
+  display: block !important;
+  text-decoration: none;
+  color: var(--pf-text);
+  font-size: var(--pf-font-size-sm);
+  transition: color 0.3s ease;
+  line-height: 1.4;
+  width: 100%;
+  text-align: left;
+}
+
+.team-email:hover,
+.team-linkedin:hover {
+  color: var(--pf-primary);
+}
+
+.team-card .contact-icon {
+  width: 12px !important;
+  height: 12px !important;
+  flex-shrink: 0;
+  border-radius: 0 !important;
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  vertical-align: middle !important;
+  display: inline-block !important;
+}
+
 /* Mobile team adjustments */
 @media (max-width: 767px) {
   .team-grid {
@@ -1549,6 +1596,23 @@ body:not(.home-page) .navbar-small-logo {
   .team-card p {
     font-size: var(--pf-font-size-xs);
     line-height: var(--pf-line-height-normal);
+  }
+  
+  .team-card .contact-icon {
+    width: 10px !important;
+    height: 10px !important;
+    border-radius: 0 !important;
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    vertical-align: middle !important;
+    display: inline-block !important;
+  }
+  
+  .team-email,
+  .team-linkedin {
+    font-size: var(--pf-font-size-xs);
   }
 }
 
@@ -2132,6 +2196,73 @@ body:has(.contact-page) .navbar-brand {
 .contact-page .hero-subtitle,
 .privacy-page .hero-subtitle {
   font-size: var(--pf-font-size-lg);
+}
+
+/* Privacy policy page - remove header completely */
+.privacy-page {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+.privacy-page .hero {
+  margin-top: 0 !important;
+  padding-top: 2rem !important;
+  min-height: auto !important;
+  height: auto !important;
+}
+
+.privacy-page .container {
+  padding-top: 0 !important;
+}
+
+/* Contact page - remove header completely */
+.contact-page {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+.contact-page .hero {
+  margin-top: 0 !important;
+  padding-top: 2rem !important;
+  min-height: auto !important;
+  height: auto !important;
+}
+
+.contact-page .container {
+  padding-top: 0 !important;
+}
+
+/* Privacy policy text styling - make all text black except titles */
+.privacy-page p,
+.privacy-page li,
+.privacy-page ul,
+.privacy-page .contact-info,
+.privacy-page .contact-info p {
+  color: #000000 !important;
+}
+
+.privacy-page h2,
+.privacy-page h3 {
+  color: var(--pf-primary) !important; /* Keep titles blue */
+}
+
+/* Make hero subtitle white in privacy policy */
+.privacy-page .hero-subtitle {
+  color: var(--pf-white) !important;
+}
+
+/* Remove box styling from contact info in privacy policy */
+.privacy-page .contact-info {
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+}
+
+.privacy-page .contact-info p {
+  margin: 0.5rem 0 !important;
+  padding: 0 !important;
 }
 
 /* Mobile contact adjustments */
