@@ -1704,6 +1704,37 @@ body:not(.home-page) .navbar-small-logo {
   margin-bottom: var(--pf-space-xs);
 }
 
+/* Mobile footer - more compact */
+@media (max-width: 767px) {
+  .footer {
+    padding: var(--pf-space-md) 0 var(--pf-space-xs);
+  }
+  
+  .footer-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--pf-space-sm);
+    margin-bottom: var(--pf-space-sm);
+  }
+  
+  .footer-section h3 {
+    font-size: var(--pf-font-size-sm);
+    margin-bottom: var(--pf-space-xs);
+  }
+  
+  .footer-section p,
+  .footer-section a {
+    font-size: var(--pf-font-size-xs);
+    margin-bottom: 2px;
+    line-height: 1.3;
+  }
+  
+  .footer-bottom {
+    padding-top: var(--pf-space-xs);
+    font-size: var(--pf-font-size-xs);
+  }
+}
+
 /* Desktop footer */
 @media (min-width: 768px) {
   .footer-content {
