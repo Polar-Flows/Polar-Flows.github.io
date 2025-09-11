@@ -1063,6 +1063,35 @@ body:not(.home-page) .navbar-small-logo {
   line-height: var(--pf-line-height-relaxed);
 }
 
+/* Mobile value props section */
+@media (max-width: 767px) {
+  .value-props-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--pf-space-md);
+    padding: 0 var(--pf-space-sm);
+  }
+  
+  .value-prop-card {
+    padding: var(--pf-space-md);
+  }
+  
+  .value-prop-icon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: var(--pf-space-sm);
+  }
+  
+  .value-prop-title {
+    font-size: var(--pf-font-size-sm);
+    margin-bottom: var(--pf-space-xs);
+  }
+  
+  .value-prop-description {
+    font-size: var(--pf-font-size-xs);
+    line-height: var(--pf-line-height-normal);
+  }
+}
+
 /* Desktop value props */
 @media (min-width: 768px) {
   .value-props-grid {
@@ -2338,6 +2367,12 @@ html, body {
   
   .partnership-name {
     font-size: var(--pf-font-size-xs);
+  }
+  
+  /* Mobile styling for large partnership logo (official partner section) */
+  .partnership-logo[style*="max-width: 500px"] {
+    max-width: 280px !important;
+    width: 100%;
   }
 }
 
