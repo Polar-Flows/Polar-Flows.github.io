@@ -1538,7 +1538,7 @@ body:not(.home-page) .navbar-small-logo {
   flex-direction: column;
   gap: var(--pf-space-sm);
   margin-top: auto;
-  align-items: flex-start;
+  align-items: center;
 }
 
 .team-email,
@@ -1550,7 +1550,11 @@ body:not(.home-page) .navbar-small-logo {
   transition: color 0.3s ease;
   line-height: 1.4;
   width: 100%;
-  text-align: left;
+  text-align: center;
+}
+
+.team-card .team-email {
+  font-size: 0.8rem !important;
 }
 
 .team-email:hover,
@@ -1558,11 +1562,11 @@ body:not(.home-page) .navbar-small-logo {
   color: var(--pf-primary);
 }
 
-.team-card .contact-icon {
-  width: 12px !important;
-  height: 12px !important;
-  flex-shrink: 0;
-  border-radius: 0 !important;
+  .team-card .contact-icon {
+    width: 18px !important;
+    height: 18px !important;
+    flex-shrink: 0;
+    border-radius: 0 !important;
   background: none !important;
   border: none !important;
   padding: 0 !important;
@@ -1599,8 +1603,8 @@ body:not(.home-page) .navbar-small-logo {
   }
   
   .team-card .contact-icon {
-    width: 10px !important;
-    height: 10px !important;
+    width: 16px !important;
+    height: 16px !important;
     border-radius: 0 !important;
     background: none !important;
     border: none !important;
