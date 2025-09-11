@@ -2421,7 +2421,7 @@ body:has(.contact-page) .navbar-brand {
   align-items: center;
   text-align: center;
   padding: var(--pf-space-lg);
-  background-color: #f8faff;
+  background-color: #e6f3ff;
   border-radius: var(--pf-radius-lg);
   border: 1px solid var(--pf-border-light);
   transition: all var(--pf-transition-fast);
