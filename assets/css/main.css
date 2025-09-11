@@ -2026,6 +2026,38 @@ html, body {
   color: var(--pf-white);
 }
 
+/* Disable all logo animations on contact page */
+.contact-page .transition-logo,
+.contact-page .hero-logo,
+.contact-page .hero-logo-img {
+  display: none !important;
+}
+
+/* Show navbar logo immediately on contact page */
+.contact-page .navbar-logo {
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: flex !important;
+  transition: none !important;
+}
+
+/* Position logo left and arrow right on contact page */
+body:has(.contact-page) .navbar-container {
+  justify-content: space-between !important;
+  position: relative !important;
+}
+
+body:has(.contact-page) .navbar-brand {
+  position: static !important;
+  left: auto !important;
+  top: auto !important;
+  transform: translateY(-5px) !important; /* Moved down 15px from -35px to -20px */
+  z-index: auto !important;
+  align-items: center !important;
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+
 /* Privacy policy page hero title - white color */
 .privacy-page .hero-title {
   color: var(--pf-white);
@@ -2034,8 +2066,8 @@ html, body {
 /* Smaller hero sections for contact and privacy pages */
 .contact-page .hero,
 .privacy-page .hero {
-  height: 40vh;
-  min-height: 300px;
+  height: 60vh;
+  min-height: 500px;
 }
 
 /* Smaller subtitle for contact and privacy pages */
