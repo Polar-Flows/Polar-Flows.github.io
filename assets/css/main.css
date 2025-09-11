@@ -1123,6 +1123,11 @@ body:not(.home-page) .navbar-small-logo {
 
 /* ===== Services ===== */
 .services {
+  background-color: #ffffff;
+}
+
+/* Main page specific services background */
+.index .services {
   background-color: #d1e7ff;
 }
 
@@ -1439,6 +1444,11 @@ body:not(.home-page) .navbar-small-logo {
 
 /* ===== Team Section ===== */
 .team {
+  background-color: #ffffff;
+}
+
+/* Main page specific team background */
+.index .team {
   background-color: #d1e7ff;
 }
 
