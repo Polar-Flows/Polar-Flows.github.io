@@ -1452,12 +1452,13 @@ body:not(.home-page) .navbar-small-logo {
   background: #e6f3ff;
   border: 1px solid var(--pf-border-light);
   border-radius: 16px;
-  padding: var(--pf-space-lg);
+  padding: var(--pf-space-md);
   text-align: center;
   transition: all var(--pf-transition-normal);
   display: flex;
   flex-direction: column;
   height: 100%;
+  min-height: 280px;
 }
 
 .team-card:hover {
@@ -1466,8 +1467,8 @@ body:not(.home-page) .navbar-small-logo {
 }
 
 .team-card img {
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   object-fit: cover;
   margin: 0 auto var(--pf-space-lg);
@@ -1584,12 +1585,12 @@ body:not(.home-page) .navbar-small-logo {
   }
   
   .team-card {
-    padding: var(--pf-space-md);
+    padding: var(--pf-space-sm);
   }
   
   .team-card img {
-    width: 60px;
-    height: 60px;
+    width: 80px;
+    height: 80px;
   }
   
   .team-card h3 {
@@ -1628,12 +1629,12 @@ body:not(.home-page) .navbar-small-logo {
   }
   
   .team-card {
-    padding: 1.25rem;
+    padding: var(--pf-space-sm);
   }
   
   .team-card img {
-    width: 128px;
-    height: 128px;
+    width: 140px;
+    height: 140px;
   }
   
   .team-card .team-name {
