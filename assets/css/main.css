@@ -2776,7 +2776,7 @@ body:has(.contact-page) .navbar-brand {
 .partnerships-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: var(--pf-space-xl);
+  gap: var(--pf-space-sm);
   margin-top: var(--pf-space-2xl);
   max-width: 1200px;
   margin-left: auto;
@@ -2788,19 +2788,18 @@ body:has(.contact-page) .navbar-brand {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: var(--pf-space-lg);
-  background-color: #e6f3ff;
+  padding: var(--pf-space-sm);
+  background-color: transparent;
   border-radius: var(--pf-radius-lg);
-  border: 1px solid var(--pf-border-light);
+  border: 1px solid transparent;
   transition: all var(--pf-transition-fast);
   cursor: pointer;
 }
 
 .partnership-logo:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-  background-color: #ffffff;
-  border-color: var(--pf-primary);
+  background-color: rgba(230, 243, 255, 0.3);
+  border-color: transparent;
 }
 
 .partnership-img {
@@ -2823,7 +2822,7 @@ body:has(.contact-page) .navbar-brand {
 }
 
 .partnership-logo:hover .partnership-name {
-  color: var(--pf-primary);
+  color: #000000;
 }
 
 /* Mobile partnerships section */
@@ -2834,12 +2833,12 @@ body:has(.contact-page) .navbar-brand {
   
   .partnerships-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: var(--pf-space-lg);
+    gap: var(--pf-space-xs);
     padding: 0 var(--pf-space-sm);
   }
   
   .partnership-logo {
-    padding: var(--pf-space-md);
+    padding: var(--pf-space-xs);
   }
   
   .partnership-img {
@@ -2862,7 +2861,7 @@ body:has(.contact-page) .navbar-brand {
 @media (min-width: 768px) and (max-width: 1023px) {
   .partnerships-grid {
     grid-template-columns: repeat(3, 1fr);
-    gap: var(--pf-space-lg);
+    gap: var(--pf-space-xs);
   }
 }
 
@@ -2870,7 +2869,7 @@ body:has(.contact-page) .navbar-brand {
 @media (min-width: 1024px) {
   .partnerships-grid {
     grid-template-columns: repeat(4, 1fr);
-    gap: var(--pf-space-xl);
+    gap: var(--pf-space-sm);
   }
   
   .partnership-img {
