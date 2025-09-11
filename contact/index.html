@@ -305,6 +305,39 @@
     <script>
     const LOGIC_APP_URL = "https://prod-129.westeurope.logic.azure.com:443/workflows/c7b3bf9aade34af395b1675e1df507ea/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=wcTbcjNOz3OHrqhvXcr90GkvI8ri7GPOfueMuuC5UyM";
 
+    // Custom notification function
+    function showFormNotification(message, type = 'info') {
+      // Remove any existing notifications
+      const existingNotification = document.querySelector('.form-notification');
+      if (existingNotification) {
+        existingNotification.remove();
+      }
+
+      // Create notification element
+      const notification = document.createElement('div');
+      notification.className = `form-notification form-notification-${type}`;
+      notification.innerHTML = `
+        <div class="form-notification-content">
+          <span class="form-notification-message">${message}</span>
+          <button class="form-notification-close" onclick="this.parentElement.parentElement.remove()">&times;</button>
+        </div>
+      `;
+
+      // Insert right above the submit button
+      const submitButton = document.querySelector('#contact-form .btn-primary');
+      const formGroup = submitButton.closest('.form-group');
+      formGroup.insertBefore(notification, formGroup.firstChild);
+
+      // Auto-remove after 5 seconds for success messages
+      if (type === 'success') {
+        setTimeout(() => {
+          if (notification.parentElement) {
+            notification.remove();
+          }
+        }, 5000);
+      }
+    }
+
     document.getElementById('contact-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       
@@ -319,20 +352,20 @@
       // Enhanced validation - check for any existing error messages
       const hasErrors = document.querySelectorAll('.form-error').length > 0;
       if (hasErrors) {
-        alert('Please correct the validation errors before submitting the form.');
+        showFormNotification('Please fill in all required fields correctly before submitting the form.', 'error');
         return;
       }
       
       // Basic required field validation
       if (!fullName || !email || !message) {
-        alert('Please fill in all required fields (Full Name, Email, and Message).');
+        showFormNotification('Please fill in all required fields (Full Name, Email, and Message).', 'error');
         return;
       }
       
       // Email validation
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailPattern.test(email)) {
-        alert('Please enter a valid email address (e.g., user@example.com)');
+        showFormNotification('Please enter a valid email address (e.g., user@example.com)', 'error');
         return;
       }
       
@@ -340,14 +373,14 @@
       if (phone) {
         const phonePattern = /^[\+]?[0-9\s\-\(\)]{7,20}$/;
         if (!phonePattern.test(phone)) {
-          alert('Please enter a valid phone number (Swedish: 07X XXX XX XX or international: +46)');
+          showFormNotification('Please enter a valid phone number (Swedish: 07X XXX XX XX or international: +46)', 'error');
           return;
         }
       }
       
       // Message length validation
       if (message.length < 10) {
-        alert('Message must be at least 10 characters long.');
+        showFormNotification('Message must be at least 10 characters long.', 'error');
         return;
       }
       
@@ -383,16 +416,16 @@
         });
         
         if (res.ok) {
-          alert('Thank you! Your message has been sent. We\'ll get back to you within 24 hours.');
+          showFormNotification('Thank you! Your message has been sent. We\'ll get back to you within 24 hours.', 'success');
           document.getElementById('contact-form').reset();
           // Clear any remaining error messages
           document.querySelectorAll('.form-error').forEach(error => error.remove());
         } else {
-          alert('Could not send message. Please try again or contact us directly at info@polarflows.com');
+          showFormNotification('Could not send message. Please try again or contact us directly at info@polarflows.com', 'error');
         }
       } catch (error) {
         console.error('Form submission error:', error);
-        alert('An error occurred while sending your message. Please try again or contact us directly at info@polarflows.com');
+        showFormNotification('An error occurred while sending your message. Please try again or contact us directly at info@polarflows.com', 'error');
       }
     });
     

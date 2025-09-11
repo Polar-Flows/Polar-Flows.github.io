@@ -2271,6 +2271,99 @@ html, body {
   }
 }
 
+/* Add padding to contact form on smaller screens */
+@media (max-width: 767px) {
+  .contact-page .contact-form {
+    padding: 0 var(--pf-space-md); /* Add left and right padding */
+  }
+}
+
+/* Custom form notifications */
+.form-notification {
+  margin-bottom: var(--pf-space-lg);
+  border-radius: var(--pf-border-radius);
+  overflow: hidden;
+  animation: slideDown 0.3s ease-out;
+}
+
+.form-notification-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--pf-space-md);
+  gap: var(--pf-space-sm);
+}
+
+.form-notification-message {
+  flex: 1;
+  font-weight: var(--pf-font-weight-medium);
+  line-height: var(--pf-line-height-relaxed);
+}
+
+.form-notification-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
+.form-notification-close:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Success notification */
+.form-notification-success {
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+  color: #155724;
+}
+
+.form-notification-success .form-notification-close {
+  color: #155724;
+}
+
+/* Error notification */
+.form-notification-error {
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  color: #721c24;
+}
+
+.form-notification-error .form-notification-close {
+  color: #721c24;
+}
+
+/* Info notification */
+.form-notification-info {
+  background-color: #d1ecf1;
+  border: 1px solid #bee5eb;
+  color: #0c5460;
+}
+
+.form-notification-info .form-notification-close {
+  color: #0c5460;
+}
+
+/* Animation */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .hero-logo-static:hover {
   opacity: 1;
 }
