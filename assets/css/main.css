@@ -2183,6 +2183,11 @@ html, body {
   color: var(--pf-white);
 }
 
+/* Privacy page hero title - white color */
+.privacy-page .hero-title {
+  color: var(--pf-white);
+}
+
 /* Disable all logo animations on contact page */
 .contact-page .transition-logo,
 .contact-page .hero-logo,
@@ -2196,6 +2201,109 @@ html, body {
   visibility: visible !important;
   display: flex !important;
   transition: none !important;
+}
+
+/* Disable all logo animations on privacy page */
+.privacy-page .transition-logo,
+.privacy-page .hero-logo,
+.privacy-page .hero-logo-img {
+  display: none !important;
+}
+
+/* Show navbar logo immediately on privacy page */
+.privacy-page .navbar-logo {
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: flex !important;
+  transition: none !important;
+}
+
+/* Static hero logo for contact and privacy pages */
+.hero-logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-top: 2rem;
+}
+
+.hero-logo-static {
+  width: 100%;
+  max-width: min(500px, 60vw); /* Slightly smaller than main page logo */
+  min-width: 200px;
+  height: auto;
+  opacity: 1 !important; /* Force full opacity to match the visual appearance of main page logo */
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3)); /* Match main page logo shadow */
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); /* Match main page logo transition */
+}
+
+/* Make logo smaller and closer to top on large screens */
+@media (min-width: 1200px) {
+  .hero-logo-static {
+    max-width: min(350px, 40vw); /* Smaller on large screens */
+  }
+  
+  .hero-logo-container {
+    margin-bottom: 1rem; /* Closer to content */
+    padding-top: 1rem; /* Closer to top */
+  }
+}
+
+/* Force opacity on contact and privacy page logos specifically */
+.contact-page .hero-logo-static,
+.privacy-page .hero-logo-static {
+  opacity: 1 !important;
+  /* Add additional effects to match main page logo appearance */
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3)) brightness(1.1) contrast(1.1) !important;
+}
+
+/* Reduce section spacing on contact and privacy pages */
+.contact-page .section,
+.privacy-page .section {
+  padding: var(--pf-space-lg) 0; /* Reduced from var(--pf-space-2xl) */
+}
+
+/* Desktop spacing for contact and privacy pages */
+@media (min-width: 768px) {
+  .contact-page .section,
+  .privacy-page .section {
+    padding: var(--pf-space-xl) 0; /* Reduced from var(--pf-space-4xl) */
+  }
+}
+
+.hero-logo-static:hover {
+  opacity: 1;
+}
+
+/* Responsive adjustments for static hero logo */
+@media (max-width: 1200px) {
+  .hero-logo-static {
+    max-width: min(450px, 55vw);
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-logo-container {
+    margin-bottom: 1.5rem;
+    padding-top: 1.5rem;
+  }
+  
+  .hero-logo-static {
+    min-width: 180px;
+    max-width: min(400px, 50vw);
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-logo-container {
+    margin-bottom: 1rem;
+    padding-top: 1rem;
+  }
+  
+  .hero-logo-static {
+    min-width: 150px;
+    max-width: min(300px, 45vw);
+  }
 }
 
 /* Position logo left and arrow right on contact page */

@@ -56,12 +56,25 @@ export class Navigation {
       this.navbarToggle = document.querySelector('.navbar-toggle') || document.querySelector('.navbar-back-home');
       this.navbarNav = document.querySelector('.navbar-nav');
       
-      if (this.navbar && this.navbarToggle && this.navbarNav) {
+      // Check if we have the minimum required elements
+      if (this.navbar && this.navbarToggle) {
+        // If we have navbar and toggle, but no nav (like contact/privacy pages), that's okay
+        if (!this.navbarNav) {
+          console.log('Navigation component: No navbar-nav found, skipping navigation setup');
+          return;
+        }
+        // If we have all elements, proceed normally
         return;
       }
       
       await new Promise(resolve => setTimeout(resolve, 100));
       attempts++;
+    }
+    
+    // If no navbar at all, this page doesn't need navigation
+    if (!this.navbar) {
+      console.log('Navigation component: No navbar found, skipping navigation initialization');
+      return;
     }
     
     throw new Error('Required navigation elements not found');
@@ -71,6 +84,12 @@ export class Navigation {
    * Set up event listeners
    */
   setupEventListeners() {
+    // If no navbar, skip event listener setup
+    if (!this.navbar) {
+      console.log('Navigation component: No navbar found, skipping event listener setup');
+      return;
+    }
+
     // Mobile menu toggle or back button
     if (this.navbarToggle) {
       if (this.navbarToggle.classList.contains('navbar-back-home')) {
@@ -151,6 +170,11 @@ export class Navigation {
    * Handle scroll updates
    */
   handleScrollUpdate() {
+    // If no navbar, skip scroll handling
+    if (!this.navbar) {
+      return;
+    }
+
     const currentScrollY = window.scrollY;
     
     // Update navbar appearance based on scroll
@@ -170,6 +194,12 @@ export class Navigation {
    * Set up keyboard navigation
    */
   setupKeyboardNavigation() {
+    // If no navbar nav, skip keyboard navigation setup
+    if (!this.navbarNav) {
+      console.log('Navigation component: No navbar-nav found, skipping keyboard navigation setup');
+      return;
+    }
+
     const navLinks = this.navbarNav.querySelectorAll('a');
     
     // Handle tab navigation
