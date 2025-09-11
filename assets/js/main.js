@@ -300,6 +300,44 @@ class PolarFlowsApp {
           window.clearFinalLogoProperties();
         }
         
+        // Handle logo transformation on resize (maintain scroll position)
+        const transitionLogo = document.querySelector('.transition-logo');
+        if (transitionLogo) {
+          const currentScrollY = window.scrollY;
+          
+          // Recalculate max scroll dynamically based on new hero section dimensions
+          const newViewportHeight = window.innerHeight;
+          const newHeroSection = document.querySelector('.hero-section');
+          const newHeroSectionHeight = newHeroSection ? newHeroSection.offsetHeight : window.innerHeight;
+          const newDynamicPercentage = Math.max(0.05, 0.45 - (Math.max(0, 800 - newViewportHeight) * 0.004));
+          const newMaxScroll = (newHeroSectionHeight * newDynamicPercentage) - 10; // earlyFinishPx = 10
+          
+          // Calculate current progress based on existing scroll position
+          const currentProgress = Math.min(currentScrollY / newMaxScroll, 1);
+          
+          // Calculate positions based on current progress
+          const newViewportWidth = window.innerWidth;
+          const newLogoHeight = transitionLogo ? transitionLogo.offsetHeight : 0;
+          const newCssHeroTop = (newHeroSectionHeight * 0.15) + (newLogoHeight / 2);
+          const newCssHeroLeft = newViewportWidth * 0.5;
+          
+          // Calculate navbar position
+          const navbar = document.querySelector('.navbar');
+          const navbarHeight = navbar ? navbar.offsetHeight : 0;
+          const navbarTop = navbarHeight / 2;
+          
+          // Interpolate position based on current scroll progress
+          const currentTop = newCssHeroTop + (navbarTop - newCssHeroTop) * currentProgress;
+          const currentLeft = newCssHeroLeft + (newViewportWidth * 0.5 - newCssHeroLeft) * currentProgress;
+          
+          // Apply the calculated position
+          transitionLogo.style.top = `${currentTop}px`;
+          transitionLogo.style.left = `${currentLeft}px`;
+          transitionLogo.style.transform = 'translate(-50%, -50%)';
+          
+          console.log(`Resize handled - maintained scroll position at ${currentScrollY}px, progress: ${currentProgress.toFixed(2)}`);
+        }
+        
         this.dispatchEvent('app:resize', {
           width: window.innerWidth,
           height: window.innerHeight
@@ -699,40 +737,52 @@ class PolarFlowsApp {
         window.clearFinalLogoProperties(); // Use the global function to clear cache
         console.log('Cleared stored final logo properties due to resize');
         
-        // Step 1: Scroll up to reset animation state
-        window.scrollTo(0, 0);
-        console.log('Step 1: Scrolled to top');
+        // Step 1: Maintain current scroll position (don't scroll to top)
+        console.log('Step 1: Maintaining current scroll position');
         
-        // Step 2: Recalculate positions and display immediately (no intermediate jump)
+        // Step 2: Recalculate positions based on current scroll position
         if (transitionLogo) {
+          const currentScrollY = window.scrollY;
+          
           // Recalculate max scroll dynamically based on new hero section dimensions
           const newViewportHeight = window.innerHeight;
           const newHeroSection = document.querySelector('.hero-section');
           const newHeroSectionHeight = newHeroSection ? newHeroSection.offsetHeight : window.innerHeight;
-          // Use same dynamic percentage calculation (ultra-aggressive for smaller window heights - 2x faster)
+          // Use same dynamic percentage calculation
           const newDynamicPercentage = Math.max(0.05, 0.45 - (Math.max(0, 800 - newViewportHeight) * 0.004));
           const newMaxScroll = (newHeroSectionHeight * newDynamicPercentage) - earlyFinishPx;
-          console.log(`New hero section height: ${newHeroSectionHeight}px, New max scroll: ${newMaxScroll}px`);
           
-          // Use the same calculation as handleScroll for consistency
+          // Calculate current progress based on existing scroll position
+          const currentProgress = Math.min(currentScrollY / newMaxScroll, 1);
+          
+          console.log(`Current scroll: ${currentScrollY}px, New max scroll: ${newMaxScroll}px, Progress: ${currentProgress.toFixed(2)}`);
+          
+          // Calculate positions based on current progress
           const newViewportWidth = window.innerWidth;
           const newLogoHeight = transitionLogo ? transitionLogo.offsetHeight : 0;
           const newCssHeroTop = (newHeroSectionHeight * 0.15) + (newLogoHeight / 2);
           const newCssHeroLeft = newViewportWidth * 0.5;
           
-          console.log(`New calculated position: top=${newCssHeroTop}px, left=${newCssHeroLeft}px`);
+          // Calculate navbar position
+          const navbar = document.querySelector('.navbar');
+          const navbarHeight = navbar ? navbar.offsetHeight : 0;
+          const navbarTop = navbarHeight / 2;
           
-          // Apply new calculated positions immediately
-          transitionLogo.style.top = `${newCssHeroTop}px`;
-          transitionLogo.style.left = `${newCssHeroLeft}px`;
+          // Interpolate position based on current scroll progress
+          const currentTop = newCssHeroTop + (navbarTop - newCssHeroTop) * currentProgress;
+          const currentLeft = newCssHeroLeft + (newViewportWidth * 0.5 - newCssHeroLeft) * currentProgress;
+          
+          // Apply the calculated position
+          transitionLogo.style.top = `${currentTop}px`;
+          transitionLogo.style.left = `${currentLeft}px`;
           transitionLogo.style.transform = 'translate(-50%, -50%)';
-          console.log('Step 2: Applied new calculated positions immediately');
           
-          console.log('Resize complete - all steps executed in correct order');
+          console.log(`Resize complete - maintained scroll position, applied position: top=${currentTop}px, left=${currentLeft}px`);
         }
     };
     
-    window.addEventListener('resize', handleResize, { passive: true });
+    // Remove the duplicate resize listener - this is handled by setupResizeHandling()
+    // window.addEventListener('resize', handleResize, { passive: true });
     
     // Set initial position based on current scroll position
     const setInitialPosition = () => {
