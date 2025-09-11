@@ -278,6 +278,19 @@ a:focus {
     font-size: var(--pf-font-size-xl);
     min-height: 60px;
   }
+  
+  /* Contact form buttons mobile optimization */
+  .contact-page .form-group .btn {
+    width: 100%;
+    margin-bottom: var(--pf-space-sm);
+    padding: var(--pf-space-lg) var(--pf-space-xl);
+    font-size: var(--pf-font-size-base);
+    min-height: 48px;
+  }
+  
+  .contact-page .form-group .btn:last-child {
+    margin-bottom: 0;
+  }
 }
 
 /* ===== Logo Transition Container ===== */
@@ -1374,6 +1387,40 @@ body:not(.home-page) .navbar-small-logo {
   font-weight: var(--pf-font-weight-bold);
 }
 
+/* Mobile journey adjustments */
+@media (max-width: 767px) {
+  .journey-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--pf-space-md);
+    padding: 0 var(--pf-space-sm);
+  }
+  
+  .journey-card {
+    padding: var(--pf-space-md);
+  }
+  
+  .journey-title {
+    font-size: var(--pf-font-size-sm);
+    margin-bottom: var(--pf-space-sm);
+  }
+  
+  .journey-description {
+    font-size: var(--pf-font-size-xs);
+    line-height: var(--pf-line-height-normal);
+    margin-bottom: var(--pf-space-sm);
+  }
+  
+  .journey-steps {
+    margin-bottom: var(--pf-space-sm);
+  }
+  
+  .journey-steps li {
+    font-size: var(--pf-font-size-xs);
+    padding: var(--pf-space-xs) 0;
+    padding-left: var(--pf-space-md);
+  }
+}
+
 /* Desktop journey */
 @media (min-width: 768px) {
   .journey-grid {
@@ -1480,8 +1527,9 @@ body:not(.home-page) .navbar-small-logo {
 /* Mobile team adjustments */
 @media (max-width: 767px) {
   .team-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: var(--pf-space-md);
+    padding: 0 var(--pf-space-sm);
   }
   
   .team-card {
@@ -1489,8 +1537,18 @@ body:not(.home-page) .navbar-small-logo {
   }
   
   .team-card img {
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
+  }
+  
+  .team-card h3 {
+    font-size: var(--pf-font-size-sm);
+    margin-bottom: var(--pf-space-xs);
+  }
+  
+  .team-card p {
+    font-size: var(--pf-font-size-xs);
+    line-height: var(--pf-line-height-normal);
   }
 }
 
@@ -2119,6 +2177,30 @@ body:has(.contact-page) .navbar-brand {
 .faq-item p {
   color: #000000;
   line-height: var(--pf-line-height-relaxed);
+}
+
+/* Mobile FAQ adjustments */
+@media (max-width: 767px) {
+  .faq-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--pf-space-md);
+    padding: 0 var(--pf-space-sm);
+    margin-top: var(--pf-space-xl);
+  }
+  
+  .faq-item {
+    padding: var(--pf-space-md);
+  }
+  
+  .faq-item h3 {
+    font-size: var(--pf-font-size-sm);
+    margin-bottom: var(--pf-space-xs);
+  }
+  
+  .faq-item p {
+    font-size: var(--pf-font-size-xs);
+    line-height: var(--pf-line-height-normal);
+  }
 }
 
 /* Desktop FAQ */
