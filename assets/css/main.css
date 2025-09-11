@@ -1040,7 +1040,7 @@ body:not(.home-page) .navbar-small-logo {
 }
 
 .value-prop-card {
-  background-color: #e6f3ff;
+  background-color: #d1e7ff;
   padding: var(--pf-space-lg);
   border-radius: var(--pf-radius-xl);
   box-shadow: var(--pf-shadow-sm);
@@ -1123,7 +1123,7 @@ body:not(.home-page) .navbar-small-logo {
 
 /* ===== Services ===== */
 .services {
-  background-color: #f8faff;
+  background-color: #d1e7ff;
 }
 
 .services-grid {
@@ -1133,7 +1133,7 @@ body:not(.home-page) .navbar-small-logo {
 }
 
 .service-card {
-  background-color: #e6f3ff;
+  background-color: #a8d0ff;
   padding: var(--pf-space-xl);
   border-radius: var(--pf-radius-xl);
   border: 1px solid var(--pf-border-light);
@@ -1439,18 +1439,19 @@ body:not(.home-page) .navbar-small-logo {
 
 /* ===== Team Section ===== */
 .team {
-  background-color: #ffffff;
+  background-color: #d1e7ff;
 }
 
 .team-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: var(--pf-space-lg);
+  justify-items: center;
 }
 
 .team-card {
-  background: #e6f3ff;
-  border: 1px solid var(--pf-border-light);
+  background: transparent;
+  border: 1px solid transparent;
   border-radius: 16px;
   padding: var(--pf-space-md);
   text-align: center;
@@ -1485,7 +1486,7 @@ body:not(.home-page) .navbar-small-logo {
 .team-card .team-role {
   color: #000000;
   font-size: var(--pf-font-size-sm);
-  margin-bottom: var(--pf-space-md);
+  margin-bottom: var(--pf-space-xs);
 }
 
 .team-card .team-email {
@@ -1514,7 +1515,7 @@ body:not(.home-page) .navbar-small-logo {
 
 .team-card .team-linkedin {
   display: inline-block;
-  margin-top: var(--pf-space-sm);
+  margin-top: var(--pf-space-xs);
   color: #000000;
   font-size: var(--pf-font-size-sm);
   text-decoration: none;
@@ -1622,9 +1623,9 @@ body:not(.home-page) .navbar-small-logo {
 }
 
 /* Desktop team */
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .team-grid {
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: 1.5rem;
   }
   
@@ -2823,6 +2824,23 @@ body:has(.contact-page) .navbar-brand {
 
 .partnership-logo:hover .partnership-name {
   color: #000000;
+}
+
+/* Restore original styling for Databricks partner section */
+#partnership .partnership-logo {
+  background-color: #e6f3ff;
+  border: 1px solid var(--pf-border-light);
+}
+
+#partnership .partnership-logo:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  border-color: var(--pf-primary);
+}
+
+#partnership .partnership-logo:hover .partnership-name {
+  color: var(--pf-primary);
 }
 
 /* Mobile partnerships section */
