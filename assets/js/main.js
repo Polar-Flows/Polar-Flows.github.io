@@ -350,6 +350,38 @@ class PolarFlowsApp {
       // Calculate current progress
       const currentProgress = Math.min(currentScrollY / newMaxScroll, 1);
       
+      // Check if animation is complete (progress = 1.0)
+      // Use a small tolerance to account for floating point precision
+      if (currentProgress >= 0.99) {
+        // Animation is complete - position logo directly in navbar
+        console.log('Animation complete during resize - positioning logo in navbar');
+        
+        // Get final logo properties for navbar position
+        const globalLogoProps = window.getFinalLogoProperties();
+        
+        // Apply final navbar position directly
+        transitionLogo.style.top = `${globalLogoProps.top}px`;
+        transitionLogo.style.left = `${globalLogoProps.left}px`;
+        transitionLogo.style.transform = 'translate(-50%, -50%)';
+        
+        // Apply final navbar size
+        const navbarSize = globalLogoProps.height;
+        const navbarWidth = globalLogoProps.width;
+        const navbarPadding = 20;
+        const maxSafeWidth = navbarWidth - navbarPadding;
+        const maxSafeWidthPercent = (maxSafeWidth / newViewportWidth) * 100;
+        
+        const calculatedSize = Math.max((navbarSize / newViewportWidth) * 100 * 2.5, 8);
+        const finalSize = Math.min(calculatedSize, maxSafeWidthPercent);
+        
+        transitionLogo.style.width = `${finalSize}%`;
+        transitionLogo.style.height = 'auto';
+        
+        console.log(`Logo positioned in navbar during resize - size: ${finalSize.toFixed(1)}%`);
+        return;
+      }
+      
+      // Animation is not complete - use scroll-based interpolation
       // Calculate new positions
       // Use fixed reference height for Y positioning to prevent wiggling during width changes
       // The Y position should be independent of the logo's current size
