@@ -114,7 +114,7 @@ class PolarFlowsApp {
     if (!hero) return;
 
     const handleScroll = () => {
-      const scrollY = window.scrollY;
+      const scrollY = Math.max(0, window.scrollY);
       const heroHeight = hero.offsetHeight;
       const maxScroll = heroHeight;
       
@@ -161,12 +161,12 @@ class PolarFlowsApp {
     // Hide scroll indicator when user starts scrolling
     let hasScrolled = false;
     const handleScroll = () => {
-      if (window.scrollY > 50 && !hasScrolled) {
+      if (Math.max(0, window.scrollY) > 50 && !hasScrolled) {
         hasScrolled = true;
         scrollIndicator.style.opacity = '0';
         scrollIndicator.style.transform = 'translateX(-50%) translateY(20px)';
         scrollIndicator.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-      } else if (window.scrollY <= 50 && hasScrolled) {
+      } else if (Math.max(0, window.scrollY) <= 50 && hasScrolled) {
         hasScrolled = false;
         scrollIndicator.style.opacity = '1';
         scrollIndicator.style.transform = 'translateX(-50%) translateY(0)';
@@ -203,10 +203,17 @@ class PolarFlowsApp {
   }
 
   /**
+   * Get safe scroll position (never negative)
+   */
+  getSafeScrollY() {
+    return Math.max(0, Math.max(0, window.scrollY));
+  }
+
+  /**
    * Handle scroll updates
    */
   handleScrollUpdate() {
-    const scrollY = window.scrollY;
+    const scrollY = this.getSafeScrollY();
     const navbar = document.querySelector('.navbar');
     
     // Update navbar appearance
@@ -335,7 +342,7 @@ class PolarFlowsApp {
     
     // Use requestAnimationFrame for smooth updates during resize
     requestAnimationFrame(() => {
-      const currentScrollY = window.scrollY;
+      const currentScrollY = Math.max(0, window.scrollY);
       
       // Recalculate dimensions based on current window size
       const newViewportHeight = window.innerHeight;
@@ -693,7 +700,7 @@ class PolarFlowsApp {
         return; // Don't update during resize - let resize handler take care of it
       }
       
-      const scrollY = window.scrollY;
+      const scrollY = Math.max(0, Math.max(0, window.scrollY));
       
       // Calculate maxScroll dynamically to respond to window size changes
       const currentViewportHeight = window.innerHeight;
@@ -822,7 +829,7 @@ class PolarFlowsApp {
     
     // Set initial position based on current scroll position
     const setInitialPosition = () => {
-      const currentScrollY = window.scrollY;
+      const currentScrollY = Math.max(0, window.scrollY);
       const currentScrollProgress = Math.min(currentScrollY / maxScroll, 1);
       
       console.log(`Initial scroll: ${currentScrollY}px, Progress: ${currentScrollProgress.toFixed(2)}`);
@@ -971,13 +978,13 @@ class PolarFlowsApp {
           if (isActive && !isMenuOpen) {
             // Menu just opened
             isMenuOpen = true;
-            originalScrollY = window.scrollY;
+            originalScrollY = Math.max(0, window.scrollY);
             
             // Store original overflow BEFORE we change it
             originalOverflow = document.body.style.overflow || '';
             
             // Store original scroll position for restoration
-            window.menuOriginalScrollY = window.scrollY;
+            window.menuOriginalScrollY = Math.max(0, window.scrollY);
             
             console.log('Menu opened - checking scroll state');
             
@@ -999,7 +1006,7 @@ class PolarFlowsApp {
             const heroSection = document.querySelector('.hero');
             if (heroSection) {
               const heroHeight = heroSection.offsetHeight;
-              const currentScrollY = window.scrollY;
+              const currentScrollY = Math.max(0, window.scrollY);
               const currentProgress = Math.min(currentScrollY / heroHeight, 1);
               
               console.log('Current scroll state:', {
@@ -1012,7 +1019,7 @@ class PolarFlowsApp {
               const aboutSection = document.getElementById('about');
               if (aboutSection) {
                 const aboutSectionTop = aboutSection.offsetTop;
-                const currentScrollY = window.scrollY;
+                const currentScrollY = Math.max(0, window.scrollY);
                 
                 // Only scroll if user is above the About section
                 if (currentScrollY < aboutSectionTop) {
@@ -1085,7 +1092,7 @@ class PolarFlowsApp {
               if (aboutSection) {
                 const aboutSectionTop = aboutSection.offsetTop;
                 const aboutSectionWithPadding = aboutSectionTop - ABOUT_SECTION_PADDING;
-                const currentScrollY = window.scrollY;
+                const currentScrollY = Math.max(0, window.scrollY);
                 
                 if (currentScrollY < aboutSectionWithPadding) {
                   // User is above About section (with padding), scroll to top

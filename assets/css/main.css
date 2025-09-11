@@ -986,9 +986,29 @@ body:not(.home-page) .navbar-small-logo {
     min-height: 800px;
   }
   
+  .hero-content {
+    max-width: 100%;
+    padding: 0 var(--pf-space-xs);
+  }
+  
   .hero-logo-img {
-    min-width: 250px;
-    max-width: min(500px, 60vw);
+    min-width: 350px;
+    max-width: min(700px, 90vw);
+  }
+  
+  .hero-title {
+    font-size: var(--pf-font-size-2xl);
+  }
+  
+  .hero-subtitle {
+    font-size: var(--pf-font-size-base);
+    line-height: 1.4;
+  }
+  
+  .hero-actions .btn {
+    width: 140px;
+    padding: var(--pf-space-sm) var(--pf-space-xs);
+    font-size: var(--pf-font-size-sm);
   }
 }
 
@@ -997,9 +1017,58 @@ body:not(.home-page) .navbar-small-logo {
     min-height: 800px;
   }
   
+  .hero-content {
+    max-width: 100%;
+    padding: 0 var(--pf-space-xs);
+  }
+  
   .hero-logo-img {
-    min-width: 200px;
-    max-width: min(400px, 55vw);
+    min-width: 320px;
+    max-width: min(600px, 85vw);
+  }
+  
+  .hero-title {
+    font-size: var(--pf-font-size-xl);
+  }
+  
+  .hero-subtitle {
+    font-size: var(--pf-font-size-sm);
+  }
+  
+  .hero-actions .btn {
+    width: 120px;
+    padding: var(--pf-space-xs) var(--pf-space-xs);
+    font-size: var(--pf-font-size-xs);
+  }
+}
+
+/* Force two-line subtitle on small screens */
+@media (max-width: 600px) {
+  .hero-subtitle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .hero-subtitle::before {
+    content: "Expert consultancy for";
+    display: block;
+  }
+  
+  .hero-subtitle::after {
+    content: "modern data solutions";
+    display: block;
+  }
+  
+  .hero-subtitle {
+    font-size: 0; /* Hide original text */
+  }
+}
+
+/* Reduce button gap for medium-small screens */
+@media (min-width: 300px) and (max-width: 600px) {
+  .hero-actions {
+    gap: var(--pf-space-xs);
   }
 }
 
