@@ -1700,37 +1700,33 @@ body:not(.home-page) .navbar-small-logo {
 /* Mobile team adjustments */
 @media (max-width: 767px) {
   .team-grid {
-    grid-template-columns: 1fr;
-    gap: var(--pf-space-lg);
-    padding: 0 var(--pf-space-md);
-    max-width: 400px;
-    margin: 0 auto;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--pf-space-md);
+    padding: 0 var(--pf-space-sm);
   }
   
   .team-card {
-    padding: var(--pf-space-lg);
-    max-width: 100%;
-    margin: 0 auto;
+    padding: var(--pf-space-sm);
   }
   
   .team-card img {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
   }
   
-  .team-card .team-name {
-    font-size: var(--pf-font-size-base);
-    margin-bottom: var(--pf-space-sm);
-  }
-  
-  .team-card .team-role {
+  .team-card h3 {
     font-size: var(--pf-font-size-sm);
-    margin-bottom: var(--pf-space-sm);
+    margin-bottom: var(--pf-space-xs);
+  }
+  
+  .team-card p {
+    font-size: var(--pf-font-size-xs);
+    line-height: var(--pf-line-height-normal);
   }
   
   .team-card .contact-icon {
-    width: 18px !important;
-    height: 18px !important;
+    width: 16px !important;
+    height: 16px !important;
     border-radius: 0 !important;
     background: none !important;
     border: none !important;
@@ -1742,39 +1738,10 @@ body:not(.home-page) .navbar-small-logo {
   
   .team-email,
   .team-linkedin {
-    font-size: var(--pf-font-size-sm);
+    font-size: var(--pf-font-size-xs);
   }
 }
 
-/* Very small screens */
-@media (max-width: 480px) {
-  .team-grid {
-    padding: 0 var(--pf-space-sm);
-    gap: var(--pf-space-md);
-  }
-  
-  .team-card {
-    padding: var(--pf-space-md);
-  }
-  
-  .team-card img {
-    width: 90px;
-    height: 90px;
-  }
-  
-  .team-card .team-name {
-    font-size: var(--pf-font-size-sm);
-  }
-  
-  .team-card .team-role {
-    font-size: var(--pf-font-size-xs);
-  }
-  
-  .team-email,
-  .team-linkedin {
-    font-size: var(--pf-font-size-xs);
-  }
-}
 
 /* Tablet team */
 @media (min-width: 768px) and (max-width: 1023px) {
