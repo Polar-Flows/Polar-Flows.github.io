@@ -334,13 +334,7 @@ Polar Flows is a data consultancy website specializing in Azure, Databricks, AWS
 **?? NEVER USE THESE CHARACTERS - THEY BREAK GITHUB PAGES DEPLOYMENT:**
 
 ### **FORBIDDEN CHARACTERS:**
-- **Em dashes**: `—` (use `-` instead)
-- **En dashes**: `–` (use `-` instead)
-- **Smart quotes**: `"` `"` `'` `'` (use `"` `'` instead)
-- **Arrows**: `?` `?` `?` `?` (use `->` `<-` `^` `v` or HTML entities like `&uarr;`)
-- **Emojis**: `??` `?` `?` `??` etc. (use plain text instead)
-- **Special symbols**: `•` `°` `×` `÷` `±` etc. (use plain text or HTML entities)
-- **Accented characters**: `ö` `é` `ñ` `ü` etc. (use plain ASCII equivalents)
+Only use UTF8 supported characters in this file.
 
 ### **SAFE ALTERNATIVES:**
 - **Dashes**: Use regular hyphen `-` for all dash needs
