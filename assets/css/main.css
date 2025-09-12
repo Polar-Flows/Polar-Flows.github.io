@@ -1218,11 +1218,15 @@ body:not(.home-page) .navbar-small-logo {
 /* Desktop value props */
 @media (min-width: 768px) {
   .value-props-grid {
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
     gap: var(--pf-space-2xl);
+    justify-content: center;
   }
   
   .value-prop-card {
+    flex: 0 0 300px;
+    max-width: 300px;
     padding: var(--pf-space-xl);
   }
   
@@ -2955,13 +2959,14 @@ body:has(.contact-page) .navbar-brand {
 }
 
 .partnerships-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: var(--pf-space-sm);
   margin-top: var(--pf-space-2xl);
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
+  justify-content: center;
 }
 
 .partnership-logo {
@@ -2975,6 +2980,8 @@ body:has(.contact-page) .navbar-brand {
   border: 1px solid transparent;
   transition: all var(--pf-transition-fast);
   cursor: pointer;
+  flex: 0 0 200px;
+  max-width: 200px;
 }
 
 .partnership-logo:hover {
@@ -3030,12 +3037,13 @@ body:has(.contact-page) .navbar-brand {
   }
   
   .partnerships-grid {
-    grid-template-columns: repeat(2, 1fr);
     gap: var(--pf-space-xs);
     padding: 0 var(--pf-space-sm);
   }
   
   .partnership-logo {
+    flex: 0 0 calc(50% - var(--pf-space-xs));
+    max-width: calc(50% - var(--pf-space-xs));
     padding: var(--pf-space-xs);
   }
   
