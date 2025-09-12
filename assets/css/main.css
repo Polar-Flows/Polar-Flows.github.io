@@ -1452,7 +1452,7 @@ body:not(.home-page) .navbar-small-logo {
 
 .journey-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(2, 1fr);
   gap: var(--pf-space-lg);
 }
 
@@ -1536,10 +1536,43 @@ body:not(.home-page) .navbar-small-logo {
   }
 }
 
+/* Extremely small screens - switch to single column */
+@media (max-width: 349px) {
+  .journey-grid {
+    grid-template-columns: 1fr;
+    gap: var(--pf-space-sm);
+    padding: 0 var(--pf-space-xs);
+  }
+  
+  .journey-card {
+    padding: var(--pf-space-md);
+  }
+  
+  .journey-title {
+    font-size: var(--pf-font-size-sm);
+    margin-bottom: var(--pf-space-sm);
+  }
+  
+  .journey-description {
+    font-size: var(--pf-font-size-xs);
+    line-height: var(--pf-line-height-normal);
+    margin-bottom: var(--pf-space-sm);
+  }
+  
+  .journey-steps {
+    margin-bottom: var(--pf-space-sm);
+  }
+  
+  .journey-steps li {
+    font-size: var(--pf-font-size-xs);
+    padding: var(--pf-space-xs) 0;
+    padding-left: var(--pf-space-md);
+  }
+}
+
 /* Desktop journey */
 @media (min-width: 768px) {
   .journey-grid {
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
     gap: var(--pf-space-2xl);
   }
   
