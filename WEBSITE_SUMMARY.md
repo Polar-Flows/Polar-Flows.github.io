@@ -113,7 +113,7 @@ Polar Flows is a data consultancy website specializing in Azure, Databricks, AWS
 ## Content Guidelines
 
 ### Team Section
-- **4 Team Members**: Mert Canat, Daniel Sjöholm, Yunus Kocyigit, Linggar Pangestu
+- **4 Team Members**: Mert Canat, Daniel Sjoholm, Yunus Kocyigit, Linggar Pangestu
 - **No Descriptions**: Team bios removed per requirements
 - **Contact Info**: Email and LinkedIn links (emails don't scroll to top)
 - **Layout**: 2x2 grid on mobile/tablet, 4x1 on desktop
@@ -329,11 +329,45 @@ Polar Flows is a data consultancy website specializing in Azure, Databricks, AWS
 
 **This documentation must stay current and comprehensive for the website to be properly maintained.**
 
+## CRITICAL: UTF-8 Encoding Rules for AI Assistants
+
+**?? NEVER USE THESE CHARACTERS - THEY BREAK GITHUB PAGES DEPLOYMENT:**
+
+### **FORBIDDEN CHARACTERS:**
+- **Em dashes**: `—` (use `-` instead)
+- **En dashes**: `–` (use `-` instead)
+- **Smart quotes**: `"` `"` `'` `'` (use `"` `'` instead)
+- **Arrows**: `?` `?` `?` `?` (use `->` `<-` `^` `v` or HTML entities like `&uarr;`)
+- **Emojis**: `??` `?` `?` `??` etc. (use plain text instead)
+- **Special symbols**: `•` `°` `×` `÷` `±` etc. (use plain text or HTML entities)
+- **Accented characters**: `ö` `é` `ñ` `ü` etc. (use plain ASCII equivalents)
+
+### **SAFE ALTERNATIVES:**
+- **Dashes**: Use regular hyphen `-` for all dash needs
+- **Quotes**: Use straight quotes `"` and `'`
+- **Arrows**: Use HTML entities `&uarr;` `&darr;` `&larr;` `&rarr;` or plain text
+- **Bullets**: Use `-` or `*` for lists
+- **Names**: Use ASCII equivalents (e.g., `Daniel Sjoholm` not `Daniel Sjöholm`)
+
+### **VERIFICATION COMMAND:**
+Before committing, run this PowerShell command to check for problematic characters:
+```powershell
+Get-ChildItem -Recurse -Include "*.html","*.md","*.css","*.js" | ForEach-Object { $content = Get-Content $_.FullName -Encoding UTF8 -Raw; if ($content -match "[^\x00-\x7F]") { Write-Host "Found non-ASCII in: $($_.Name)" } }
+```
+
+### **WHY THIS MATTERS:**
+- GitHub Pages uses Jekyll which is strict about UTF-8 encoding
+- Non-ASCII characters cause build failures with "invalid characters for UTF-8" errors
+- This prevents website deployment and breaks the entire build process
+- **ALWAYS use ASCII-only characters in all text content**
+
+**Remember: When in doubt, use plain ASCII characters. It's better to be safe than to break the deployment!**
+
 ## Asset Versioning System
 
 **CRITICAL**: The website uses query string versioning to prevent browser caching issues. When making changes to CSS or JavaScript files, you MUST update the version numbers in all HTML files.
 
-### Current Version: `v1.0.9`
+### Current Version: `v1.0.12`
 
 ### Files That Need Version Updates:
 - `index.html` - All CSS and JS links
@@ -343,7 +377,7 @@ Polar Flows is a data consultancy website specializing in Azure, Databricks, AWS
 - `sw.js` - Cache version constants
 
 ### Version Update Process:
-1. **Increment version number** (e.g., `v1.0.9` to `v1.0.10`)
+1. **Increment version number** (e.g., `v1.0.12` to `v1.0.13`)
 2. **Update all HTML files** with new version in query strings
 3. **Update service worker** cache version constants
 4. **Test deployment** to ensure changes appear immediately
@@ -354,12 +388,39 @@ Polar Flows is a data consultancy website specializing in Azure, Databricks, AWS
 <link rel="stylesheet" href="assets/css/main.css">
 
 <!-- After -->
-<link rel="stylesheet" href="assets/css/main.css?v=1.0.9">
+<link rel="stylesheet" href="assets/css/main.css?v=1.0.12">
 ```
 
 **Why This Matters**: Without versioning, browsers cache CSS/JS files and changes won't appear until cache expires (days/weeks). Versioning forces immediate updates.
 
 ## Recent Updates (Latest Session)
+
+### Version 1.0.12 - UTF-8 Encoding Prevention Documentation
+
+#### **Documentation Updates:**
+- Added comprehensive UTF-8 encoding rules section to prevent future issues
+- Added critical warnings about forbidden characters that break GitHub Pages
+- Added verification commands for checking encoding issues
+- Added safe alternatives for common problematic characters
+- Updated both README.md and WEBSITE_SUMMARY.md with encoding guidelines
+
+#### **Prevention Measures:**
+- Clear list of forbidden characters (em dashes, smart quotes, arrows, emojis, accented characters)
+- Safe alternatives for each problematic character type
+- PowerShell verification command for checking files before deployment
+- Explanation of why encoding issues break GitHub Pages deployment
+
+### Version 1.0.11 - Final UTF-8 Encoding Fixes
+
+#### **Additional Critical Fixes:**
+- Fixed remaining UTF-8 encoding issues in team member name in WEBSITE_SUMMARY.md
+- Fixed em dash character in README.md tagline
+- Verified all files are now free of non-ASCII characters
+- Comprehensive scan confirmed no remaining encoding issues
+
+#### **Files Fixed:**
+- `WEBSITE_SUMMARY.md` - Fixed `Daniel Sjöholm` to `Daniel Sjoholm` in team section
+- `README.md` - Fixed em dash in tagline from `AI—delivered` to `AI - delivered`
 
 ### Version 1.0.9 - UTF-8 Encoding Fixes
 
