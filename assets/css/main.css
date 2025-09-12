@@ -1622,8 +1622,8 @@ body:not(.home-page) .navbar-small-logo {
 /* Team card hover animations removed as requested */
 
 .team-card img {
-  width: 120px;
-  height: 120px;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
   object-fit: cover;
   margin: 0 auto var(--pf-space-lg);
@@ -1735,17 +1735,18 @@ body:not(.home-page) .navbar-small-logo {
 @media (max-width: 767px) {
   .team-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: var(--pf-space-md);
-    padding: 0 var(--pf-space-sm);
+    gap: var(--pf-space-sm); /* Reduced gap for more image space */
+    padding: 0 0.5rem; /* Minimal container padding */
   }
   
   .team-card {
-    padding: var(--pf-space-xs);
+    padding: 0.25rem; /* Minimal padding to maximize image space */
   }
   
   .team-card img {
-    width: 80px;
-    height: 80px;
+    width: 130px;
+    height: 130px;
+    margin: 0 auto 0.5rem; /* Reduced bottom margin */
   }
   
   .team-card h3 {
@@ -1847,21 +1848,22 @@ body:not(.home-page) .navbar-small-logo {
 @media (min-width: 768px) and (max-width: 1023px) {
   .team-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: var(--pf-space-xl);
-    padding: 0 var(--pf-space-lg);
-    max-width: var(--pf-hero-content-max-width);
+    gap: var(--pf-space-lg); /* Reduced gap for more image space */
+    padding: 0 var(--pf-space-sm); /* Reduced container padding */
+    max-width: none; /* Remove width constraint */
     margin: 0 auto;
   }
   
   .team-card {
-    padding: var(--pf-space-lg);
-    max-width: var(--pf-logo-mobile-min-width);
+    padding: var(--pf-space-sm); /* Reduced padding */
+    max-width: none; /* Remove width constraint */
     margin: 0 auto;
   }
   
   .team-card img {
-    width: 120px;
-    height: 120px;
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 0.75rem; /* Reduced bottom margin */
   }
   
   .team-card .team-name {
@@ -1881,8 +1883,8 @@ body:not(.home-page) .navbar-small-logo {
   }
   
   .team-card img {
-    width: 140px;
-    height: 140px;
+    width: 160px;
+    height: 160px;
   }
   
   .team-card .team-name {
