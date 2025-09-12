@@ -68,7 +68,7 @@ Polar Flows is a data consultancy website specializing in Azure, Databricks, AWS
 #### Section Styling Rules:
 - **Expertise section**: Transparent boxes with minimal hover effects (no border, no shadow, no color change)
 - **Databricks partner section**: Keep original styling (blue background, border, shadow, color changes on hover)
-- **Team section**: Transparent boxes with minimal hover (only upward movement and shadow)
+- **Team section**: Transparent boxes with no hover animations
 - **Services section**: Boxes match background color (`#d1e7ff`) for seamless appearance
 - **Page specificity**: Always use `.index` class for main page-only styles to prevent affecting other pages
 
@@ -204,7 +204,7 @@ Polar Flows is a data consultancy website specializing in Azure, Databricks, AWS
 ### Section Styling (CRITICAL)
 - **Expertise section**: Transparent boxes, minimal hover effects
 - **Databricks partner**: Keep original styling with full hover effects
-- **Team section**: Transparent boxes, minimal hover
+- **Team section**: Transparent boxes, no hover animations
 - **Page specificity**: Use `.index` class for main page-only styles
 - **Background colors**: Blue only on main page, white on other pages
 

@@ -1619,10 +1619,7 @@ body:not(.home-page) .navbar-small-logo {
   min-height: 280px;
 }
 
-.team-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--pf-shadow-lg);
-}
+/* Team card hover animations removed as requested */
 
 .team-card img {
   width: 120px;
@@ -1743,7 +1740,7 @@ body:not(.home-page) .navbar-small-logo {
   }
   
   .team-card {
-    padding: var(--pf-space-sm);
+    padding: var(--pf-space-xs);
   }
   
   .team-card img {
@@ -1753,7 +1750,7 @@ body:not(.home-page) .navbar-small-logo {
   
   .team-card h3 {
     font-size: var(--pf-font-size-sm);
-    margin-bottom: var(--pf-space-xs);
+    margin-bottom: 0.125rem; /* 2px - tighter spacing */
   }
   
   .team-card p {
@@ -1761,21 +1758,87 @@ body:not(.home-page) .navbar-small-logo {
     line-height: var(--pf-line-height-normal);
   }
   
+  
+  /* Override contact-icon styles for mobile team section */
   .team-card .contact-icon {
-    width: 16px !important;
-    height: 16px !important;
+    width: 32px !important;
+    height: 32px !important;
     border-radius: 0 !important;
     background: none !important;
     border: none !important;
     padding: 0 !important;
     margin: 0 !important;
     vertical-align: middle !important;
-    display: inline-block !important;
+    display: block !important;
+  }
+  
+  /* Mobile team contact styling - icons only, single row */
+  .team-contact {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: var(--pf-space-sm) !important; /* Reduced gap for better visual */
+    margin-top: 0.125rem !important; /* 2px - tighter spacing from role */
+    flex-wrap: nowrap !important; /* Force single row */
+    width: 100% !important;
   }
   
   .team-email,
   .team-linkedin {
-    font-size: var(--pf-font-size-xs);
+    display: inline-flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: var(--pf-space-sm) !important;
+    border-radius: var(--pf-radius-md) !important;
+    transition: background-color var(--pf-transition-fast) !important;
+    text-decoration: none !important;
+    width: 48px !important;
+    height: 48px !important;
+    flex-shrink: 0 !important; /* Prevent shrinking */
+    margin: 0 !important;
+    float: none !important;
+    position: relative !important; /* For absolute positioning of icons */
+  }
+  
+  /* Remove hover animations on mobile for team contact icons */
+  .team-email:hover,
+  .team-linkedin:hover {
+    background-color: transparent !important;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+  
+  /* Completely hide text content on mobile */
+  .team-email::after,
+  .team-linkedin::after {
+    content: "";
+  }
+  
+  /* Completely hide text content on mobile */
+  .team-email,
+  .team-linkedin {
+    font-size: 0 !important;
+    line-height: 0 !important;
+    color: transparent !important;
+    text-decoration: none !important;
+  }
+  
+  /* Show only the icons with proper sizing and positioning */
+  .team-email .contact-icon,
+  .team-linkedin .contact-icon {
+    font-size: initial !important;
+    line-height: initial !important;
+    display: block !important;
+    width: 32px !important;
+    height: 32px !important;
+    margin: 0 auto !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
   }
 }
 
