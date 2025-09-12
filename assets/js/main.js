@@ -8,6 +8,7 @@ import { initTestimonials } from './components/Testimonials.js';
 import { initForms } from './components/Forms.js';
 import { initAnimations } from './components/Animations.js';
 import { initUtils } from './components/Utils.js';
+import { CONFIG } from './constants.js';
 import './scroll-animations.js';
 
 /**
@@ -123,7 +124,7 @@ class PolarFlowsApp {
       
       // Calculate the background position based on scroll
       // Start at top (0%) and move down as user scrolls
-      const backgroundPosition = Math.min(scrollY / maxScroll * 50, 50);
+      const backgroundPosition = Math.min(scrollY / maxScroll * CONFIG.ANIMATION.MAX_BACKGROUND_OFFSET, CONFIG.ANIMATION.MAX_BACKGROUND_OFFSET);
       
       // Apply the sliding effect (maintain left alignment)
       hero.style.backgroundPosition = `left ${backgroundPosition}%`;
@@ -164,12 +165,12 @@ class PolarFlowsApp {
     // Hide scroll indicator when user starts scrolling
     let hasScrolled = false;
     const handleScroll = () => {
-      if (Math.max(0, window.scrollY) > 50 && !hasScrolled) {
+      if (Math.max(0, window.scrollY) > CONFIG.ANIMATION.SCROLL_INDICATOR_HIDE && !hasScrolled) {
         hasScrolled = true;
         scrollIndicator.style.opacity = '0';
-        scrollIndicator.style.transform = 'translateX(-50%) translateY(20px)';
+        scrollIndicator.style.transform = `translateX(-50%) translateY(${CONFIG.ANIMATION.SCROLL_INDICATOR_ANIMATION}px)`;
         scrollIndicator.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-      } else if (Math.max(0, window.scrollY) <= 50 && hasScrolled) {
+      } else if (Math.max(0, window.scrollY) <= CONFIG.ANIMATION.SCROLL_INDICATOR_HIDE && hasScrolled) {
         hasScrolled = false;
         scrollIndicator.style.opacity = '1';
         scrollIndicator.style.transform = 'translateX(-50%) translateY(0)';
@@ -251,7 +252,7 @@ class PolarFlowsApp {
     
     // Update navbar appearance
     if (navbar) {
-      if (scrollY > 50) {
+      if (scrollY > CONFIG.ANIMATION.NAVBAR_SHOW_THRESHOLD) {
         navbar.classList.add('nav--scrolled');
       } else {
         navbar.classList.remove('nav--scrolled');
@@ -261,7 +262,7 @@ class PolarFlowsApp {
     // Update back to top button
     const backToTop = document.querySelector('.back-to-top');
     if (backToTop) {
-      if (scrollY > 300) {
+      if (scrollY > CONFIG.ANIMATION.BACK_TO_TOP_THRESHOLD) {
         backToTop.classList.add('visible');
       } else {
         backToTop.classList.remove('visible');
@@ -357,7 +358,7 @@ class PolarFlowsApp {
         });
         
         console.log('Resize handling complete');
-      }, 100); // Reduced from 250ms to 100ms
+      }, CONFIG.ANIMATION.RESIZE_DEBOUNCE);
     };
 
     window.addEventListener('resize', handleResize, { passive: true });
@@ -384,15 +385,15 @@ class PolarFlowsApp {
       const newHeroSectionHeight = newHeroSection ? newHeroSection.offsetHeight : window.innerHeight;
       
       // Calculate new max scroll
-      const newDynamicPercentage = Math.max(0.05, 0.35 - (Math.max(0, 800 - newViewportHeight) * 0.004));
-      const newMaxScroll = (newHeroSectionHeight * newDynamicPercentage) - 15;
+      const newDynamicPercentage = Math.max(0.05, CONFIG.ANIMATION.DYNAMIC_PERCENTAGE - (Math.max(0, CONFIG.ANIMATION.HERO_SECTION_HEIGHT - newViewportHeight) * 0.004));
+      const newMaxScroll = (newHeroSectionHeight * newDynamicPercentage) - CONFIG.ANIMATION.EARLY_FINISH_PX;
       
       // Calculate current progress
       const currentProgress = Math.min(currentScrollY / newMaxScroll, 1);
       
       // Check if animation is complete (progress = 1.0)
       // Use a small tolerance to account for floating point precision
-      if (currentProgress >= 0.99) {
+      if (currentProgress >= CONFIG.ANIMATION.PROGRESS_THRESHOLD) {
         // Animation is complete - position logo directly in navbar
         console.log('Animation complete during resize - positioning logo in navbar');
         
@@ -411,7 +412,7 @@ class PolarFlowsApp {
         const maxSafeWidth = navbarWidth - navbarPadding;
         const maxSafeWidthPercent = (maxSafeWidth / newViewportWidth) * 100;
         
-        const calculatedSize = Math.max((navbarSize / newViewportWidth) * 100 * 2.5, 8);
+        const calculatedSize = Math.max((navbarSize / newViewportWidth) * 100 * CONFIG.ANIMATION.NAVBAR_LOGO_MULTIPLIER, CONFIG.ANIMATION.MIN_LOGO_SIZE_PERCENT);
         const finalSize = Math.min(calculatedSize, maxSafeWidthPercent);
         
         transitionLogo.style.width = `${finalSize}%`;
@@ -657,9 +658,9 @@ class PolarFlowsApp {
         // Fallback if hero section not found - use same logic as hero section
         const navbarHeight = 70; // Fixed navbar height from CSS
         const navbarBottom = navbarHeight + 50; // 50px padding below navbar
-        const cssHeroSectionHeight = 800; // CSS min-height: 800px
+        const cssHeroSectionHeight = CONFIG.ANIMATION.HERO_SECTION_HEIGHT; // CSS min-height: 800px
         const textTop = cssHeroSectionHeight * 0.6; // Text is around 60% down in hero section
-        const textTopWithPadding = textTop - 100; // 100px padding above text
+        const textTopWithPadding = textTop - CONFIG.ANIMATION.TEXT_PADDING_OFFSET; // 100px padding above text
         
         const safeAreaTop = navbarBottom;
         const safeAreaBottom = textTopWithPadding;
@@ -676,7 +677,7 @@ class PolarFlowsApp {
       }
       
       // Use CSS-defined height instead of actual rendered height for consistent positioning
-      const cssHeroSectionHeight = 800; // CSS min-height: 800px
+      const cssHeroSectionHeight = CONFIG.ANIMATION.HERO_SECTION_HEIGHT; // CSS min-height: 800px
       
       // Calculate hero section position once and use fixed offset (consistent positioning)
       const heroSectionTop = heroSection.offsetTop; // Use offsetTop instead of getBoundingClientRect
@@ -687,7 +688,7 @@ class PolarFlowsApp {
       // Calculate safe area: below navbar + padding, above text + padding
       const navbarBottom = navbarHeight + 50; // 50px padding below navbar
       const textTop = heroSectionTop + (cssHeroSectionHeight * 0.6); // Text is around 60% down in hero section
-      const textTopWithPadding = textTop - 100; // 100px padding above text
+      const textTopWithPadding = textTop - CONFIG.ANIMATION.TEXT_PADDING_OFFSET; // 100px padding above text
       
       // Calculate the middle of the safe area (between navbar and text)
       const safeAreaTop = navbarBottom;

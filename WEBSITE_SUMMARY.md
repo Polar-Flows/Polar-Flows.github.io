@@ -261,6 +261,34 @@ Polar Flows is a data consultancy website specializing in Azure, Databricks, AWS
 - **Registration**: Automatically registered in main.js
 - **Cache Strategy**: Static assets cached immediately, dynamic content cached on demand
 
+### Constants and Configuration (constants.js)
+- **Location**: `assets/js/constants.js`
+- **Purpose**: Centralized configuration for all hardcoded values
+- **Categories**:
+  - **Animation Config**: Logo animation constants, timing, thresholds
+  - **Responsive Config**: Breakpoints, logo sizing, content constraints
+  - **Timing Config**: Delays, durations, debounce values
+  - **Validation Config**: Form validation rules and patterns
+  - **Service Worker Config**: Cache names and versions
+  - **Contact Config**: API URLs and response times
+- **Benefits**: Maintainable, consistent, theme-ready, easy to modify
+
+## Parameterization and Maintainability
+
+### Design System
+- **CSS Design Tokens**: Comprehensive token system in `tokens.css`
+- **Centralized Constants**: All hardcoded values moved to `constants.js`
+- **Consistent Values**: Colors, spacing, typography, and animations use tokens
+- **Theme Ready**: Easy to create dark mode or other themes
+- **Responsive Values**: Breakpoints and sizing use design tokens
+
+### Code Quality Improvements
+- **No Magic Numbers**: All animation constants are named and documented
+- **Maintainable**: Change values in one place, update everywhere
+- **Consistent**: All components use the same design system
+- **Scalable**: Easy to add new themes or modify existing ones
+- **Professional**: Follows industry best practices for design systems
+
 ## Maintenance Notes
 - **Logo Animation**: Core feature requiring careful scroll position handling
 - **Mobile Testing**: Critical for logo sizing and button layout
@@ -268,6 +296,7 @@ Polar Flows is a data consultancy website specializing in Azure, Databricks, AWS
 - **Performance**: Monitor animation smoothness during resize events
 - **Content Updates**: Team info, partnerships, and contact details may change
 - **SEO Files**: Keep sitemap.xml and robots.txt updated when adding new pages
+- **Design System**: Use design tokens and constants for all new values
 
 ## Future Improvements (Not Yet Implemented)
 **IMPORTANT**: The following items were identified as missing but not yet implemented:

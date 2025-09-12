@@ -63,7 +63,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: var(--pf-font-weight-bold);
   line-height: var(--pf-line-height-tight);
   margin-bottom: var(--pf-space-md);
-  color: #000000;
+  color: var(--pf-text-primary);
   /* Mobile optimization */
   word-wrap: break-word;
   overflow-wrap: break-word;
@@ -88,7 +88,7 @@ h6 { font-size: var(--pf-font-size-base); }
 
 p {
   margin-bottom: var(--pf-space-md);
-  color: #000000;
+  color: var(--pf-text-primary);
   /* Mobile optimization */
   line-height: var(--pf-line-height-relaxed);
 }
@@ -709,7 +709,7 @@ body:not(.home-page) .navbar-small-logo {
   position: relative;
   overflow: hidden;
   height: 100vh;
-  min-height: 800px;
+  min-height: var(--pf-hero-content-max-width);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -826,7 +826,7 @@ body:not(.home-page) .navbar-small-logo {
 }
 
 .hero-content {
-  max-width: 800px;
+  max-width: var(--pf-hero-content-max-width);
   margin: 0 auto;
   padding: 0 var(--pf-space-md);
   width: 100%;
@@ -885,18 +885,18 @@ body:not(.home-page) .navbar-small-logo {
 }
 
 .hero-title-gray {
-  color: #ffffff;
+  color: var(--pf-text-light);
 }
 
 .hero-title-white {
-  color: #ffffff;
+  color: var(--pf-text-light);
   font-weight: var(--pf-font-weight-bold);
 }
 
 .hero-title-sub {
   font-size: 0.7em;
   font-weight: var(--pf-font-weight-normal);
-  color: #ffffff;
+  color: var(--pf-text-light);
   opacity: 0.8;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
@@ -985,7 +985,7 @@ body:not(.home-page) .navbar-small-logo {
 /* Mobile responsiveness for hero logo */
 @media (max-width: 768px) {
   .hero {
-    min-height: 800px;
+    min-height: var(--pf-hero-content-max-width);
     /* Remove background-attachment: fixed for mobile compatibility */
     background-attachment: scroll;
     /* Ensure background is visible on mobile */
@@ -1000,8 +1000,8 @@ body:not(.home-page) .navbar-small-logo {
   }
   
   .hero-logo-img {
-    min-width: 350px;
-    max-width: min(700px, 90vw);
+    min-width: var(--pf-logo-mobile-min-width);
+    max-width: min(var(--pf-logo-mobile-max-width), 90vw);
   }
   
   .hero-title {
@@ -1022,7 +1022,7 @@ body:not(.home-page) .navbar-small-logo {
 
 @media (max-width: 480px) {
   .hero {
-    min-height: 800px;
+    min-height: var(--pf-hero-content-max-width);
     /* iOS Safari specific fixes */
     background-attachment: scroll;
     background-size: cover;
@@ -1108,7 +1108,7 @@ body:not(.home-page) .navbar-small-logo {
 /* Short screens (low height) */
 @media (max-height: 600px) {
   .hero {
-    min-height: 800px;
+    min-height: var(--pf-hero-content-max-width);
   }
 }
 
@@ -1140,7 +1140,7 @@ body:not(.home-page) .navbar-small-logo {
 
 /* ===== Value Props ===== */
 .value-props {
-  background-color: #f8faff;
+  background-color: var(--pf-bg-section-light);
 }
 
 .value-props-grid {
@@ -1150,7 +1150,7 @@ body:not(.home-page) .navbar-small-logo {
 }
 
 .value-prop-card {
-  background-color: #d1e7ff;
+  background-color: var(--pf-bg-section-blue);
   padding: var(--pf-space-lg);
   border-radius: var(--pf-radius-xl);
   box-shadow: var(--pf-shadow-sm);
@@ -1178,11 +1178,11 @@ body:not(.home-page) .navbar-small-logo {
 .value-prop-title {
   font-size: var(--pf-font-size-lg);
   margin-bottom: var(--pf-space-md);
-  color: #000000;
+  color: var(--pf-text-primary);
 }
 
 .value-prop-description {
-  color: #000000;
+  color: var(--pf-text-primary);
   line-height: var(--pf-line-height-relaxed);
 }
 
@@ -1238,7 +1238,7 @@ body:not(.home-page) .navbar-small-logo {
 
 /* Main page specific services background */
 .index .services {
-  background-color: #d1e7ff;
+  background-color: var(--pf-bg-section-blue);
 }
 
 .services-grid {
@@ -1263,11 +1263,11 @@ body:not(.home-page) .navbar-small-logo {
 .service-title {
   font-size: var(--pf-font-size-base);
   margin-bottom: var(--pf-space-md);
-  color: #000000;
+  color: var(--pf-text-primary);
 }
 
 .service-description {
-  color: #000000;
+  color: var(--pf-text-primary);
   margin-bottom: var(--pf-space-lg);
   line-height: var(--pf-line-height-relaxed);
 }
@@ -1293,7 +1293,7 @@ body:not(.home-page) .navbar-small-logo {
 /* Desktop services */
 @media (min-width: 768px) {
   .services-grid {
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(var(--pf-logo-mobile-min-width), 1fr));
     gap: var(--pf-space-2xl);
   }
   
@@ -1313,7 +1313,7 @@ body:not(.home-page) .navbar-small-logo {
 
 .testimonials-container {
   position: relative;
-  max-width: 800px;
+  max-width: var(--pf-hero-content-max-width);
   margin: 0 auto;
 }
 
@@ -1401,19 +1401,19 @@ body:not(.home-page) .navbar-small-logo {
 .about-content {
   position: relative;
   z-index: 2;
-  max-width: 800px;
+  max-width: var(--pf-hero-content-max-width);
   margin: 0 auto;
   text-align: center;
 }
 
 .about-content h2 {
-  color: #000000;
+  color: var(--pf-text-primary);
 }
 
 .about-text {
   font-size: var(--pf-font-size-base);
   line-height: var(--pf-line-height-relaxed);
-  color: #000000;
+  color: var(--pf-text-primary);
 }
 
 /* Mobile about section */
@@ -1447,7 +1447,7 @@ body:not(.home-page) .navbar-small-logo {
 
 /* ===== Journey Section ===== */
 .journey {
-  background-color: #f8faff;
+  background-color: var(--pf-bg-section-light);
 }
 
 .journey-grid {
@@ -1470,11 +1470,11 @@ body:not(.home-page) .navbar-small-logo {
 .journey-title {
   font-size: var(--pf-font-size-xl);
   margin-bottom: var(--pf-space-lg);
-  color: #000000;
+  color: var(--pf-text-primary);
 }
 
 .journey-description {
-  color: #000000;
+  color: var(--pf-text-primary);
   margin-bottom: var(--pf-space-xl);
   line-height: var(--pf-line-height-relaxed);
 }
@@ -1488,7 +1488,7 @@ body:not(.home-page) .navbar-small-logo {
 
 .journey-steps li {
   padding: var(--pf-space-sm) 0;
-  color: #000000;
+  color: var(--pf-text-primary);
   position: relative;
   padding-left: var(--pf-space-lg);
   line-height: var(--pf-line-height-relaxed);
@@ -1559,7 +1559,7 @@ body:not(.home-page) .navbar-small-logo {
 
 /* Main page specific team background */
 .index .team {
-  background-color: #d1e7ff;
+  background-color: var(--pf-bg-section-blue);
 }
 
 .team-grid {
@@ -1600,11 +1600,11 @@ body:not(.home-page) .navbar-small-logo {
   font-size: var(--pf-font-size-base);
   font-weight: var(--pf-font-weight-semibold);
   margin-bottom: var(--pf-space-sm);
-  color: #000000;
+  color: var(--pf-text-primary);
 }
 
 .team-card .team-role {
-  color: #000000;
+  color: var(--pf-text-primary);
   font-size: var(--pf-font-size-sm);
   margin-bottom: var(--pf-space-xs);
 }
@@ -1628,7 +1628,7 @@ body:not(.home-page) .navbar-small-logo {
 .team-card .team-bio {
   margin-top: var(--pf-space-sm);
   margin-bottom: var(--pf-space-sm);
-  color: #000000;
+  color: var(--pf-text-primary);
   font-size: var(--pf-font-size-sm);
   line-height: var(--pf-line-height-relaxed);
 }
@@ -1636,7 +1636,7 @@ body:not(.home-page) .navbar-small-logo {
 .team-card .team-linkedin {
   display: inline-block;
   margin-top: var(--pf-space-xs);
-  color: #000000;
+  color: var(--pf-text-primary);
   font-size: var(--pf-font-size-sm);
   text-decoration: none;
   transition: color var(--pf-transition-fast);
@@ -1749,13 +1749,13 @@ body:not(.home-page) .navbar-small-logo {
     grid-template-columns: repeat(2, 1fr);
     gap: var(--pf-space-xl);
     padding: 0 var(--pf-space-lg);
-    max-width: 800px;
+    max-width: var(--pf-hero-content-max-width);
     margin: 0 auto;
   }
   
   .team-card {
     padding: var(--pf-space-lg);
-    max-width: 350px;
+    max-width: var(--pf-logo-mobile-min-width);
     margin: 0 auto;
   }
   
@@ -1792,8 +1792,8 @@ body:not(.home-page) .navbar-small-logo {
 
 /* ===== Contact CTA ===== */
 .contact-cta {
-  background-color: #f8faff;
-  color: #000000;
+  background-color: var(--pf-bg-section-light);
+  color: var(--pf-text-primary);
   text-align: center;
   padding: var(--pf-space-2xl) 0;
 }
@@ -2202,7 +2202,7 @@ html, body {
   display: block;
   margin-bottom: var(--pf-space-sm);
   font-weight: var(--pf-font-weight-medium);
-  color: #000000;
+  color: var(--pf-text-primary);
   /* Mobile optimization */
   font-size: var(--pf-font-size-base);
 }
@@ -2216,7 +2216,7 @@ html, body {
   font-size: var(--pf-font-size-base);
   transition: border-color var(--pf-transition-fast);
   background-color: #ffffff;
-  color: #000000;
+  color: var(--pf-text-primary);
   /* Mobile optimization */
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -2389,7 +2389,7 @@ html, body {
 /* Make logo smaller and closer to top on large screens */
 @media (min-width: 1200px) {
   .hero-logo-static {
-    max-width: min(350px, 40vw); /* Smaller on large screens */
+    max-width: min(var(--pf-logo-mobile-min-width), 40vw); /* Smaller on large screens */
   }
   
   .hero-logo-container {
@@ -2691,7 +2691,7 @@ body:has(.contact-page) .navbar-brand {
 }
 
 .faq-item p {
-  color: #000000;
+  color: var(--pf-text-primary);
   line-height: var(--pf-line-height-relaxed);
 }
 
@@ -2796,7 +2796,7 @@ body:has(.contact-page) .navbar-brand {
 }
 
 .privacy-text {
-  max-width: 800px;
+  max-width: var(--pf-hero-content-max-width);
   margin: 0 auto;
 }
 
@@ -2965,12 +2965,12 @@ body:has(.contact-page) .navbar-brand {
 .partnership-name {
   font-size: var(--pf-font-size-sm);
   font-weight: var(--pf-font-weight-medium);
-  color: #000000;
+  color: var(--pf-text-primary);
   transition: color var(--pf-transition-fast);
 }
 
 .partnership-logo:hover .partnership-name {
-  color: #000000;
+  color: var(--pf-text-primary);
 }
 
 /* Restore original styling for Databricks partner section */
