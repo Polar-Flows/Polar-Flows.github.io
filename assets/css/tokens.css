@@ -41,6 +41,17 @@
   --pf-error: #ef4444;
   --pf-info: var(--pf-blue);
   
+  /* ===== Section Background Colors ===== */
+  --pf-bg-section-blue: #d1e7ff;
+  --pf-bg-section-light: #f8faff;
+  
+  /* ===== Logo Sizing ===== */
+  --pf-logo-mobile-min-width: 350px;
+  --pf-logo-mobile-max-width: 700px;
+  
+  /* ===== Content Constraints ===== */
+  --pf-hero-content-max-width: 800px;
+  
   /* ===== Spacing Scale ===== */
   --pf-space-xs: 0.25rem;    /* 4px */
   --pf-space-sm: 0.5rem;     /* 8px */

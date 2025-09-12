@@ -3,6 +3,8 @@
  * Handles form validation, submission, and user feedback
  */
 
+import { CONFIG } from '../constants.js';
+
 export class Forms {
   constructor() {
     this.forms = new Map();
@@ -43,34 +45,34 @@ export class Forms {
   setupDefaultValidationRules() {
     this.validationRules.set('name', {
       required: true,
-      minLength: 2,
-      maxLength: 50,
-      pattern: /^[a-zA-Z\s'-]+$/,
-      message: 'Please enter a valid name (2-50 characters, letters only)'
+      minLength: CONFIG.VALIDATION.NAME_MIN_LENGTH,
+      maxLength: CONFIG.VALIDATION.NAME_MAX_LENGTH,
+      pattern: CONFIG.VALIDATION.NAME_PATTERN,
+      message: `Please enter a valid name (${CONFIG.VALIDATION.NAME_MIN_LENGTH}-${CONFIG.VALIDATION.NAME_MAX_LENGTH} characters, letters only)`
     });
     
     this.validationRules.set('email', {
       required: true,
-      pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+      pattern: CONFIG.VALIDATION.EMAIL_PATTERN,
       message: 'Please enter a valid email address'
     });
     
     this.validationRules.set('company', {
       required: false,
-      maxLength: 100,
-      message: 'Company name must be less than 100 characters'
+      maxLength: CONFIG.VALIDATION.COMPANY_MAX_LENGTH,
+      message: `Company name must be less than ${CONFIG.VALIDATION.COMPANY_MAX_LENGTH} characters`
     });
     
     this.validationRules.set('message', {
       required: true,
-      minLength: 10,
-      maxLength: 1000,
-      message: 'Message must be between 10 and 1000 characters'
+      minLength: CONFIG.VALIDATION.MESSAGE_MIN_LENGTH,
+      maxLength: CONFIG.VALIDATION.MESSAGE_MAX_LENGTH,
+      message: `Message must be between ${CONFIG.VALIDATION.MESSAGE_MIN_LENGTH} and ${CONFIG.VALIDATION.MESSAGE_MAX_LENGTH} characters`
     });
     
     this.validationRules.set('phone', {
       required: false,
-      pattern: /^[\+]?[0-9\s\-\(\)]{7,20}$/,
+      pattern: CONFIG.VALIDATION.PHONE_PATTERN,
       message: 'Please enter a valid phone number (Swedish: 07X XXX XX XX or international: +46)'
     });
   }

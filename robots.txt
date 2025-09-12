@@ -9,7 +9,8 @@ Disallow: /logs/
 
 # Allow important pages
 Allow: /index.html
-Allow: /contact.html
+Allow: /contact/
+Allow: /privacy-policy/
 Allow: /assets/css/
 Allow: /assets/js/
 Allow: /assets/img/

@@ -7,10 +7,16 @@
         <priority>1.0</priority>
     </url>
     <url>
-        <loc>https://polarflows.com/contact.html</loc>
+        <loc>https://polarflows.com/contact/</loc>
         <lastmod>2024-01-01</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://polarflows.com/privacy-policy/</loc>
+        <lastmod>2024-01-01</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
     </url>
     <url>
         <loc>https://polarflows.com/assets/css/main.css</loc>

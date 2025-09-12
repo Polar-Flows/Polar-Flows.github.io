@@ -35,7 +35,7 @@
     <link rel="manifest" href="../manifest.webmanifest">
     
     <!-- Preload critical resources -->
-    <link rel="preload" href="../assets/css/main.css" as="style">
+    <link rel="preload" href="../assets/css/main.css?v=1.0.8" as="style">
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -43,8 +43,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet">
     
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="../assets/css/tokens.css">
-    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/tokens.css?v=1.0.1">
+    <link rel="stylesheet" href="../assets/css/main.css?v=1.0.8">
     
     <!-- Structured Data -->
     <script type="application/ld+json">
@@ -83,7 +83,7 @@
                 
                 <div class="hero-content scroll-animate">
                     <h1 id="contact-hero-title" class="hero-title">Get in Touch</h1>
-                    <p class="hero-subtitle">Ready to transform your data capabilities? Let's start a conversation</p>
+                    <p class="hero-subtitle">Ready to transform your data capabilities?</p>
                     <div class="back-to-home">
                         <a href="../" class="btn btn-secondary">
                             <span>&larr; Back to Home</span>
@@ -299,11 +299,13 @@
     </div>
     
     <!-- JavaScript -->
-    <script type="module" src="../assets/js/main.js"></script>
+    <script type="module" src="../assets/js/main.js?v=1.0.8"></script>
     
     <!-- Contact Form Submission Script -->
     <script>
-    const LOGIC_APP_URL = "https://prod-129.westeurope.logic.azure.com:443/workflows/c7b3bf9aade34af395b1675e1df507ea/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=wcTbcjNOz3OHrqhvXcr90GkvI8ri7GPOfueMuuC5UyM";
+    // Import constants for configuration
+    import { CONFIG } from '../assets/js/constants.js';
+    const LOGIC_APP_URL = CONFIG.CONTACT.LOGIC_APP_URL;
 
     // Custom notification function
     function showFormNotification(message, type = 'info') {
