@@ -55,7 +55,7 @@ Polar Flows is a data consultancy website specializing in Azure, Databricks, AWS
 - **Mobile logo sizing**: `min-width: 350px`, `max-width: min(700px, 90vw)` on mobile
 - **Hero content constraints**: Remove `max-width: 800px` and reduce padding on mobile for logo space
 - **Button gap optimization**: Reduce gap to `var(--pf-space-xs)` on 300-600px screens
-- **Two-line subtitle**: Force "Expert consultancy for" / "modern data solutions" on ?600px screens
+- **Two-line subtitle**: Force "Expert consultancy for" / "modern data solutions" on <=600px screens
 - **Team grid distribution**: NEVER allow single item in last row - use 2x2 grid on mobile/tablet, 4x1 on desktop
 
 ### Section Background Colors
@@ -341,7 +341,7 @@ Only use UTF8 supported characters in this file.
 - **Quotes**: Use straight quotes `"` and `'`
 - **Arrows**: Use HTML entities `&uarr;` `&darr;` `&larr;` `&rarr;` or plain text
 - **Bullets**: Use `-` or `*` for lists
-- **Names**: Use ASCII equivalents (e.g., `Daniel Sjoholm` not `Daniel Sjöholm`)
+- **Names**: Use ASCII equivalents (e.g., `Daniel Sjoholm` not `Daniel Sjoholm`)
 
 ### **VERIFICATION COMMAND:**
 Before committing, run this PowerShell command to check for problematic characters:
@@ -413,8 +413,8 @@ Get-ChildItem -Recurse -Include "*.html","*.md","*.css","*.js" | ForEach-Object 
 - Comprehensive scan confirmed no remaining encoding issues
 
 #### **Files Fixed:**
-- `WEBSITE_SUMMARY.md` - Fixed `Daniel Sjöholm` to `Daniel Sjoholm` in team section
-- `README.md` - Fixed em dash in tagline from `AI—delivered` to `AI - delivered`
+- `WEBSITE_SUMMARY.md` - Fixed `Daniel Sjoholm` to `Daniel Sjoholm` in team section
+- `README.md` - Fixed em dash in tagline from `AI-delivered` to `AI - delivered`
 
 ### Version 1.0.9 - UTF-8 Encoding Fixes
 
