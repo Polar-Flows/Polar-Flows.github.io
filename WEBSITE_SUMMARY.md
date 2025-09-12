@@ -269,6 +269,25 @@ Polar Flows is a data consultancy website specializing in Azure, Databricks, AWS
 - **Content Updates**: Team info, partnerships, and contact details may change
 - **SEO Files**: Keep sitemap.xml and robots.txt updated when adding new pages
 
+## Future Improvements (Not Yet Implemented)
+**IMPORTANT**: The following items were identified as missing but not yet implemented:
+
+### 1. PWA Icons (High Priority)
+- **Issue**: All PWA icons in `manifest.webmanifest` point to the same PNG file
+- **Impact**: Poor PWA experience, incorrect icon scaling
+- **Solution**: Create separate 192x192 and 512x512 icon files
+- **Location**: Update `manifest.webmanifest` with proper icon sizes
+- **Files Needed**: `assets/img/polarflows/logo-192.png` and `assets/img/polarflows/logo-512.png`
+
+### 2. Enhanced Structured Data (Medium Priority)
+- **Issue**: Limited structured data for SEO
+- **Impact**: Poor search engine understanding of content
+- **Solution**: Add comprehensive structured data (Organization, Service, Person, etc.)
+- **Location**: Add to HTML files and/or create separate JSON-LD files
+- **Types Needed**: Organization, Service, Person, ContactPoint, WebSite, BreadcrumbList
+
+**These items should be implemented when time permits to improve PWA experience and SEO.**
+
 ## AI Assistant Instructions
 **IMPORTANT**: When making any changes to this website, you MUST:
 1. **Update this WEBSITE_SUMMARY.md file** to reflect the changes made
