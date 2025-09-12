@@ -1144,9 +1144,13 @@ body:not(.home-page) .navbar-small-logo {
 }
 
 .value-props-grid {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-wrap: wrap;
   gap: var(--pf-space-lg);
+  justify-content: center;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .value-prop-card {
@@ -1156,6 +1160,8 @@ body:not(.home-page) .navbar-small-logo {
   box-shadow: var(--pf-shadow-sm);
   transition: all var(--pf-transition-normal);
   border: 1px solid var(--pf-border-light);
+  flex: 0 0 300px;
+  max-width: 300px;
 }
 
 .value-prop-card:hover {
@@ -1189,12 +1195,13 @@ body:not(.home-page) .navbar-small-logo {
 /* Mobile value props section */
 @media (max-width: 767px) {
   .value-props-grid {
-    grid-template-columns: repeat(2, 1fr);
     gap: var(--pf-space-md);
     padding: 0 var(--pf-space-sm);
   }
   
   .value-prop-card {
+    flex: 0 0 calc(50% - var(--pf-space-md));
+    max-width: calc(50% - var(--pf-space-md));
     padding: var(--pf-space-md);
   }
   
@@ -1218,15 +1225,11 @@ body:not(.home-page) .navbar-small-logo {
 /* Desktop value props */
 @media (min-width: 768px) {
   .value-props-grid {
-    display: flex;
-    flex-wrap: wrap;
     gap: var(--pf-space-2xl);
-    justify-content: center;
+    max-width: 1400px;
   }
   
   .value-prop-card {
-    flex: 0 0 300px;
-    max-width: 300px;
     padding: var(--pf-space-xl);
   }
   
