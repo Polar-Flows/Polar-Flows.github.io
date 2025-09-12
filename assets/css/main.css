@@ -3157,8 +3157,8 @@ body:has(.contact-page) .navbar-brand {
 
 /* Restore original styling for Databricks partner section */
 #partnership .partnership-logo {
-  background-color: #e6f3ff;
-  border: 1px solid var(--pf-border-light);
+  background-color: var(--pf-bg-section-light);
+  border: none;
 }
 
 #partnership .partnership-logo:hover {

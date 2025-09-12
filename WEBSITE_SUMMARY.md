@@ -333,7 +333,7 @@ Polar Flows is a data consultancy website specializing in Azure, Databricks, AWS
 
 **CRITICAL**: The website uses query string versioning to prevent browser caching issues. When making changes to CSS or JavaScript files, you MUST update the version numbers in all HTML files.
 
-### Current Version: `v1.0.1`
+### Current Version: `v1.0.8`
 
 ### Files That Need Version Updates:
 - `index.html` - All CSS and JS links
@@ -343,7 +343,7 @@ Polar Flows is a data consultancy website specializing in Azure, Databricks, AWS
 - `sw.js` - Cache version constants
 
 ### Version Update Process:
-1. **Increment version number** (e.g., `v1.0.1` ? `v1.0.2`)
+1. **Increment version number** (e.g., `v1.0.8` ? `v1.0.9`)
 2. **Update all HTML files** with new version in query strings
 3. **Update service worker** cache version constants
 4. **Test deployment** to ensure changes appear immediately
@@ -354,9 +354,50 @@ Polar Flows is a data consultancy website specializing in Azure, Databricks, AWS
 <link rel="stylesheet" href="assets/css/main.css">
 
 <!-- After -->
-<link rel="stylesheet" href="assets/css/main.css?v=1.0.2">
+<link rel="stylesheet" href="assets/css/main.css?v=1.0.8">
 ```
 
 **Why This Matters**: Without versioning, browsers cache CSS/JS files and changes won't appear until cache expires (days/weeks). Versioning forces immediate updates.
+
+## Recent Updates (Latest Session)
+
+### Version 1.0.8 - UI/UX Improvements and Bug Fixes
+
+#### **Hero Section Improvements:**
+- Fixed font size progression for "Turning data into actions" title to be more gradual (768px-899px: 30px, 900px-1023px: 36px, 1024px+: 60px)
+- Reduced vertical spacing between title and subtitle for better visual hierarchy
+- Made hero expertise hashtags smaller on mobile screens for better proportion
+- Fixed button spacing consistency - buttons now stay centered together with consistent 16px gap
+- Added exception rule for extremely small screens (<300px) to allow button wrapping
+
+#### **Section Layout Fixes:**
+- Fixed "Why Choose Polar Flows" section centering - last row items now center properly when there's only one item
+- Fixed "Expertise" section centering - last row items now center properly when there's only one item
+- Removed hover animations on mobile for both "Why Choose Polar Flows" and "Expertise" sections
+- Made team member photos larger across all screen sizes, especially on smaller screens
+
+#### **Team Section Enhancements:**
+- Removed hover animations from team cards
+- Implemented mobile-only contact icons (email and LinkedIn) with text hidden on small screens
+- Reduced vertical padding and spacing for better mobile layout
+- Updated team member details (Linggar's title changed to "Data Engineer", reordered team members)
+- Made team member photos significantly larger on all screen sizes
+
+#### **Content Updates:**
+- Removed "Career growth opportunities" from "As an Employee" section
+- Changed journey section title from "How would you like to continue the journey with us?" to "Ready to Start?"
+- Updated contact page hero subtitle to be more concise
+
+#### **Technical Improvements:**
+- Fixed browser caching issues by implementing proper CSS/JS versioning system
+- Resolved preload version mismatch warnings
+- Fixed Databricks partnership logo styling to match section background with no border
+- Ensured footer contact submenu follows same styling as other footer items
+
+#### **Mobile Optimizations:**
+- Improved responsive design across all sections
+- Better touch experience with removed hover animations on mobile
+- Optimized spacing and sizing for smaller screens
+- Enhanced visual hierarchy and readability
 
 This website represents a modern, responsive data consultancy site with sophisticated animations and user experience optimizations.

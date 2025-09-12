@@ -6,7 +6,7 @@ Welcome to the Polar Flows website! This is a modern, professional website for o
 
 **IMPORTANT**: This website uses query string versioning to prevent browser caching issues. When making changes to CSS or JavaScript files, you MUST update the version numbers in all HTML files.
 
-**Current Version**: `v1.0.1`
+**Current Version**: `v1.0.8`
 
 **Quick Version Update Process**:
 1. Increment version number (e.g., `v1.0.1` ? `v1.0.2`)
@@ -15,7 +15,7 @@ Welcome to the Polar Flows website! This is a modern, professional website for o
 
 **Files to Update**: `index.html`, `contact/index.html`, `privacy-policy/index.html`, `404.html`, `sw.js`
 
-**Example**: `<link rel="stylesheet" href="assets/css/main.css?v=1.0.2">`
+**Example**: `<link rel="stylesheet" href="assets/css/main.css?v=1.0.8">`
 
 **Why This Matters**: Without versioning, browsers cache CSS/JS files and changes won't appear until cache expires (days/weeks). Versioning forces immediate updates.
 
