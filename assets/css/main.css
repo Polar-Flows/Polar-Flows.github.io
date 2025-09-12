@@ -701,6 +701,8 @@ body:not(.home-page) .navbar-small-logo {
 .hero {
   padding: calc(var(--pf-space-3xl) + 100px) 0 var(--pf-space-3xl);
   background: linear-gradient(135deg, rgba(1, 45, 117, 0.3) 0%, rgba(14, 30, 58, 0.3) 100%), 
+              url('../img/polarflows/Stockholm_modif.avif') left top/cover no-repeat,
+              url('../img/polarflows/Stockholm_modif.webp') left top/cover no-repeat,
               url('../img/polarflows/Stockholm_modif.jpg') left top/cover no-repeat;
   background-attachment: fixed;
   text-align: center;
@@ -984,6 +986,12 @@ body:not(.home-page) .navbar-small-logo {
 @media (max-width: 768px) {
   .hero {
     min-height: 800px;
+    /* Remove background-attachment: fixed for mobile compatibility */
+    background-attachment: scroll;
+    /* Ensure background is visible on mobile */
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
   }
   
   .hero-content {
@@ -1015,6 +1023,13 @@ body:not(.home-page) .navbar-small-logo {
 @media (max-width: 480px) {
   .hero {
     min-height: 800px;
+    /* iOS Safari specific fixes */
+    background-attachment: scroll;
+    background-size: cover;
+    background-position: center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
   }
   
   .hero-content {
@@ -1094,6 +1109,32 @@ body:not(.home-page) .navbar-small-logo {
 @media (max-height: 600px) {
   .hero {
     min-height: 800px;
+  }
+}
+
+/* iOS Safari specific fixes */
+@supports (-webkit-touch-callout: none) {
+  .hero {
+    background-attachment: scroll !important;
+    background-size: cover !important;
+    background-position: center center !important;
+  }
+}
+
+/* Additional mobile device fixes */
+@media (max-width: 1024px) and (orientation: portrait) {
+  .hero {
+    background-attachment: scroll;
+    background-size: cover;
+    background-position: center center;
+  }
+}
+
+@media (max-width: 1024px) and (orientation: landscape) {
+  .hero {
+    background-attachment: scroll;
+    background-size: cover;
+    background-position: center center;
   }
 }
 
@@ -1698,6 +1739,33 @@ body:not(.home-page) .navbar-small-logo {
   .team-email,
   .team-linkedin {
     font-size: var(--pf-font-size-xs);
+  }
+}
+
+
+/* Tablet team */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .team-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--pf-space-xl);
+    padding: 0 var(--pf-space-lg);
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .team-card {
+    padding: var(--pf-space-lg);
+    max-width: 350px;
+    margin: 0 auto;
+  }
+  
+  .team-card img {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .team-card .team-name {
+    font-size: var(--pf-font-size-base);
   }
 }
 
