@@ -329,4 +329,34 @@ Polar Flows is a data consultancy website specializing in Azure, Databricks, AWS
 
 **This documentation must stay current and comprehensive for the website to be properly maintained.**
 
+## Asset Versioning System
+
+**CRITICAL**: The website uses query string versioning to prevent browser caching issues. When making changes to CSS or JavaScript files, you MUST update the version numbers in all HTML files.
+
+### Current Version: `v1.0.1`
+
+### Files That Need Version Updates:
+- `index.html` - All CSS and JS links
+- `contact/index.html` - All CSS and JS links  
+- `privacy-policy/index.html` - All CSS and JS links
+- `404.html` - All CSS links
+- `sw.js` - Cache version constants
+
+### Version Update Process:
+1. **Increment version number** (e.g., `v1.0.1` ? `v1.0.2`)
+2. **Update all HTML files** with new version in query strings
+3. **Update service worker** cache version constants
+4. **Test deployment** to ensure changes appear immediately
+
+### Example:
+```html
+<!-- Before -->
+<link rel="stylesheet" href="assets/css/main.css">
+
+<!-- After -->
+<link rel="stylesheet" href="assets/css/main.css?v=1.0.2">
+```
+
+**Why This Matters**: Without versioning, browsers cache CSS/JS files and changes won't appear until cache expires (days/weeks). Versioning forces immediate updates.
+
 This website represents a modern, responsive data consultancy site with sophisticated animations and user experience optimizations.
