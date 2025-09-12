@@ -1229,6 +1229,13 @@ body:not(.home-page) .navbar-small-logo {
     flex: 0 0 calc(50% - var(--pf-space-md));
     max-width: calc(50% - var(--pf-space-md));
     padding: var(--pf-space-md);
+    box-shadow: none !important;
+  }
+  
+  /* Remove hover animations on mobile */
+  .value-prop-card:hover {
+    transform: none !important;
+    box-shadow: none !important;
   }
   
   .value-prop-icon {
@@ -3189,6 +3196,32 @@ body:has(.contact-page) .navbar-brand {
   
   .partnership-name {
     font-size: var(--pf-font-size-xs);
+  }
+  
+  /* Remove hover animations on mobile */
+  .partnership-logo:hover {
+    transform: none !important;
+    background-color: transparent !important;
+    border-color: transparent !important;
+  }
+  
+  .partnership-logo:hover .partnership-img {
+    filter: none !important;
+  }
+  
+  .partnership-logo:hover .partnership-name {
+    color: var(--pf-text-primary) !important;
+  }
+  
+  #partnership .partnership-logo:hover {
+    transform: none !important;
+    box-shadow: none !important;
+    background-color: transparent !important;
+    border-color: transparent !important;
+  }
+  
+  #partnership .partnership-logo:hover .partnership-name {
+    color: var(--pf-text-primary) !important;
   }
   
   /* Mobile styling for large partnership logo (official partner section) */
