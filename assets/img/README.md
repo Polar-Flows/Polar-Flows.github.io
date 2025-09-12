@@ -6,7 +6,7 @@ This folder contains all image assets for the Polar Flows website.
 
 ### `/team/`
 - Team member profile pictures
-- **ProfilePicDanne.jpg** - Daniel Sjöholm's profile picture
+- **ProfilePicDanne.jpg** - Daniel Sjoholm's profile picture
 - **alex.svg** - Alex Berg placeholder
 - **maja.svg** - Maja Lind placeholder  
 - **samir.svg** - Samir Khan placeholder

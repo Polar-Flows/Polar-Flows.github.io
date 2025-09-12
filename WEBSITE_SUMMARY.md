@@ -333,7 +333,7 @@ Polar Flows is a data consultancy website specializing in Azure, Databricks, AWS
 
 **CRITICAL**: The website uses query string versioning to prevent browser caching issues. When making changes to CSS or JavaScript files, you MUST update the version numbers in all HTML files.
 
-### Current Version: `v1.0.8`
+### Current Version: `v1.0.9`
 
 ### Files That Need Version Updates:
 - `index.html` - All CSS and JS links
@@ -343,7 +343,7 @@ Polar Flows is a data consultancy website specializing in Azure, Databricks, AWS
 - `sw.js` - Cache version constants
 
 ### Version Update Process:
-1. **Increment version number** (e.g., `v1.0.8` ? `v1.0.9`)
+1. **Increment version number** (e.g., `v1.0.9` to `v1.0.10`)
 2. **Update all HTML files** with new version in query strings
 3. **Update service worker** cache version constants
 4. **Test deployment** to ensure changes appear immediately
@@ -354,12 +354,36 @@ Polar Flows is a data consultancy website specializing in Azure, Databricks, AWS
 <link rel="stylesheet" href="assets/css/main.css">
 
 <!-- After -->
-<link rel="stylesheet" href="assets/css/main.css?v=1.0.8">
+<link rel="stylesheet" href="assets/css/main.css?v=1.0.9">
 ```
 
 **Why This Matters**: Without versioning, browsers cache CSS/JS files and changes won't appear until cache expires (days/weeks). Versioning forces immediate updates.
 
 ## Recent Updates (Latest Session)
+
+### Version 1.0.9 - UTF-8 Encoding Fixes
+
+#### **Critical Fixes:**
+- Fixed UTF-8 encoding issues that were preventing GitHub Pages deployment
+- Replaced problematic Unicode characters with HTML entities or plain text
+- Fixed em dash characters in page titles and meta tags
+- Fixed arrow characters in back-to-top buttons
+- Fixed special characters in documentation files
+
+#### **Files Fixed:**
+- `index.html` - Fixed em dash in title and meta tags, arrow in back-to-top button
+- `contact/index.html` - Fixed arrow in back-to-top button
+- `privacy-policy/index.html` - Fixed arrow in back-to-top button
+- `README.md` - Fixed warning emoji and arrow characters
+- `WEBSITE_SUMMARY.md` - Fixed arrow characters
+- `assets/img/README.md` - Fixed UTF-8 encoding in team member name
+
+#### **Technical Details:**
+- Replaced `ó` (em dash) with `-` (hyphen) in titles
+- Replaced `?` (up arrow) with `&uarr;` (HTML entity) in back-to-top buttons
+- Replaced `?` (right arrow) with `to` in documentation
+- Replaced `??` (warning emoji) with plain text
+- Fixed `Daniel Sj√∂holm` encoding issue
 
 ### Version 1.0.8 - UI/UX Improvements and Bug Fixes
 
