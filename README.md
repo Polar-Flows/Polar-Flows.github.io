@@ -1,251 +1,153 @@
-# Polar Flows - Static Website
+# Polar Flows Website
 
-A modern, responsive static website for Polar Flows boutique consultancy, built with vanilla HTML, CSS, and JavaScript.
+Welcome to the Polar Flows website! This is a modern, professional website for our data consultancy business, showcasing our expertise in Azure, Databricks, AWS, and modern data solutions.
 
-## 🎯 Project Overview
+## What You'll Find Here
 
-**Polar Flows** is a boutique consultancy specializing in Azure & Databricks expertise, Data Governance & Compliance, Security & Networking, Cost Optimization, Ingestion & Structured Streaming, Scalability & DR, and DataOps & MLOps.
+### Main Page
+- **Hero Section**: Features our animated logo that transforms as you scroll
+- **About Us**: Learn about our mission and expertise
+- **Our Services**: Discover what we offer (Data Strategy, Azure Implementation, Databricks Solutions, etc.)
+- **Technology Expertise**: See the 15+ technologies we work with
+- **Official Databricks Partner**: Special section highlighting our partnership
+- **Meet the Team**: Get to know our 4 team members
+- **Contact**: Easy ways to get in touch
 
-This website showcases our services, team, and provides a professional contact point for potential clients and employees.
+### Contact Page
+- **Contact Form**: Send us a message directly
+- **FAQ Section**: Answers to common questions
+- **Location**: We're based in Stockholm with global reach
 
-## 🏗️ Project Structure
+### Privacy Policy
+- **Legal Information**: Our privacy policy and data handling practices
 
-```
-PolarFlows-Website/
-├── index.html                 # Landing page with all main sections
-├── contact.html              # Contact form and company information
-├── assets/
-│   ├── css/
-│   │   ├── tokens.css        # CSS custom properties and design tokens
-│   │   └── main.css          # Main stylesheet
-│   ├── js/
-│   │   ├── main.js           # Main JavaScript entry point
-│   │   └── components/       # Modular component files
-│   │       ├── Navigation.js # Sticky navbar and mobile menu
-│   │       ├── Testimonials.js # Testimonials slider component
-│   │       ├── Forms.js      # Form validation and handling
-│   │       ├── Animations.js # Scroll animations and transitions
-│   │       └── Utils.js      # Utility functions and helpers
-│   └── img/                  # Images and logos
-│       ├── logo.svg          # Main logo (SVG)
-│       ├── logo-dark.svg     # Dark variant logo
-│       ├── favicon.svg       # Favicon
-│       └── placeholders/     # Placeholder images
-├── robots.txt                # Search engine directives
-├── sitemap.xml               # XML sitemap
-├── manifest.webmanifest      # PWA manifest
-├── .editorconfig             # Editor configuration
-├── .prettierrc              # Prettier formatting rules
-├── .eslintrc.json           # ESLint configuration
-├── .stylelintrc.json        # Stylelint configuration
-└── .gitignore               # Git ignore rules
-```
+## Key Features
 
-## 🚀 Getting Started
+### Responsive Design
+- **Mobile-First**: Optimized for phones, tablets, and desktops
+- **Smooth Animations**: Logo transforms beautifully as you scroll
+- **Fast Loading**: Built for speed and performance
 
-### Prerequisites
-- Modern web browser
-- Local web server (optional, for development)
+### Professional Contact
+- **Easy Contact Form**: Send messages directly from the website
+- **Team Information**: See who you'll be working with
+- **Clear Services**: Understand exactly what we offer
 
-### Local Development
-1. **Clone the repository:**
+### Technology Showcase
+- **15+ Technologies**: Azure, AWS, Databricks, Snowflake, Power BI, and more
+- **Partnership Badges**: Official Databricks partner status
+- **Expertise Areas**: Data governance, MLOps, cost optimization, and more
+
+## Mobile Experience
+
+The website is fully optimized for mobile devices:
+- **Large Logo**: Always prominent and readable
+- **Touch-Friendly**: Easy navigation and form interaction
+- **Fast Performance**: Quick loading on mobile networks
+- **Responsive Layout**: Adapts perfectly to any screen size
+
+## Design Highlights
+
+### Visual Elements
+- **Animated Logo**: Sophisticated scroll-based animation
+- **Clean Layout**: Professional and modern design
+- **Consistent Branding**: Polar Flows blue color scheme
+- **High-Quality Images**: Crisp logos and team photos
+
+### User Experience
+- **Intuitive Navigation**: Easy to find what you need
+- **Clear Call-to-Actions**: Obvious next steps
+- **Accessible Design**: Works for all users
+- **Fast Interactions**: Smooth and responsive
+
+## For Developers
+
+### Quick Start
+1. **Clone the repository**
+2. **Open `index.html`** in your browser, or
+3. **Run a local server**:
    ```bash
-   git clone <repository-url>
-   cd PolarFlows-Website
+   python -m http.server 8000
+   # Then visit http://localhost:8000
    ```
 
-2. **Run locally:**
-   - **Option 1:** Open `index.html` directly in your browser
-   - **Option 2:** Use a local server for better development experience:
-     ```bash
-     # Python 3
-     python -m http.server 8000
-     
-     # Node.js
-     npx serve .
-     
-     # PHP
-     php -S localhost:8000
-     ```
-
-3. **Access the site:**
-   - Navigate to `http://localhost:8000` (if using local server)
-   - Or open `index.html` directly in your browser
-
-### No Build Step Required
-This project uses vanilla technologies and requires no build process, transpilation, or bundling. Simply edit the files and refresh your browser to see changes.
-
-## 🎨 Customization
-
-### Design Tokens
-All colors, spacing, and typography are defined in `assets/css/tokens.css`:
-
-```css
-:root {
-  --pf-blue: #187ef9;
-  --pf-navy: #012d75;
-  --pf-white: #ffffff;
-  --pf-slate: #123456;
-  --pf-azure: #0665d8;
-  --pf-deep: #0140a8;
-}
+### File Structure
+```
+/
+??? index.html              # Main page
+??? contact/index.html      # Contact page
+??? privacy-policy/index.html # Privacy policy
+??? assets/
+?   ??? css/main.css        # All styles
+?   ??? js/main.js          # Main functionality
+?   ??? img/                # Images and logos
+??? serve.py                # Local development server
 ```
 
-**To customize:**
-1. Edit the color values in `tokens.css`
-2. The site automatically generates light/dark variants
-3. All components use these tokens for consistent theming
+### Key Technologies
+- **HTML5**: Semantic markup
+- **CSS3**: Modern styling with animations
+- **Vanilla JavaScript**: No frameworks, just clean code
+- **Responsive Design**: Mobile-first approach
 
-### Content Updates
-- **Text content:** Edit directly in HTML files
-- **Images:** Replace files in `assets/img/` (maintain same filenames)
-- **Services:** Modify the value props section in `index.html`
-- **Team members:** Edit the team section or hide completely
+## Performance
 
-### Hiding Team Section
-The team section can be easily hidden by setting `data-visible="false"` on the team container:
+- **Fast Loading**: Optimized for speed
+- **Mobile Optimized**: Great performance on phones
+- **SEO Ready**: Search engine friendly
+- **Accessible**: Works for all users
 
-```html
-<section class="team" data-visible="false">
-  <!-- Team content -->
-</section>
-```
+## Business Focus
 
-## 🧪 Testing & Quality
+### Our Expertise
+- **Azure & Databricks**: Deep specialization
+- **Data Governance**: Compliance and security
+- **Cost Optimization**: Efficient solutions
+- **MLOps & DataOps**: Modern data practices
 
-### Code Quality Tools
-- **ESLint:** JavaScript linting and formatting
-- **Stylelint:** CSS linting and formatting  
-- **Prettier:** Code formatting
-- **EditorConfig:** Consistent editor settings
+### Our Approach
+- **Boutique Service**: Personal attention
+- **Enterprise Experience**: Large-scale solutions
+- **Modern Technologies**: Latest tools and practices
+- **Global Reach**: Stockholm-based, worldwide service
 
-### Performance & Accessibility
-- **Lighthouse:** Run audits for performance, accessibility, SEO, and best practices
-- **axe-core:** Accessibility testing
-- **WebPageTest:** Performance benchmarking
+## Getting in Touch
 
-### Manual Testing Checklist
-- [ ] Responsive design across all breakpoints
-- [ ] Keyboard navigation and focus states
-- [ ] Screen reader compatibility
-- [ ] Color contrast compliance (WCAG AA)
-- [ ] Form validation and error handling
-- [ ] Cross-browser compatibility
+### Contact Options
+- **Contact Form**: Direct message from the website
+- **Email**: Individual team member emails
+- **LinkedIn**: Professional networking
+- **Location**: Stockholm, Sweden
 
-## 📱 Responsive Breakpoints
+### What to Expect
+- **Quick Response**: We get back to you promptly
+- **Expert Consultation**: Free initial discussion
+- **Tailored Solutions**: Customized to your needs
+- **Ongoing Support**: Long-term partnership
 
-```css
-/* Mobile-first approach */
---breakpoint-sm: 576px;   /* Small devices */
---breakpoint-md: 768px;   /* Medium devices */
---breakpoint-lg: 992px;   /* Large devices */
---breakpoint-xl: 1200px;  /* Extra large devices */
-```
+## Global Presence
 
-## 🚀 Deployment
+- **Headquarters**: Stockholm, Sweden
+- **Service Area**: Nordic region and globally
+- **Remote Capability**: Full remote service delivery
+- **Time Zones**: Flexible scheduling for international clients
 
-### GitHub Pages
-1. Push code to GitHub repository
-2. Go to Settings > Pages
-3. Select source branch (usually `main`)
-4. Site will be available at `https://username.github.io/repository-name`
+## Why Choose Polar Flows
 
-### Netlify
-1. Connect your GitHub repository
-2. Build command: (leave empty - no build step)
-3. Publish directory: `.` (root)
-4. Deploy automatically on push
+### Our Advantages
+- **Specialized Expertise**: Deep knowledge in key technologies
+- **Proven Track Record**: Successful implementations
+- **Modern Approach**: Latest tools and methodologies
+- **Personal Service**: Boutique consultancy experience
 
-### Vercel
-1. Import your GitHub repository
-2. Framework preset: Other
-3. Build command: (leave empty)
-4. Output directory: `.` (root)
-
-## 📊 Performance Targets
-
-- **JavaScript:** ≤ 150 KB (minified)
-- **CSS:** ≤ 120 KB (minified)
-- **Images:** WebP/AVIF with fallbacks
-- **Lighthouse Score:** ≥ 90 for all categories
-- **First Contentful Paint:** < 1.5s
-- **Largest Contentful Paint:** < 2.5s
-
-## ♿ Accessibility Features
-
-- Semantic HTML structure
-- Proper heading hierarchy
-- ARIA labels and roles where needed
-- Skip-to-content link
-- Focus management
-- Color contrast compliance (WCAG AA)
-- Reduced motion support
-- Screen reader friendly
-
-## 🔍 SEO Features
-
-- Meta tags and descriptions
-- Open Graph and Twitter Card tags
-- Structured data (Organization + WebSite)
-- XML sitemap
-- robots.txt
-- Canonical URLs
-- Semantic HTML markup
-
-## 🛠️ Browser Support
-
-- Chrome 90+
-- Firefox 88+
-- Safari 14+
-- Edge 90+
-- Mobile browsers (iOS Safari, Chrome Mobile)
-
-## 📝 Content Guidelines
-
-### Writing Style
-- Professional yet approachable
-- Clear value propositions
-- Action-oriented CTAs
-- Consistent terminology
-
-### Image Guidelines
-- Use SVG logos for scalability
-- Optimize images for web
-- Provide meaningful alt text
-- Maintain brand consistency
-
-## 🚨 Troubleshooting
-
-### Common Issues
-1. **Images not loading:** Check file paths and ensure images exist
-2. **Styles not applying:** Verify CSS file paths and syntax
-3. **JavaScript errors:** Check browser console for errors
-4. **Mobile menu not working:** Ensure JavaScript is enabled
-
-### Performance Issues
-1. **Slow loading:** Optimize images and check file sizes
-2. **Layout shifts:** Verify image dimensions are set
-3. **Animation lag:** Check `prefers-reduced-motion` support
-
-## 📚 Additional Resources
-
-- [MDN Web Docs](https://developer.mozilla.org/) - HTML, CSS, JavaScript reference
-- [Web.dev](https://web.dev/) - Performance and best practices
-- [A11y Project](https://www.a11yproject.com/) - Accessibility guidelines
-- [CSS-Tricks](https://css-tricks.com/) - CSS techniques and tips
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
-
-## 📄 License
-
-This project is proprietary to Polar Flows. All rights reserved.
+### Our Values
+- **Quality First**: Excellence in everything we do
+- **Client Success**: Your success is our success
+- **Innovation**: Always learning and improving
+- **Partnership**: Long-term relationships, not just projects
 
 ---
 
-**Need help?** Contact the development team or refer to the inline code comments for implementation details.
+**Ready to transform your data capabilities?** [Contact us today!](contact/)
+
+*Polar Flows - Data, Analytics & AI�delivered right.*
