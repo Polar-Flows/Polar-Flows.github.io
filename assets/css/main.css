@@ -836,7 +836,7 @@ body:not(.home-page) .navbar-small-logo {
 .hero-title {
   font-size: var(--pf-font-size-4xl);
   font-weight: var(--pf-font-weight-semibold);
-  margin-bottom: var(--pf-space-lg);
+  margin-bottom: var(--pf-space-sm);
   /* Mobile optimization */
   line-height: 1.1;
   word-wrap: break-word;
@@ -948,7 +948,18 @@ body:not(.home-page) .navbar-small-logo {
   display: flex;
   gap: var(--pf-space-md);
   justify-content: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  align-items: center;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+/* Allow button wrapping on extremely small screens */
+@media (max-width: 300px) {
+  .hero-actions {
+    flex-wrap: wrap;
+    gap: var(--pf-space-sm);
+  }
 }
 
 .hero-actions .btn {
@@ -956,10 +967,57 @@ body:not(.home-page) .navbar-small-logo {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  flex-shrink: 0;
 }
 
-/* Desktop hero adjustments */
-@media (min-width: 768px) {
+/* Tablet hero adjustments - gradual increase */
+@media (min-width: 768px) and (max-width: 899px) {
+  .hero {
+    padding: calc(var(--pf-space-4xl) + 80px) 0 var(--pf-space-4xl);
+  }
+  
+  .hero-title {
+    font-size: var(--pf-font-size-3xl);
+  }
+  
+  .hero-subtitle {
+    font-size: var(--pf-font-size-xl);
+  }
+  
+  .hero-expertise {
+    font-size: var(--pf-font-size-lg);
+  }
+  
+  .hero-logo-img {
+    max-width: 600px;
+  }
+}
+
+/* Medium desktop hero adjustments */
+@media (min-width: 900px) and (max-width: 1023px) {
+  .hero {
+    padding: calc(var(--pf-space-4xl) + 80px) 0 var(--pf-space-4xl);
+  }
+  
+  .hero-title {
+    font-size: var(--pf-font-size-4xl);
+  }
+  
+  .hero-subtitle {
+    font-size: var(--pf-font-size-2xl);
+  }
+  
+  .hero-expertise {
+    font-size: var(--pf-font-size-xl);
+  }
+  
+  .hero-logo-img {
+    max-width: 700px;
+  }
+}
+
+/* Large desktop hero adjustments */
+@media (min-width: 1024px) {
   .hero {
     padding: calc(var(--pf-space-4xl) + 80px) 0 var(--pf-space-4xl);
   }
@@ -967,7 +1025,6 @@ body:not(.home-page) .navbar-small-logo {
   .hero-title {
     font-size: var(--pf-font-size-6xl);
   }
-  
   
   .hero-subtitle {
     font-size: var(--pf-font-size-2xl);
@@ -1003,22 +1060,8 @@ body:not(.home-page) .navbar-small-logo {
     min-width: var(--pf-logo-mobile-min-width);
     max-width: min(var(--pf-logo-mobile-max-width), 90vw);
   }
-  
-  .hero-title {
-    font-size: var(--pf-font-size-2xl);
-  }
-  
-  .hero-subtitle {
-    font-size: var(--pf-font-size-base);
-    line-height: 1.4;
-  }
-  
-  .hero-actions .btn {
-    width: 140px;
-    padding: var(--pf-space-sm) var(--pf-space-xs);
-    font-size: var(--pf-font-size-sm);
-  }
 }
+
 
 @media (max-width: 480px) {
   .hero {
@@ -1039,7 +1082,7 @@ body:not(.home-page) .navbar-small-logo {
   
   .hero-logo-img {
     min-width: 320px;
-    max-width: min(600px, 85vw);
+    max-width: min(500px, 95vw);
   }
   
   .hero-title {
@@ -1047,6 +1090,12 @@ body:not(.home-page) .navbar-small-logo {
   }
   
   .hero-subtitle {
+    font-size: var(--pf-font-size-sm);
+    line-height: 1.4;
+    text-align: center;
+  }
+  
+  .hero-expertise {
     font-size: var(--pf-font-size-sm);
   }
   
@@ -1057,33 +1106,10 @@ body:not(.home-page) .navbar-small-logo {
   }
 }
 
-/* Force two-line subtitle on small screens */
-@media (max-width: 600px) {
-  .hero-subtitle {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .hero-subtitle::before {
-    content: "Expert consultancy for";
-    display: block;
-  }
-  
-  .hero-subtitle::after {
-    content: "modern data solutions";
-    display: block;
-  }
-  
-  .hero-subtitle {
-    font-size: 0; /* Hide original text */
-  }
-}
-
-/* Reduce button gap for medium-small screens */
+/* Keep consistent button gap for all screen sizes */
 @media (min-width: 300px) and (max-width: 600px) {
   .hero-actions {
-    gap: var(--pf-space-xs);
+    gap: var(--pf-space-md);
   }
 }
 
