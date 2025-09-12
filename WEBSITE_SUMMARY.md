@@ -220,11 +220,65 @@ Polar Flows is a data consultancy website specializing in Azure, Databricks, AWS
 - **LinkedIn links**: Specific URLs for each team member
 - **Two-line subtitle**: Force break on mobile screens
 
+## SEO and Technical Files
+
+### Sitemap (sitemap.xml)
+- **Homepage**: `https://polarflows.com/` (priority 1.0, weekly updates)
+- **Contact Page**: `https://polarflows.com/contact/` (priority 0.8, monthly updates)
+- **Privacy Policy**: `https://polarflows.com/privacy-policy/` (priority 0.6, monthly updates)
+- **Assets**: CSS and JS files included for search engine discovery
+
+### Robots.txt
+- **Allowed**: Homepage, contact page, privacy policy, and all assets
+- **Disallowed**: Admin, private, temp, and logs directories
+- **Crawl Delay**: 1 second to be respectful to search engines
+- **Sitemap**: Points to sitemap.xml for search engine guidance
+
+### Open Graph Image (og-image.jpg)
+- **Location**: `assets/img/og-image.jpg`
+- **Dimensions**: 1200x630px (Facebook/LinkedIn standard)
+- **Purpose**: Social media sharing preview image
+- **Status**: ? Created (placeholder using Polar Flows logo)
+- **Generation**: Use `og-image-generator.html` for proper image creation
+- **Usage**: Referenced in all HTML files for social media sharing
+
+### Navigation and Links
+- **Footer Links**: All internal links use correct directory structure
+- **Privacy Policy**: Footer link fixed from `privacy-policy.html` to `./`
+- **Contact Page**: Footer links properly reference `../` for parent directory
+- **Home Links**: All pages link back to homepage with `../` or `/`
+
+### Service Worker (sw.js)
+- **Location**: `/sw.js` (root directory)
+- **Purpose**: Offline functionality and performance improvements
+- **Features**: 
+  - Caches static assets (HTML, CSS, JS, images)
+  - Serves cached content when offline
+  - Automatic cache updates and cleanup
+  - Background sync support (for future use)
+  - Push notification support (for future use)
+- **Privacy**: No data collection, purely local caching
+- **Registration**: Automatically registered in main.js
+- **Cache Strategy**: Static assets cached immediately, dynamic content cached on demand
+
 ## Maintenance Notes
 - **Logo Animation**: Core feature requiring careful scroll position handling
 - **Mobile Testing**: Critical for logo sizing and button layout
 - **Cross-Browser**: Test scroll behavior on different mobile browsers
 - **Performance**: Monitor animation smoothness during resize events
 - **Content Updates**: Team info, partnerships, and contact details may change
+- **SEO Files**: Keep sitemap.xml and robots.txt updated when adding new pages
+
+## AI Assistant Instructions
+**IMPORTANT**: When making any changes to this website, you MUST:
+1. **Update this WEBSITE_SUMMARY.md file** to reflect the changes made
+2. **Update README.md** if changes affect user-facing features or setup instructions
+3. **Document new features, fixes, or modifications** in the appropriate sections
+4. **Keep the technical specifications current** and accurate
+5. **Add new maintenance notes** for any new components or features
+6. **Update file structure documentation** when adding/removing files
+7. **Maintain the critical rules sections** for future AI assistants
+
+**This documentation must stay current and comprehensive for the website to be properly maintained.**
 
 This website represents a modern, responsive data consultancy site with sophisticated animations and user experience optimizations.
