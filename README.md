@@ -6,7 +6,7 @@ Welcome to the Polar Flows website! This is a modern, professional website for o
 
 **IMPORTANT**: This website uses query string versioning to prevent browser caching issues. When making changes to CSS or JavaScript files, you MUST update the version numbers in all HTML files.
 
-**Current Version**: `v1.0.9`
+**Current Version**: `v1.0.10`
 
 **Quick Version Update Process**:
 1. Increment version number (e.g., `v1.0.1` to `v1.0.2`)

@@ -1535,7 +1535,7 @@ body:not(.home-page) .navbar-small-logo {
 }
 
 .journey-steps li::before {
-  content: "✓";
+  content: "?";
   position: absolute;
   left: 0;
   color: var(--pf-success);

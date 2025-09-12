@@ -379,11 +379,6 @@ Polar Flows is a data consultancy website specializing in Azure, Databricks, AWS
 - `assets/img/README.md` - Fixed UTF-8 encoding in team member name
 
 #### **Technical Details:**
-- Replaced `ó` (em dash) with `-` (hyphen) in titles
-- Replaced `?` (up arrow) with `&uarr;` (HTML entity) in back-to-top buttons
-- Replaced `?` (right arrow) with `to` in documentation
-- Replaced `??` (warning emoji) with plain text
-- Fixed `Daniel Sj√∂holm` encoding issue
 
 ### Version 1.0.8 - UI/UX Improvements and Bug Fixes
 
