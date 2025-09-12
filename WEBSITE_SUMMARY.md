@@ -33,6 +33,14 @@ Polar Flows is a data consultancy website specializing in Azure, Databricks, AWS
 - **Mobile Safety**: Uses `Math.max(0, window.scrollY)` to prevent negative scroll bugs
 - **Animation Speed**: Configurable with `dynamicPercentage` and `earlyFinishPx` parameters
 
+#### Critical Logo Animation Rules:
+- **NEVER use negative scroll values**: Always use `Math.max(0, window.scrollY)` - mobile browsers can report negative values causing visual bugs
+- **Animation parameters**: `dynamicPercentage = 0.35`, `earlyFinishPx = 15` for faster completion
+- **Resize handling**: Real-time updates during window resize using `requestAnimationFrame`
+- **Progress threshold**: Animation completes at `progress >= 0.99` (not 1.0)
+- **Menu integration**: Animation pauses when mobile menu is open
+- **Y-position calculation**: Uses fixed `referenceLogoHeight = 100` to prevent wiggling during resize
+
 ### Responsive Design Rules
 - **Mobile First**: Optimized for mobile devices with progressive enhancement
 - **Breakpoints**: 
@@ -42,12 +50,27 @@ Polar Flows is a data consultancy website specializing in Azure, Databricks, AWS
 - **Logo Sizing**: Larger on mobile to ensure it's always bigger than title text
 - **Button Optimization**: Compact sizing on small screens to prevent wrapping
 
+#### Critical Visual Rules:
+- **Logo dominance on mobile**: Logo must ALWAYS be wider than "Turning data into actions" text
+- **Mobile logo sizing**: `min-width: 350px`, `max-width: min(700px, 90vw)` on mobile
+- **Hero content constraints**: Remove `max-width: 800px` and reduce padding on mobile for logo space
+- **Button gap optimization**: Reduce gap to `var(--pf-space-xs)` on 300-600px screens
+- **Two-line subtitle**: Force "Expert consultancy for" / "modern data solutions" on ?600px screens
+- **Team grid distribution**: NEVER allow single item in last row - use 2x2 grid on mobile/tablet, 4x1 on desktop
+
 ### Section Background Colors
 - **Main Page Only**: 
   - "Why Choose Polar Flows" (services): Blue background (`#d1e7ff`)
   - "Meet the Team": Blue background (`#d1e7ff`)
 - **Other Pages**: White backgrounds for all sections
 - **Implementation**: Uses `.index` class on main page body for specificity
+
+#### Section Styling Rules:
+- **Expertise section**: Transparent boxes with minimal hover effects (no border, no shadow, no color change)
+- **Databricks partner section**: Keep original styling (blue background, border, shadow, color changes on hover)
+- **Team section**: Transparent boxes with minimal hover (only upward movement and shadow)
+- **Services section**: Boxes match background color (`#d1e7ff`) for seamless appearance
+- **Page specificity**: Always use `.index` class for main page-only styles to prevent affecting other pages
 
 ### Navigation System
 - **Mobile Menu**: Hamburger menu with smooth animations
@@ -58,6 +81,14 @@ Polar Flows is a data consultancy website specializing in Azure, Databricks, AWS
 - **Custom Validation**: Replaces browser default alerts
 - **Notifications**: Positioned above submit button
 - **Error Messages**: User-friendly text instead of technical validation errors
+
+#### Form and Interaction Rules:
+- **Custom notifications**: NEVER use browser default alerts - always use custom styled notifications
+- **Notification positioning**: Place notifications above the submit button, not at the top
+- **Error message text**: Use "Please fill in all required fields correctly" instead of technical validation messages
+- **Email links**: Team email links must NOT scroll to top - use `javascript:void(0)` with `window.open()` or `onclick` handlers
+- **Navigation errors**: Handle missing navigation elements gracefully - check for null before accessing properties
+- **Form validation**: Show notifications immediately on form load for validation errors
 
 ## Technical Architecture
 
@@ -87,11 +118,26 @@ Polar Flows is a data consultancy website specializing in Azure, Databricks, AWS
 - **Contact Info**: Email and LinkedIn links (emails don't scroll to top)
 - **Layout**: 2x2 grid on mobile/tablet, 4x1 on desktop
 
+#### Team Section Rules:
+- **No team descriptions**: Remove all `<p class="team-bio">` elements
+- **Email link behavior**: Must NOT scroll to top when clicked
+- **LinkedIn links**: Specific URLs for each team member (Mert, Yunus, Linggar updated)
+- **Spacing**: Reduced spacing between job title, email, and LinkedIn
+- **Grid distribution**: Use `grid-template-columns: repeat(2, 1fr)` for mobile/tablet, `repeat(4, 1fr)` for desktop
+
 ### Expertise/Partnerships
 - **15+ Technologies**: Azure, AWS, Databricks, Snowflake, dbt, Power BI, Tableau, etc.
 - **Order**: Specific order maintained (Azure first, Fabric/Immuta last)
 - **Styling**: Transparent boxes with minimal hover effects
 - **Databricks Special**: Separate section with partner directory link
+
+#### Expertise Section Rules:
+- **Exact order required**: Microsoft Azure, Amazon Web Services, Databricks, Snowflake, Synapse Analytics, dbt, Power BI, Tableau, Azure DevOps, Terraform, Docker, Kubernetes, Kafka, Microsoft Fabric, Immuta
+- **Transparent styling**: `background: transparent`, `border: 1px solid transparent`
+- **Minimal hover effects**: Only subtle background color change, no border, no shadow, no text color change
+- **Reduced spacing**: `gap: var(--pf-space-sm)` for tighter layout
+- **Databricks partner section**: Keep original styling with full hover effects (background, border, shadow, text color)
+- **Partner directory**: Add "Partner Directory" text above Databricks logo, make both clickable together
 
 ### Text Content
 - **Hero Subtitle**: "Expert consultancy for modern data solutions" (two-line on mobile)
@@ -138,6 +184,41 @@ Polar Flows is a data consultancy website specializing in Azure, Databricks, AWS
 ?   ??? img/ (logos, icons, team photos)
 ??? WEBSITE_SUMMARY.md
 ```
+
+## Critical Rules for AI Agents
+
+### Logo Animation (CRITICAL)
+- **NEVER use negative scroll values**: Always use `Math.max(0, window.scrollY)`
+- **Mobile browser bug**: Negative scroll positions cause visual bugs on mobile
+- **Animation parameters**: `dynamicPercentage = 0.35`, `earlyFinishPx = 15`
+- **Resize handling**: Use `requestAnimationFrame` for real-time updates
+- **Progress threshold**: Complete at `progress >= 0.99`, not 1.0
+
+### Visual Requirements (CRITICAL)
+- **Logo dominance**: Logo must ALWAYS be wider than title text on mobile
+- **Mobile logo sizing**: `min-width: 350px`, `max-width: min(700px, 90vw)`
+- **Hero content**: Remove `max-width: 800px` and reduce padding on mobile
+- **Team grid**: NEVER allow single item in last row - use 2x2 on mobile/tablet
+- **Button optimization**: Reduce gap to `var(--pf-space-xs)` on 300-600px screens
+
+### Section Styling (CRITICAL)
+- **Expertise section**: Transparent boxes, minimal hover effects
+- **Databricks partner**: Keep original styling with full hover effects
+- **Team section**: Transparent boxes, minimal hover
+- **Page specificity**: Use `.index` class for main page-only styles
+- **Background colors**: Blue only on main page, white on other pages
+
+### Form and Interaction (CRITICAL)
+- **Custom notifications**: NEVER use browser default alerts
+- **Email links**: Must NOT scroll to top - use `javascript:void(0)`
+- **Notification positioning**: Above submit button, not at top
+- **Error messages**: User-friendly text, not technical validation messages
+
+### Content Rules (CRITICAL)
+- **Team descriptions**: Remove all team bios
+- **Expertise order**: Exact order must be maintained
+- **LinkedIn links**: Specific URLs for each team member
+- **Two-line subtitle**: Force break on mobile screens
 
 ## Maintenance Notes
 - **Logo Animation**: Core feature requiring careful scroll position handling
