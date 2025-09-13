@@ -437,7 +437,7 @@ Get-ChildItem -Recurse -Include "*.html","*.md","*.css","*.js" | ForEach-Object 
 - Ensured universal browser compatibility
 
 #### **Technical Implementation:**
-- **CSS Approach**: Replaced `content: "•"` with `content: ""`
+- **CSS Approach**: Replaced `content: "bullet"` with `content: ""`
 - **Bullet Creation**: Used CSS `width: 6px; height: 6px; border-radius: 50%`
 - **Positioning**: `top: 50%; transform: translateY(-50%)` for perfect vertical alignment
 - **Color**: Maintained green color using `background-color: var(--pf-success)`
@@ -472,19 +472,19 @@ Get-ChildItem -Recurse -Include "*.html","*.md","*.css","*.js" | ForEach-Object 
 
 #### **Bullet Point Display Fix:**
 - Fixed bullet points showing as "?" in the "Ready to Start" section
-- Replaced corrupted character with proper bullet symbol (•)
+- Replaced corrupted character with proper bullet symbol (bullet)
 - Ensured proper UTF-8 encoding for all special characters
 - Verified all HTML files have correct charset declarations
 
 #### **Technical Implementation:**
-- **CSS Fix**: Updated `.journey-steps li::before` content from corrupted character to "•"
+- **CSS Fix**: Updated `.journey-steps li::before` content from corrupted character to "bullet"
 - **Encoding**: Verified UTF-8 charset is properly set in all HTML files
-- **Character**: Used proper bullet character (•) instead of placeholder/question mark
+- **Character**: Used proper bullet character (bullet) instead of placeholder/question mark
 - **Consistency**: Maintained green color and bold styling for bullet points
 
 #### **Visual Result:**
 - **Before**: Bullet points displayed as "?" (corrupted character)
-- **After**: Clean bullet points (•) in green color
+- **After**: Clean bullet points (bullet) in green color
 - **Professional Look**: Proper typography and visual hierarchy
 - **Encoding**: All special characters display correctly across browsers
 
@@ -497,7 +497,7 @@ Get-ChildItem -Recurse -Include "*.html","*.md","*.css","*.js" | ForEach-Object 
 
 #### **Hero Section Enhancement:**
 - Added Stockholm location line right under "Expert consultancy for modern data solutions"
-- Used same text size and styling as the hashtag line (#Azure · #AWS · #Databricks · #Snowflake)
+- Used same text size and styling as the hashtag line (#Azure &middot; #AWS &middot; #Databricks &middot; #Snowflake)
 - Added location icon (same as footer) with appropriate sizing
 - Maintains consistent spacing and visual hierarchy
 
