@@ -932,6 +932,27 @@ body:not(.home-page) .navbar-small-logo {
   -ms-hyphens: auto;
 }
 
+.hero-location {
+  font-size: var(--pf-font-size-lg);
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: var(--pf-space-lg);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: var(--pf-line-height-relaxed);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--pf-space-xs);
+}
+
+.hero-location .location-icon {
+  flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.8);
+}
+
 .hero-expertise {
   font-size: var(--pf-font-size-lg);
   color: rgba(255, 255, 255, 0.8);
@@ -984,6 +1005,10 @@ body:not(.home-page) .navbar-small-logo {
     font-size: var(--pf-font-size-xl);
   }
   
+  .hero-location {
+    font-size: var(--pf-font-size-lg);
+  }
+  
   .hero-expertise {
     font-size: var(--pf-font-size-lg);
   }
@@ -1007,6 +1032,10 @@ body:not(.home-page) .navbar-small-logo {
     font-size: var(--pf-font-size-2xl);
   }
   
+  .hero-location {
+    font-size: var(--pf-font-size-xl);
+  }
+  
   .hero-expertise {
     font-size: var(--pf-font-size-xl);
   }
@@ -1028,6 +1057,10 @@ body:not(.home-page) .navbar-small-logo {
   
   .hero-subtitle {
     font-size: var(--pf-font-size-2xl);
+  }
+  
+  .hero-location {
+    font-size: var(--pf-font-size-xl);
   }
   
   .hero-expertise {
@@ -1096,6 +1129,10 @@ body:not(.home-page) .navbar-small-logo {
     font-size: var(--pf-font-size-sm);
     line-height: 1.4;
     text-align: center;
+  }
+  
+  .hero-location {
+    font-size: var(--pf-font-size-sm);
   }
   
   .hero-expertise {
@@ -1538,11 +1575,15 @@ body:not(.home-page) .navbar-small-logo {
 }
 
 .journey-steps li::before {
-  content: "?";
+  content: "";
   position: absolute;
   left: 0;
-  color: var(--pf-success);
-  font-weight: var(--pf-font-weight-bold);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  background-color: var(--pf-text-primary);
+  border-radius: 50%;
 }
 
 /* Mobile journey adjustments */

@@ -361,7 +361,7 @@ Get-ChildItem -Recurse -Include "*.html","*.md","*.css","*.js" | ForEach-Object 
 
 **CRITICAL**: The website uses query string versioning to prevent browser caching issues. When making changes to CSS or JavaScript files, you MUST update the version numbers in all HTML files.
 
-### Current Version: `v1.0.20`
+### Current Version: `v1.0.24`
 
 ### Files That Need Version Updates:
 - `index.html` - All CSS and JS links
@@ -388,6 +388,137 @@ Get-ChildItem -Recurse -Include "*.html","*.md","*.css","*.js" | ForEach-Object 
 **Why This Matters**: Without versioning, browsers cache CSS/JS files and changes won't appear until cache expires (days/weeks). Versioning forces immediate updates.
 
 ## Recent Updates (Latest Session)
+
+### Version 1.0.24 - Improved Bullet Point Color
+
+#### **Better Bullet Color:**
+- Changed bullet points from green to black for better readability
+- Used standard text color (`var(--pf-text-primary)`) for consistency
+- Improved visual hierarchy and professional appearance
+- Maintained clean, round bullet design
+
+#### **Technical Change:**
+- **Color Update**: Changed `background-color: var(--pf-success)` to `background-color: var(--pf-text-primary)`
+- **Result**: Bullet points now match the text color for better visual harmony
+- **Design**: More standard and professional bullet appearance
+
+#### **Visual Result:**
+- **Before**: Green circular bullets (stood out too much)
+- **After**: Black circular bullets (standard, professional look)
+- **Consistency**: Matches text color for better visual flow
+- **Readability**: Better contrast and less distracting
+
+#### **CSS Code:**
+```css
+.journey-steps li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  background-color: var(--pf-text-primary); /* Changed from var(--pf-success) */
+  border-radius: 50%;
+}
+```
+
+#### **Files Modified:**
+- `assets/css/main.css` - Updated bullet color to black
+- All HTML files - Updated to version 1.0.24
+- `sw.js` - Updated cache version to 1.0.24
+
+### Version 1.0.23 - Fixed Bullet Character Display Issue
+
+#### **CSS-Based Bullet Solution:**
+- Fixed bullet points showing as "green square with question mark"
+- Replaced text-based bullet character with CSS-generated bullet
+- Used `border-radius: 50%` to create perfect circular bullets
+- Ensured universal browser compatibility
+
+#### **Technical Implementation:**
+- **CSS Approach**: Replaced `content: "•"` with `content: ""`
+- **Bullet Creation**: Used CSS `width: 6px; height: 6px; border-radius: 50%`
+- **Positioning**: `top: 50%; transform: translateY(-50%)` for perfect vertical alignment
+- **Color**: Maintained green color using `background-color: var(--pf-success)`
+
+#### **Visual Result:**
+- **Before**: Green square with question mark (character not supported)
+- **After**: Clean, perfectly round green bullets
+- **Universal**: Works across all browsers and fonts
+- **Professional**: Consistent, modern bullet appearance
+
+#### **CSS Code:**
+```css
+.journey-steps li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  background-color: var(--pf-success);
+  border-radius: 50%;
+}
+```
+
+#### **Files Modified:**
+- `assets/css/main.css` - Implemented CSS-based bullet solution
+- All HTML files - Updated to version 1.0.23
+- `sw.js` - Updated cache version to 1.0.23
+
+### Version 1.0.22 - Fixed Bullet Points in Ready to Start Section
+
+#### **Bullet Point Display Fix:**
+- Fixed bullet points showing as "?" in the "Ready to Start" section
+- Replaced corrupted character with proper bullet symbol (•)
+- Ensured proper UTF-8 encoding for all special characters
+- Verified all HTML files have correct charset declarations
+
+#### **Technical Implementation:**
+- **CSS Fix**: Updated `.journey-steps li::before` content from corrupted character to "•"
+- **Encoding**: Verified UTF-8 charset is properly set in all HTML files
+- **Character**: Used proper bullet character (•) instead of placeholder/question mark
+- **Consistency**: Maintained green color and bold styling for bullet points
+
+#### **Visual Result:**
+- **Before**: Bullet points displayed as "?" (corrupted character)
+- **After**: Clean bullet points (•) in green color
+- **Professional Look**: Proper typography and visual hierarchy
+- **Encoding**: All special characters display correctly across browsers
+
+#### **Files Modified:**
+- `assets/css/main.css` - Fixed bullet point content in journey-steps
+- All HTML files - Updated to version 1.0.22
+- `sw.js` - Updated cache version to 1.0.22
+
+### Version 1.0.21 - Added Stockholm Location Line to Hero Section
+
+#### **Hero Section Enhancement:**
+- Added Stockholm location line right under "Expert consultancy for modern data solutions"
+- Used same text size and styling as the hashtag line (#Azure · #AWS · #Databricks · #Snowflake)
+- Added location icon (same as footer) with appropriate sizing
+- Maintains consistent spacing and visual hierarchy
+
+#### **Technical Implementation:**
+- **HTML**: Added new `<p class="hero-location">` element with SVG location icon and "Stockholm" text
+- **CSS**: Created `.hero-location` styling matching `.hero-expertise` appearance
+- **Icon**: Used same location SVG from footer with 16x16px size
+- **Responsive**: Added responsive font sizing across all breakpoints
+- **Layout**: Flexbox layout with centered alignment and proper spacing
+
+#### **Visual Result:**
+- **Location Display**: ?? Stockholm appears between subtitle and hashtags
+- **Consistent Styling**: Matches hashtag line appearance and spacing
+- **Professional Look**: Clean, centered location indication
+- **Responsive**: Scales properly across all device sizes
+
+#### **Files Modified:**
+- `index.html` - Added hero location line with SVG icon
+- `assets/css/main.css` - Added hero-location styling and responsive breakpoints
+- All HTML files - Updated to version 1.0.21
+- `sw.js` - Updated cache version to 1.0.21
 
 ### Version 1.0.20 - Fixed Mobile Hero Background & Restored Section Colors
 
