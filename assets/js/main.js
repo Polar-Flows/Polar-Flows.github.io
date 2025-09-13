@@ -176,8 +176,11 @@ class PolarFlowsApp {
       background-size: cover;
       background-position: center center;
       background-repeat: no-repeat;
-      background-attachment: fixed;
+      background-attachment: scroll;
       z-index: 0;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
     `;
     
     // Insert background element at the beginning of hero

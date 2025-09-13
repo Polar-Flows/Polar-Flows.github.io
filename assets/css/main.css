@@ -879,9 +879,9 @@ body:not(.home-page) .navbar-small-logo {
 }
 
 .hero-title-line:first-child {
-  color: var(--pf-white);
+  color: #ffffff !important;
   opacity: 0.95;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
 }
 
 .hero-title-gray {
@@ -909,22 +909,22 @@ body:not(.home-page) .navbar-small-logo {
 }
 
 .hero-title-rest {
-  color: var(--pf-white);
+  color: #ffffff !important;
   font-weight: var(--pf-font-weight-semibold);
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
 }
 
 .hero-subtitle {
   font-size: var(--pf-font-size-xl);
-  color: var(--pf-white);
+  color: #ffffff !important;
   margin-bottom: var(--pf-space-lg);
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
   /* Mobile optimization */
   line-height: var(--pf-line-height-relaxed);
-  opacity: 0.9;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  opacity: 0.95;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
   word-wrap: break-word;
   overflow-wrap: break-word;
   hyphens: auto;
@@ -934,13 +934,13 @@ body:not(.home-page) .navbar-small-logo {
 
 .hero-location {
   font-size: var(--pf-font-size-lg);
-  color: rgba(255, 255, 255, 0.8);
+  color: #ffffff !important;
   margin-bottom: var(--pf-space-lg);
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
   line-height: var(--pf-line-height-relaxed);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
   font-weight: 500;
   display: flex;
   align-items: center;
@@ -955,13 +955,13 @@ body:not(.home-page) .navbar-small-logo {
 
 .hero-expertise {
   font-size: var(--pf-font-size-lg);
-  color: rgba(255, 255, 255, 0.8);
+  color: #ffffff !important;
   margin-bottom: var(--pf-space-2xl);
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
   line-height: var(--pf-line-height-relaxed);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
   font-weight: 500;
 }
 
@@ -1184,6 +1184,21 @@ body:not(.home-page) .navbar-small-logo {
     background-attachment: scroll !important;
     background-size: cover !important;
     background-position: center center !important;
+    -webkit-background-size: cover !important;
+    -moz-background-size: cover !important;
+    -o-background-size: cover !important;
+    background-image: url('../img/polarflows/Stockholm_modif.avif'), url('../img/polarflows/Stockholm_modif.webp'), url('../img/polarflows/Stockholm_modif.jpg') !important;
+  }
+  
+  .hero-background-mobile {
+    background-attachment: scroll !important;
+    background-size: cover !important;
+    background-position: center center !important;
+    -webkit-background-size: cover !important;
+    -moz-background-size: cover !important;
+    -o-background-size: cover !important;
+    display: block !important;
+    visibility: visible !important;
   }
 }
 

@@ -361,7 +361,7 @@ Get-ChildItem -Recurse -Include "*.html","*.md","*.css","*.js" | ForEach-Object 
 
 **CRITICAL**: The website uses query string versioning to prevent browser caching issues. When making changes to CSS or JavaScript files, you MUST update the version numbers in all HTML files.
 
-### Current Version: `v1.0.24`
+### Current Version: `v1.0.25`
 
 ### Files That Need Version Updates:
 - `index.html` - All CSS and JS links
@@ -388,6 +388,51 @@ Get-ChildItem -Recurse -Include "*.html","*.md","*.css","*.js" | ForEach-Object 
 **Why This Matters**: Without versioning, browsers cache CSS/JS files and changes won't appear until cache expires (days/weeks). Versioning forces immediate updates.
 
 ## Recent Updates (Latest Session)
+
+### Version 1.0.25 - Fixed iOS/iPhone Display Issues
+
+#### **iOS Background Image Fix:**
+- Fixed background image not displaying at all on iPhone/iOS
+- Replaced `background-attachment: fixed` with `background-attachment: scroll` for iOS compatibility
+- Added iOS-specific CSS fixes using `@supports (-webkit-touch-callout: none)`
+- Enhanced mobile parallax implementation with better cross-browser support
+
+#### **iOS Text Visibility Fix:**
+- Fixed all text showing as white/invisible on iPhone/iOS
+- Changed hero text colors from `var(--pf-white)` to `#ffffff !important`
+- Enhanced text shadows for better contrast and readability
+- Improved text visibility across all hero elements (title, subtitle, location, expertise)
+
+#### **Technical Implementation:**
+- **JavaScript**: Updated mobile parallax to use `background-attachment: scroll`
+- **CSS**: Added iOS-specific fixes with `@supports` query
+- **Text Colors**: Used explicit `#ffffff !important` instead of CSS variables
+- **Text Shadows**: Enhanced shadows from `rgba(0, 0, 0, 0.3)` to `rgba(0, 0, 0, 0.8)`
+- **Cross-Browser**: Added `-webkit-`, `-moz-`, `-o-` prefixes for background-size
+
+#### **iOS-Specific CSS Fixes:**
+```css
+@supports (-webkit-touch-callout: none) {
+  .hero {
+    background-attachment: scroll !important;
+    background-size: cover !important;
+    -webkit-background-size: cover !important;
+    background-image: url('../img/polarflows/Stockholm_modif.avif') !important;
+  }
+}
+```
+
+#### **Visual Result:**
+- **Before**: No background image, invisible white text on iOS
+- **After**: Clear background image display, visible white text with proper contrast
+- **Cross-Platform**: Consistent experience across all iOS devices and Safari versions
+- **Performance**: Optimized for iOS Safari rendering engine
+
+#### **Files Modified:**
+- `assets/js/main.js` - Fixed mobile parallax background-attachment
+- `assets/css/main.css` - Added iOS-specific fixes and text color improvements
+- All HTML files - Updated to version 1.0.25
+- `sw.js` - Updated cache version to 1.0.25
 
 ### Version 1.0.24 - Improved Bullet Point Color
 
