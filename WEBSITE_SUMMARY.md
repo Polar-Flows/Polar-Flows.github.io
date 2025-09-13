@@ -361,7 +361,7 @@ Get-ChildItem -Recurse -Include "*.html","*.md","*.css","*.js" | ForEach-Object 
 
 **CRITICAL**: The website uses query string versioning to prevent browser caching issues. When making changes to CSS or JavaScript files, you MUST update the version numbers in all HTML files.
 
-### Current Version: `v1.0.12`
+### Current Version: `v1.0.20`
 
 ### Files That Need Version Updates:
 - `index.html` - All CSS and JS links
@@ -388,6 +388,199 @@ Get-ChildItem -Recurse -Include "*.html","*.md","*.css","*.js" | ForEach-Object 
 **Why This Matters**: Without versioning, browsers cache CSS/JS files and changes won't appear until cache expires (days/weeks). Versioning forces immediate updates.
 
 ## Recent Updates (Latest Session)
+
+### Version 1.0.20 - Fixed Mobile Hero Background & Restored Section Colors
+
+#### **Mobile Hero Background Fix:**
+- Fixed mobile hero background effect that wasn't working on small screens
+- Improved mobile parallax implementation with better positioning
+- Mobile now uses `position: absolute` with `background-attachment: fixed` for reliability
+- Background stays static while content scrolls over it on mobile devices
+
+#### **Section Background Restoration:**
+- Restored blue backgrounds for "Why Choose Polar Flows" section
+- Restored blue backgrounds for "Meet the Team" section  
+- Restored blue backgrounds for value prop cards
+- Corrected the mistaken removal of section background colors
+
+#### **Technical Improvements:**
+- **Mobile Hero**: Uses `position: absolute` with `background-attachment: fixed`
+- **Desktop Hero**: Maintains original CSS `background-attachment: fixed`
+- **Section Colors**: All sections now have correct blue/white backgrounds
+- **Cross-Device**: Static background effect works on both desktop and mobile
+
+#### **Files Modified:**
+- `assets/js/main.js` - Fixed mobile hero background implementation
+- `assets/css/main.css` - Restored section background colors
+- All HTML files - Updated to version 1.0.20
+- `sw.js` - Updated cache version to 1.0.20
+
+### Version 1.0.19 - Reverted Non-Hero Section Backgrounds
+
+#### **Section Background Revert:**
+- Reverted all non-hero sections to white backgrounds
+- Only hero section now has the static background effect
+- Services section, team section, and value prop cards now have white backgrounds
+- Clean, consistent white background for all content sections
+
+#### **Technical Changes:**
+- **Services Section**: Reverted from blue to white background
+- **Team Section**: Reverted from blue to white background  
+- **Value Prop Cards**: Reverted from blue to white background
+- **Hero Section**: Maintains static background effect (unchanged)
+
+#### **Visual Result:**
+- **Hero Section**: Static Stockholm background with content scrolling over it
+- **All Other Sections**: Clean white backgrounds with normal content
+- **Consistent Design**: Professional white background throughout the site
+- **Focus on Hero**: Static background effect only where intended
+
+#### **Files Modified:**
+- `assets/css/main.css` - Reverted section backgrounds to white
+- All HTML files - Updated to version 1.0.19
+- `sw.js` - Updated cache version to 1.0.19
+
+### Version 1.0.18 - Static Background Implementation
+
+#### **Static Background Fix:**
+- Made background image completely static - no movement at all during scroll
+- Background stays in exactly the same position while content scrolls over it
+- Removed all JavaScript-based background movement
+- Created true static background effect on both desktop and mobile
+
+#### **Technical Implementation:**
+- **Desktop**: Uses CSS `background-attachment: fixed` with no JavaScript manipulation
+- **Mobile**: Creates static background element with `position: fixed` and no transform animations
+- **No Movement**: Background image remains in exactly the same position during scroll
+- **Pure CSS**: Desktop relies entirely on CSS for static background behavior
+
+#### **How It Works:**
+- **Desktop**: CSS `background-attachment: fixed` keeps background stationary
+- **Mobile**: JavaScript creates `position: fixed` element that doesn't move
+- **Result**: Background image stays in exact same position while content scrolls over it
+- **Effect**: Clean, static background with content scrolling on top
+
+#### **Files Modified:**
+- `assets/js/main.js` - Removed all background movement logic, made background completely static
+- All HTML files - Updated to version 1.0.18
+- `sw.js` - Updated cache version to 1.0.18
+
+### Version 1.0.17 - Proper Parallax Effect Implementation
+
+#### **Parallax Effect Fix:**
+- Fixed both desktop and mobile parallax to create proper "background stays in place" effect
+- Background now moves slower than scroll speed (50% of scroll speed)
+- Creates authentic parallax depth effect where background appears stationary
+- Unified parallax behavior across all devices and screen sizes
+
+#### **Technical Implementation:**
+- **Desktop**: Uses `background-position: left ${scrollY * 0.5}px` for slower background movement
+- **Mobile**: Uses `transform: translateY(-${scrollY * 0.5}px)` for opposite-direction parallax
+- **Parallax Speed**: Both methods use 50% scroll speed for authentic parallax effect
+- **Visual Effect**: Background appears to stay in place while content scrolls over it
+
+#### **Why This Works:**
+- **Desktop**: Background moves at 50% of scroll speed, creating parallax depth
+- **Mobile**: Background transforms in opposite direction at 50% speed, creating same visual effect
+- **Consistent Experience**: Both methods achieve identical "background stays in place" parallax effect
+- **Performance**: Optimized for smooth scrolling on all devices
+
+#### **Files Modified:**
+- `assets/js/main.js` - Fixed parallax calculations for both desktop and mobile
+- All HTML files - Updated to version 1.0.17
+- `sw.js` - Updated cache version to 1.0.17
+
+### Version 1.0.16 - Fixed Mobile Background Image Paths
+
+#### **Mobile Background Image Fix:**
+- Fixed 404 errors for background images in mobile parallax implementation
+- Added dynamic path detection for different page locations
+- JavaScript now correctly loads Stockholm background images on mobile devices
+- Resolved image loading issues across main page and sub-pages
+
+#### **Technical Fix:**
+- **Path Detection**: Automatically detects if running on sub-pages (contact, privacy-policy)
+- **Dynamic Paths**: Uses `../assets/img/polarflows/` for sub-pages, `assets/img/polarflows/` for main page
+- **Image Loading**: Background images now load correctly in mobile parallax implementation
+- **Cross-Page Compatibility**: Works on all pages (index, contact, privacy-policy)
+
+#### **Files Modified:**
+- `assets/js/main.js` - Fixed image paths in mobile parallax implementation
+- All HTML files - Updated to version 1.0.16
+- `sw.js` - Updated cache version to 1.0.16
+
+### Version 1.0.15 - Proper Mobile Parallax Implementation
+
+#### **Mobile Parallax Solution:**
+- Implemented proper mobile parallax using JavaScript transform instead of CSS background-attachment
+- Desktop uses CSS `background-attachment: fixed` with background-position changes
+- Mobile uses dynamically created background element with `transform: translateY()`
+- Automatic detection and switching between mobile/desktop methods
+- Responsive reinitialization on orientation changes
+
+#### **Technical Implementation:**
+- **Desktop**: Uses `initDesktopParallax()` with `background-position: left ${offset}%`
+- **Mobile**: Uses `initMobileParallax()` with `transform: translateY(${offset}px)`
+- **Detection**: Automatically detects screen width ? 768px for mobile
+- **Performance**: Uses `will-change: transform` and throttled scroll events
+- **Responsive**: Reinitializes method on window resize/orientation change
+
+#### **Why This Works:**
+- `background-attachment: fixed` is disabled on mobile browsers for performance
+- Mobile parallax uses separate DOM element with transform for smooth scrolling
+- Desktop maintains original CSS-based parallax for optimal performance
+- Both methods achieve the same visual sliding effect
+
+#### **Files Modified:**
+- `assets/js/main.js` - Added mobile/desktop parallax detection and implementation
+- `assets/css/main.css` - Updated mobile CSS for proper parallax container setup
+- All HTML files - Updated to version 1.0.15
+- `sw.js` - Updated cache version to 1.0.15
+
+### Version 1.0.14 - Unified Hero Background Animation
+
+#### **Background Animation Correction:**
+- Reverted to unified background sliding behavior for both desktop and mobile
+- Removed mobile-specific background animation parameters and logic
+- Ensured `background-attachment: fixed` works consistently across all devices
+- Simplified JavaScript to use same sliding logic for all screen sizes
+
+#### **Technical Changes:**
+- Removed `MOBILE_MAX_BACKGROUND_OFFSET` and `MOBILE_BACKGROUND_BREAKPOINT` from constants
+- Reverted mobile CSS to use `background-attachment: fixed` instead of `scroll`
+- Simplified `initSlidingBackground()` function to use unified logic
+- All devices now use `left` positioning with 50% max offset
+- Removed mobile-specific resize handling and transitions
+
+#### **Files Modified:**
+- `assets/js/constants.js` - Removed mobile-specific background parameters
+- `assets/js/main.js` - Simplified to unified background animation logic
+- `assets/css/main.css` - Reverted mobile CSS to use fixed attachment
+- All HTML files - Updated to version 1.0.14
+- `sw.js` - Updated cache version to 1.0.14
+
+### Version 1.0.13 - Mobile Hero Background Animation Fix
+
+#### **Mobile Background Animation Improvements:**
+- Fixed hero section background sliding effect on mobile devices
+- Added mobile-specific background animation parameters to constants
+- Implemented responsive background positioning for different screen sizes
+- Added smooth transitions for background position changes on mobile
+- Updated JavaScript to handle mobile vs desktop background animation differently
+
+#### **Technical Changes:**
+- Added `MOBILE_MAX_BACKGROUND_OFFSET: 30` and `MOBILE_BACKGROUND_BREAKPOINT: 768` to constants
+- Modified `initSlidingBackground()` function to detect mobile screens and use different animation logic
+- Updated CSS to enable smooth background position transitions on mobile
+- Mobile uses `center` positioning with reduced offset for better performance
+- Desktop maintains original `left` positioning with full offset
+
+#### **Files Modified:**
+- `assets/js/constants.js` - Added mobile background animation parameters
+- `assets/js/main.js` - Updated background animation logic for mobile compatibility
+- `assets/css/main.css` - Added transition support for mobile background positioning
+- All HTML files - Updated to version 1.0.13
+- `sw.js` - Updated cache version to 1.0.13
 
 ### Version 1.0.12 - UTF-8 Encoding Prevention Documentation
 

@@ -117,31 +117,78 @@ class PolarFlowsApp {
     const hero = document.querySelector('.hero');
     if (!hero) return;
 
-    const handleScroll = () => {
-      const scrollY = Math.max(0, window.scrollY);
-      const heroHeight = hero.offsetHeight;
-      const maxScroll = heroHeight;
-      
-      // Calculate the background position based on scroll
-      // Start at top (0%) and move down as user scrolls
-      const backgroundPosition = Math.min(scrollY / maxScroll * CONFIG.ANIMATION.MAX_BACKGROUND_OFFSET, CONFIG.ANIMATION.MAX_BACKGROUND_OFFSET);
-      
-      // Apply the sliding effect (maintain left alignment)
-      hero.style.backgroundPosition = `left ${backgroundPosition}%`;
-    };
-
-    // Initial call
-    handleScroll();
+    // Check if we're on mobile (where background-attachment: fixed doesn't work)
+    const isMobile = window.innerWidth <= 768;
     
-    // Add scroll listener with throttling
-    window.addEventListener('scroll', () => {
-      if (window.PolarFlowsUtils && window.PolarFlowsUtils.throttle) {
-        window.PolarFlowsUtils.throttle(handleScroll, 16);
-      } else {
-        // Fallback if utils not available
-        handleScroll();
+    if (isMobile) {
+      // For mobile: Use transform-based parallax effect
+      this.initMobileParallax(hero);
+    } else {
+      // For desktop: Use background-position based effect
+      this.initDesktopParallax(hero);
+    }
+
+    // Reinitialize on resize to handle orientation changes
+    window.addEventListener('resize', () => {
+      const newIsMobile = window.innerWidth <= 768;
+      if (newIsMobile !== isMobile) {
+        // Reinitialize with appropriate method
+        if (newIsMobile) {
+          this.initMobileParallax(hero);
+        } else {
+          this.initDesktopParallax(hero);
+        }
       }
     });
+  }
+
+  /**
+   * Initialize desktop parallax effect using background-position
+   */
+  initDesktopParallax(hero) {
+    // Desktop uses CSS background-attachment: fixed
+    // The background stays completely static - no JavaScript needed
+    // CSS handles the fixed background positioning
+  }
+
+  /**
+   * Initialize mobile parallax effect using transform
+   */
+  initMobileParallax(hero) {
+    // For mobile, we'll override the CSS background and use a more reliable approach
+    // Remove any existing background from the hero element
+    hero.style.background = 'none';
+    
+    // Create a static background element for mobile
+    const backgroundElement = document.createElement('div');
+    backgroundElement.className = 'hero-background-mobile';
+    // Determine the correct path based on current page location
+    const isSubPage = window.location.pathname.includes('/contact/') || window.location.pathname.includes('/privacy-policy/');
+    const imagePath = isSubPage ? '../assets/img/polarflows/' : 'assets/img/polarflows/';
+    
+    backgroundElement.style.cssText = `
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('${imagePath}Stockholm_modif.avif'), url('${imagePath}Stockholm_modif.webp'), url('${imagePath}Stockholm_modif.jpg');
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      z-index: 0;
+    `;
+    
+    // Insert background element at the beginning of hero
+    hero.insertBefore(backgroundElement, hero.firstChild);
+    
+    // Ensure hero content is above background
+    const heroContent = hero.querySelector('.container');
+    if (heroContent) {
+      heroContent.style.position = 'relative';
+      heroContent.style.zIndex = '1';
+    }
   }
 
   /**

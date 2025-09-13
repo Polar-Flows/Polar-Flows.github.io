@@ -1043,12 +1043,15 @@ body:not(.home-page) .navbar-small-logo {
 @media (max-width: 768px) {
   .hero {
     min-height: var(--pf-hero-content-max-width);
-    /* Remove background-attachment: fixed for mobile compatibility */
+    /* Remove background-attachment: fixed for mobile (doesn't work reliably) */
     background-attachment: scroll;
     /* Ensure background is visible on mobile */
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
+    /* Ensure proper positioning for mobile parallax */
+    position: relative;
+    overflow: hidden;
   }
   
   .hero-content {

@@ -6,7 +6,7 @@ Welcome to the Polar Flows website! This is a modern, professional website for o
 
 **IMPORTANT**: This website uses query string versioning to prevent browser caching issues. When making changes to CSS or JavaScript files, you MUST update the version numbers in all HTML files.
 
-**Current Version**: `v1.0.12`
+**Current Version**: `v1.0.20`
 
 **Quick Version Update Process**:
 1. Increment version number (e.g., `v1.0.1` to `v1.0.2`)
@@ -15,11 +15,15 @@ Welcome to the Polar Flows website! This is a modern, professional website for o
 
 **Files to Update**: `index.html`, `contact/index.html`, `privacy-policy/index.html`, `404.html`, `sw.js`
 
-**Example**: `<link rel="stylesheet" href="assets/css/main.css?v=1.0.12">`
+**Example**: `<link rel="stylesheet" href="assets/css/main.css?v=1.0.20">`
 
 **Why This Matters**: Without versioning, browsers cache CSS/JS files and changes won't appear until cache expires (days/weeks). Versioning forces immediate updates.
 
 **Full Instructions**: See `WEBSITE_SUMMARY.md` for detailed versioning documentation.
+
+## CRITICAL: UTF-8 Character Usage
+
+**IMPORTANT**: All README files must use only UTF-8 compatible characters. Avoid special characters like em dashes, smart quotes, arrows, or accented characters that can break GitHub Pages deployment. Use only standard ASCII characters for maximum compatibility.
 
 ## What You'll Find Here
 
