@@ -1985,8 +1985,33 @@ body:not(.home-page) .navbar-small-logo {
   text-align: center;
 }
 
-.team-card .team-email {
-  font-size: 0.8rem !important;
+/* Removed conflicting rule - now handled by strict icon-size rule */
+
+/* STRICT RULE: Based on icon size */
+/* Small icons (18px) = 2 lines + keep text */
+/* Medium icons (18px) = 2 lines + keep text */  
+/* Big icons (28px) = 1 line + remove text */
+
+/* Medium icons (18px) - Tablet: 2 lines + keep text */
+@media (min-width: 900px) and (max-width: 1023px) {
+  .team-card .team-email,
+  .team-card .team-linkedin {
+    /* Keep text visible - medium icons */
+    font-size: var(--pf-font-size-sm) !important;
+    line-height: normal !important;
+    color: var(--pf-text-primary) !important;
+  }
+  
+  .team-contact {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: var(--pf-space-sm) !important;
+  }
+  
+  .team-card .contact-icon {
+    width: 18px !important;
+    height: 18px !important;
+  }
 }
 
 .team-email:hover,
@@ -2007,8 +2032,31 @@ body:not(.home-page) .navbar-small-logo {
   display: inline-block !important;
 }
 
-/* Mobile team adjustments */
-@media (max-width: 767px) {
+/* Big icons (28px) - Mobile: 1 line + remove text */
+@media (max-width: 899px) {
+  /* Hide text when icons get larger */
+  .team-card .team-email,
+  .team-card .team-linkedin {
+    font-size: 0 !important;
+    line-height: 0 !important;
+    color: transparent !important;
+    text-indent: -9999px !important;
+    overflow: hidden !important;
+  }
+  
+  .team-contact {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: var(--pf-space-sm) !important;
+  }
+  
+  .team-card .contact-icon {
+    width: 40px !important;
+    height: 40px !important;
+  }
+}
+
+@media (max-width: 899px) {
   .team-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: var(--pf-space-sm); /* Reduced gap for more image space */
@@ -2036,10 +2084,10 @@ body:not(.home-page) .navbar-small-logo {
   }
   
   
-  /* Override contact-icon styles for mobile team section */
+  /* Override contact-icon styles for mobile team section - Big icons (28px) */
   .team-card .contact-icon {
-    width: 32px !important;
-    height: 32px !important;
+    width: 28px !important;
+    height: 28px !important;
     border-radius: 0 !important;
     background: none !important;
     border: none !important;
@@ -2049,7 +2097,7 @@ body:not(.home-page) .navbar-small-logo {
     display: block !important;
   }
   
-  /* Mobile team contact styling - icons only, single row */
+  /* Big icons (28px) - Mobile: 1 line + remove text */
   .team-contact {
     display: flex !important;
     flex-direction: row !important;
@@ -2092,23 +2140,37 @@ body:not(.home-page) .navbar-small-logo {
     content: "";
   }
   
-  /* Completely hide text content on mobile */
-  .team-email,
-  .team-linkedin {
+  /* Big icons (32px) - Completely hide text content on mobile */
+  .team-card .team-email,
+  .team-card .team-linkedin {
     font-size: 0 !important;
     line-height: 0 !important;
     color: transparent !important;
     text-decoration: none !important;
+    text-indent: -9999px !important;
+    overflow: hidden !important;
+    /* iOS Safari specific fixes */
+    -webkit-text-size-adjust: none !important;
+    text-size-adjust: none !important;
+    visibility: hidden !important;
   }
   
-  /* Show only the icons with proper sizing and positioning */
+  /* iOS Safari specific - hide text nodes */
+  .team-card .team-email *:not(.contact-icon),
+  .team-card .team-linkedin *:not(.contact-icon) {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+  }
+  
+  /* Show only the icons with proper sizing and positioning - Big icons (28px) */
   .team-email .contact-icon,
   .team-linkedin .contact-icon {
     font-size: initial !important;
     line-height: initial !important;
     display: block !important;
-    width: 32px !important;
-    height: 32px !important;
+    width: 28px !important;
+    height: 28px !important;
     margin: 0 auto !important;
     opacity: 1 !important;
     visibility: visible !important;
@@ -2116,6 +2178,45 @@ body:not(.home-page) .navbar-small-logo {
     top: 50% !important;
     left: 50% !important;
     transform: translate(-50%, -50%) !important;
+  }
+}
+
+/* iOS Safari specific - simple approach: hide text, keep original icons */
+@supports (-webkit-touch-callout: none) {
+  @media (max-width: 899px) {
+    /* Keep the original icons visible and properly sized */
+    .team .team-card .team-email .contact-icon,
+    .team .team-card .team-linkedin .contact-icon,
+    body .team .team-card .team-email .contact-icon,
+    body .team .team-card .team-linkedin .contact-icon {
+      display: block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      width: 32px !important;
+      height: 32px !important;
+    }
+    
+    /* Hide only the text content, not the entire link */
+    .team .team-card .team-email,
+    .team .team-card .team-linkedin,
+    body .team .team-card .team-email,
+    body .team .team-card .team-linkedin {
+      /* Hide text but keep the link functional */
+      color: transparent !important;
+      font-size: 0 !important;
+      line-height: 0 !important;
+      text-indent: -9999px !important;
+      overflow: hidden !important;
+      /* Keep the link visible for the icon */
+      display: block !important;
+      width: 32px !important;
+      height: 32px !important;
+      /* iOS specific */
+      -webkit-text-size-adjust: none !important;
+      text-size-adjust: none !important;
+      text-decoration: none !important;
+      text-shadow: none !important;
+    }
   }
 }
 
@@ -2144,6 +2245,19 @@ body:not(.home-page) .navbar-small-logo {
   
   .team-card .team-name {
     font-size: var(--pf-font-size-base);
+  }
+  
+  /* Medium icons (18px) - ensure proper sizing */
+  .team-card .contact-icon {
+    width: 18px !important;
+    height: 18px !important;
+    border-radius: 0 !important;
+    background: none !important;
+    border: none !important;
+    flex-shrink: 0;
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
   }
 }
 
