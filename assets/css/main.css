@@ -795,7 +795,7 @@ body:not(.home-page) .navbar-small-logo {
     url('../img/polarflows/Stockholm_modif.webp'), 
     url('../img/polarflows/Stockholm_modif.jpg');
   background-size: cover;
-  background-position: center center;
+  background-position: left center;
   background-repeat: no-repeat;
   background-attachment: fixed;
   text-align: center;
@@ -1271,57 +1271,40 @@ body:not(.home-page) .navbar-small-logo {
   }
 }
 
-/* Mobile-specific hero background handling */
+/* Mobile responsiveness - simplified approach */
 @media (max-width: 1030px) {
-  .hero-background-mobile {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    pointer-events: none;
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    /* Set background-image with gradient overlay immediately for faster loading */
-    background-image: 
-      linear-gradient(135deg, rgba(1, 45, 117, 0.3) 0%, rgba(14, 30, 58, 0.3) 100%),
-      url('../img/polarflows/Stockholm_modif.avif'), 
-      url('../img/polarflows/Stockholm_modif.webp'), 
-      url('../img/polarflows/Stockholm_modif.jpg');
+  .hero {
+    /* Mobile uses same background as desktop - no separate element needed */
+    background-position: left center;
+  }
+}
+
+
+/* Mobile compatibility - JavaScript will handle background for mobile devices */
+@media (max-width: 1030px) {
+  .hero {
+    /* CSS background will be overridden by JavaScript for mobile devices */
+    background: linear-gradient(135deg, rgba(1, 45, 117, 0.3) 0%, rgba(14, 30, 58, 0.3) 100%) !important;
   }
   
-  /* Sub-pages get different image paths */
-  .contact-page .hero-background-mobile,
-  .privacy-page .hero-background-mobile {
-    background-image: 
-      linear-gradient(135deg, rgba(1, 45, 117, 0.3) 0%, rgba(14, 30, 58, 0.3) 100%),
-      url('../../assets/img/polarflows/Stockholm_modif.avif'), 
-      url('../../assets/img/polarflows/Stockholm_modif.webp'), 
-      url('../../assets/img/polarflows/Stockholm_modif.jpg');
+  .contact-page .hero,
+  .privacy-page .hero {
+    /* CSS background will be overridden by JavaScript for mobile devices */
+    background: linear-gradient(135deg, rgba(1, 45, 117, 0.3) 0%, rgba(14, 30, 58, 0.3) 100%) !important;
   }
 }
 
-
-/* Additional mobile device fixes */
-@media (max-width: 1030px) and (orientation: portrait) {
+/* iOS compatibility - additional fallback */
+@supports (-webkit-touch-callout: none) {
   .hero {
-    background-attachment: fixed;
-    background-size: cover;
-    background-position: center center;
+    /* CSS background will be overridden by JavaScript for iOS */
+    background: linear-gradient(135deg, rgba(1, 45, 117, 0.3) 0%, rgba(14, 30, 58, 0.3) 100%) !important;
   }
-}
-
-@media (max-width: 1030px) and (orientation: landscape) {
-  .hero {
-    background-attachment: fixed;
-    background-size: cover;
-    background-position: center center;
+  
+  .contact-page .hero,
+  .privacy-page .hero {
+    /* CSS background will be overridden by JavaScript for iOS */
+    background: linear-gradient(135deg, rgba(1, 45, 117, 0.3) 0%, rgba(14, 30, 58, 0.3) 100%) !important;
   }
 }
 
@@ -2948,7 +2931,7 @@ body:has(.contact-page) .navbar-brand {
     url('../../assets/img/polarflows/Stockholm_modif.webp'), 
     url('../../assets/img/polarflows/Stockholm_modif.jpg');
   background-size: cover;
-  background-position: center center;
+  background-position: left center;
   background-repeat: no-repeat;
   background-attachment: fixed;
 }
