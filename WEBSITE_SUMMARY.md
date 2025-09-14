@@ -367,7 +367,7 @@ Get-ChildItem -Recurse -Include "*.html","*.md","*.css","*.js" | ForEach-Object 
 
 **CRITICAL**: The website uses query string versioning to prevent browser caching issues. When making changes to CSS or JavaScript files, you MUST update the version numbers in all HTML files.
 
-### Current Version: `v1.0.38`
+### Current Version: `v1.0.40`
 
 ### Files That Need Version Updates:
 - `index.html` - All CSS and JS links
@@ -394,6 +394,74 @@ Get-ChildItem -Recurse -Include "*.html","*.md","*.css","*.js" | ForEach-Object 
 **Why This Matters**: Without versioning, browsers cache CSS/JS files and changes won't appear until cache expires (days/weeks). Versioning forces immediate updates.
 
 ## Recent Updates (Latest Session)
+
+### Version 1.0.40 - Fixed Background Image Scope - Hero Section Only
+
+#### **Background Image Scope Fix:**
+- Fixed background image being applied to all sections instead of just hero section
+- Background image now properly contained within hero section boundaries
+- Other sections ("Why Choose Polar Flows", "Expertise", "Official Databricks Partner", "Meet the Team", "Ready to Start", footer) no longer have background image
+- Applies to all pages: main page, contact page, and privacy policy page
+
+#### **Technical Implementation:**
+- **Removed Global Background**: Removed background image from main `.hero` CSS rule that was using `background-attachment: fixed`
+- **Contained Background Element**: Changed `.hero-background-mobile` from `position: fixed` to `position: absolute`
+- **Hero Section Container**: Hero section maintains `position: relative` to contain the absolutely positioned background
+- **CSS Background Handling**: Background image now only exists in `.hero-background-mobile` element within hero section
+- **Gradient Overlay**: Added gradient overlay directly to CSS background-image for consistency
+
+#### **Key Changes:**
+```css
+/* BEFORE: Background applied globally via fixed positioning */
+.hero {
+  background: linear-gradient(...), url(...), url(...), url(...);
+  background-attachment: fixed; /* This made it cover entire viewport */
+}
+
+/* AFTER: Background only in contained element */
+.hero {
+  background: linear-gradient(135deg, rgba(1, 45, 117, 0.3) 0%, rgba(14, 30, 58, 0.3) 100%);
+  position: relative; /* Container for absolutely positioned background */
+}
+
+@media (max-width: 1030px) {
+  .hero-background-mobile {
+    position: absolute; /* Contained within hero section */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+      linear-gradient(135deg, rgba(1, 45, 117, 0.3) 0%, rgba(14, 30, 58, 0.3) 100%),
+      url('../img/polarflows/Stockholm_modif.avif'), 
+      url('../img/polarflows/Stockholm_modif.webp'), 
+      url('../img/polarflows/Stockholm_modif.jpg');
+  }
+}
+```
+
+#### **JavaScript Simplification:**
+```javascript
+// Simplified JavaScript - no longer needs to set background-image
+if (isIOS) {
+  backgroundElement.style.backgroundAttachment = 'scroll';
+} else {
+  backgroundElement.style.backgroundAttachment = 'fixed';
+}
+```
+
+#### **Result:**
+- ? **Hero Section Only**: Background image appears only in hero section
+- ? **Other Sections Clean**: "Why Choose Polar Flows", "Expertise", "Official Databricks Partner", "Meet the Team", "Ready to Start", footer have their original background colors
+- ? **All Pages Fixed**: Main page, contact page, and privacy policy page all have correct background scope
+- ? **Mobile Compatibility**: Background still works on mobile with proper static positioning
+- ? **iOS Compatibility**: Maintains iOS text color fixes from v1.0.39
+
+#### **Files Modified:**
+- `assets/css/main.css` - Removed global background, contained background to hero section
+- `assets/js/main.js` - Simplified JavaScript to only handle background-attachment
+- All HTML files - Updated to version 1.0.40
+- `sw.js` - Updated cache version to 1.0.40
 
 ### ?? CRITICAL FEATURE: Version 1.0.39 - iOS Compatibility - Universal Text Visibility Fix
 

@@ -168,13 +168,7 @@ class PolarFlowsApp {
     
     if (backgroundElement) {
       if (isIOS) {
-        // For iOS: Enhance existing background with scroll attachment and gradient
-        backgroundElement.style.backgroundImage = `
-          linear-gradient(135deg, rgba(1, 45, 117, 0.3) 0%, rgba(14, 30, 58, 0.3) 100%), 
-          url('${imagePath}Stockholm_modif.avif'), 
-          url('${imagePath}Stockholm_modif.webp'), 
-          url('${imagePath}Stockholm_modif.jpg');
-        `;
+        // For iOS: Override background-attachment to scroll for better compatibility
         backgroundElement.style.backgroundAttachment = 'scroll';
       } else {
         // For non-iOS: Keep fixed attachment (already set in CSS)
