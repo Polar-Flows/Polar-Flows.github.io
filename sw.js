@@ -4,9 +4,9 @@
  */
 
 // Import constants (Note: Service workers can't use ES6 imports, so we'll define them here)
-const CACHE_VERSION = 'v1.0.53';
-const STATIC_CACHE_NAME = 'polar-flows-static-v1.0.53';
-const DYNAMIC_CACHE_NAME = 'polar-flows-dynamic-v1.0.53';
+const CACHE_VERSION = 'v1.0.58';
+const STATIC_CACHE_NAME = 'polar-flows-static-v1.0.58';
+const DYNAMIC_CACHE_NAME = 'polar-flows-dynamic-v1.0.58';
 
 // Files to cache immediately (critical resources)
 const STATIC_ASSETS = [

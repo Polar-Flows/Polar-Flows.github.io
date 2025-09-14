@@ -1280,31 +1280,94 @@ body:not(.home-page) .navbar-small-logo {
 }
 
 
-/* Mobile compatibility - JavaScript will handle background for mobile devices */
+/* Mobile compatibility - CSS handles background for all devices */
 @media (max-width: 1030px) {
   .hero {
-    /* CSS background will be overridden by JavaScript for mobile devices */
-    background: linear-gradient(135deg, rgba(1, 45, 117, 0.3) 0%, rgba(14, 30, 58, 0.3) 100%) !important;
+    /* CSS background for mobile devices */
+    background: 
+      linear-gradient(135deg, rgba(1, 45, 117, 0.3) 0%, rgba(14, 30, 58, 0.3) 100%),
+      url('/assets/img/polarflows/Stockholm_modif.avif'), 
+      url('/assets/img/polarflows/Stockholm_modif.webp'), 
+      url('/assets/img/polarflows/Stockholm_modif.jpg');
+    background-size: cover;
+    background-position: left center;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
   }
   
   .contact-page .hero,
   .privacy-page .hero {
-    /* CSS background will be overridden by JavaScript for mobile devices */
-    background: linear-gradient(135deg, rgba(1, 45, 117, 0.3) 0%, rgba(14, 30, 58, 0.3) 100%) !important;
+    /* CSS background for mobile devices */
+    background: 
+      linear-gradient(135deg, rgba(1, 45, 117, 0.3) 0%, rgba(14, 30, 58, 0.3) 100%),
+      url('/assets/img/polarflows/Stockholm_modif.avif'), 
+      url('/assets/img/polarflows/Stockholm_modif.webp'), 
+      url('/assets/img/polarflows/Stockholm_modif.jpg');
+    background-size: cover;
+    background-position: left center;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
   }
 }
 
-/* iOS compatibility - additional fallback */
+/* iOS compatibility - color background with smooth image fade-in */
 @supports (-webkit-touch-callout: none) {
   .hero {
-    /* CSS background will be overridden by JavaScript for iOS */
-    background: linear-gradient(135deg, rgba(1, 45, 117, 0.3) 0%, rgba(14, 30, 58, 0.3) 100%) !important;
+    /* Start with footer color background */
+    background-color: rgb(40, 40, 88) !important;
+    background-image: none !important;
+    position: relative;
   }
   
   .contact-page .hero,
   .privacy-page .hero {
-    /* CSS background will be overridden by JavaScript for iOS */
-    background: linear-gradient(135deg, rgba(1, 45, 117, 0.3) 0%, rgba(14, 30, 58, 0.3) 100%) !important;
+    /* Start with footer color background */
+    background-color: rgb(40, 40, 88) !important;
+    background-image: none !important;
+    position: relative;
+  }
+  
+  /* Image background overlay - initially hidden */
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+      linear-gradient(135deg, rgba(1, 45, 117, 0.3) 0%, rgba(14, 30, 58, 0.3) 100%),
+      url('/assets/img/polarflows/Stockholm_modif.avif'), 
+      url('/assets/img/polarflows/Stockholm_modif.webp'), 
+      url('/assets/img/polarflows/Stockholm_modif.jpg');
+    background-size: cover;
+    background-position: left center;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    z-index: 0;
+    pointer-events: none;
+  }
+  
+  .contact-page .hero::before,
+  .privacy-page .hero::before {
+    background-image: 
+      linear-gradient(135deg, rgba(1, 45, 117, 0.3) 0%, rgba(14, 30, 58, 0.3) 100%),
+      url('/assets/img/polarflows/Stockholm_modif.avif'), 
+      url('/assets/img/polarflows/Stockholm_modif.webp'), 
+      url('/assets/img/polarflows/Stockholm_modif.jpg');
+  }
+  
+  /* When image loads, fade in the overlay */
+  .hero.image-loaded::before {
+    opacity: 1;
+  }
+  
+  /* Ensure hero content is above the background overlay */
+  .hero .container {
+    position: relative;
+    z-index: 1;
   }
 }
 

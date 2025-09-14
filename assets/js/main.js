@@ -117,91 +117,49 @@ class PolarFlowsApp {
     const hero = document.querySelector('.hero');
     if (!hero) return;
 
-    // More comprehensive iOS detection
+    // iOS detection only
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || 
                   (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) ||
                   /iPhone|iPad|iPod|iOS/.test(navigator.userAgent);
     
-    // Also detect mobile devices that might have issues with background-attachment: fixed
-    const isMobile = window.innerWidth <= 1030 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    console.log('iOS Detection:', isIOS, 'User Agent:', navigator.userAgent);
     
-    console.log('iOS Detection:', isIOS, 'Mobile Detection:', isMobile, 'User Agent:', navigator.userAgent);
-    
-    if (isIOS || isMobile) {
-      // For iOS and mobile: Create fixed positioned background element for static effect
-      this.initMobileBackground(hero);
+    if (isIOS) {
+      // For iOS only: Use color background with image fade-in
+      this.initIOSBackground(hero);
     } else {
-      // For desktop: CSS handles everything
+      // For all other devices: CSS handles everything
       console.log('Background handled by CSS - no JavaScript needed');
     }
   }
 
+
   /**
-   * Initialize mobile background for static positioning (iOS and other mobile devices)
+   * Initialize iOS background with smooth color-to-image transition
    */
-  initMobileBackground(hero) {
-    console.log('Initializing mobile background...');
+  initIOSBackground(hero) {
+    console.log('Initializing iOS background with smooth transition...');
     
     // Determine the correct path based on current page location
     const isSubPage = window.location.pathname.includes('/contact/') || window.location.pathname.includes('/privacy-policy/');
     const imagePath = isSubPage ? '../../assets/img/polarflows/' : 'assets/img/polarflows/';
     
-    console.log('Image path:', imagePath, 'Is sub-page:', isSubPage);
-    
-    // Remove any existing iOS background
-    const existingBackground = hero.querySelector('.hero-background-ios');
-    if (existingBackground) {
-      existingBackground.remove();
-    }
-    
-    // Create simple background element - much faster approach
-    const backgroundElement = document.createElement('div');
-    backgroundElement.className = 'hero-background-ios';
-    
-    // Simple approach: absolute positioned within hero section
-    backgroundElement.style.position = 'absolute';
-    backgroundElement.style.top = '0';
-    backgroundElement.style.left = '0';
-    backgroundElement.style.width = '100%';
-    backgroundElement.style.height = '100%';
-    backgroundElement.style.zIndex = '0';
-    backgroundElement.style.pointerEvents = 'none';
-    backgroundElement.style.backgroundSize = 'cover';
-    backgroundElement.style.backgroundPosition = 'left center';
-    backgroundElement.style.backgroundRepeat = 'no-repeat';
-    backgroundElement.style.backgroundAttachment = 'scroll';
-    
-    // Preload images for faster loading
-    const preloadImage = (src) => {
-      const img = new Image();
-      img.src = src;
+    // Preload the best quality image first (AVIF)
+    const img = new Image();
+    img.onload = () => {
+      // Image loaded successfully - add class to trigger CSS transition
+      hero.classList.add('image-loaded');
+      console.log('iOS background image loaded successfully');
     };
+    img.onerror = () => {
+      // Image failed to load - keep the color background
+      console.log('iOS background image failed to load - keeping color background');
+    };
+    img.src = `${imagePath}Stockholm_modif.avif`;
     
-    preloadImage(`${imagePath}Stockholm_modif.avif`);
-    preloadImage(`${imagePath}Stockholm_modif.webp`);
-    preloadImage(`${imagePath}Stockholm_modif.jpg`);
-    
-    // Set background image with fallbacks
-    const backgroundImage = `linear-gradient(135deg, rgba(1, 45, 117, 0.3) 0%, rgba(14, 30, 58, 0.3) 100%), url('${imagePath}Stockholm_modif.avif'), url('${imagePath}Stockholm_modif.webp'), url('${imagePath}Stockholm_modif.jpg')`;
-    backgroundElement.style.backgroundImage = backgroundImage;
-    
-    // Insert background element
-    hero.insertBefore(backgroundElement, hero.firstChild);
-    
-    // Ensure hero content is above background
-    const heroContent = hero.querySelector('.container');
-    if (heroContent) {
-      heroContent.style.position = 'relative';
-      heroContent.style.zIndex = '1';
-    }
-    
-    // Also ensure hero itself has proper positioning
-    hero.style.position = 'relative';
-    hero.style.zIndex = '1';
-    
-    console.log('Mobile background initialized with simple approach');
-    console.log('Background element created:', backgroundElement);
+    console.log('iOS background initialized with color fallback');
   }
+
 
   // Removed complex mobile/desktop parallax functions
   // CSS now handles all background positioning uniformly
