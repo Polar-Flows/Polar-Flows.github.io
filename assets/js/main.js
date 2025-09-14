@@ -51,7 +51,7 @@ class PolarFlowsApp {
       // Set up global event listeners
       this.setupGlobalListeners();
       
-      // Initialize sliding background effect
+      // Initialize sliding background effect (only for main page)
       this.initSlidingBackground();
       
       // Initialize scroll indicator
@@ -124,6 +124,17 @@ class PolarFlowsApp {
    * Initialize sliding background effect for hero section
    */
   initSlidingBackground() {
+    // Check if this is a sub-page (contact or privacy) - if so, do NOTHING
+    const isSubPage = window.location.pathname.includes('/contact/') || window.location.pathname.includes('/privacy-policy/');
+    
+    if (isSubPage) {
+      console.log('Sub-page detected (contact/privacy) - NO background JavaScript will run, CSS only');
+      return; // Exit immediately - no background JavaScript for sub-pages
+    }
+    
+    // Only run background JavaScript for main page
+    console.log('Main page detected - initializing background system');
+    
     const hero = document.querySelector('.hero');
     if (!hero) return;
 
@@ -135,8 +146,8 @@ class PolarFlowsApp {
     console.log('iOS Detection:', isIOS, 'User Agent:', navigator.userAgent);
     
     if (isIOS) {
-      // For iOS only: Use color background with image fade-in
-      console.log('iOS detected - calling initIOSBackground');
+      // For main page on iOS: Use color background with image fade-in
+      console.log('iOS main page detected - calling initIOSBackground');
       this.initIOSBackground(hero);
     } else {
       // For all other devices: CSS handles everything

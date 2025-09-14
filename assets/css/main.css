@@ -1347,17 +1347,29 @@ body:not(.home-page) .navbar-small-logo {
     height: 100svh !important;
   }
   
+  /* Contact and Privacy pages: OVERRIDE iOS behavior - use simple CSS only */
   .contact-page .hero,
   .privacy-page .hero {
-    /* Start with dark blue background, no transition */
-    background-color: rgb(40, 40, 88) !important;
-    background-image: none !important;
-    position: relative;
-    transition: none !important;
-    /* Ensure iOS uses the updated min-height for sub-pages */
+    /* Override iOS rules with simple, fast background */
+    background: 
+      linear-gradient(135deg, rgba(1, 45, 117, 0.3) 0%, rgba(14, 30, 58, 0.3) 100%),
+      url('../img/polarflows/Stockholm_modif.avif'), 
+      url('../img/polarflows/Stockholm_modif.webp'), 
+      url('../img/polarflows/Stockholm_modif.jpg') !important;
+    background-size: cover !important;
+    background-position: left center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: scroll !important; /* Fast scrolling - no fixed attachment */
+    background-color: transparent !important; /* No blue overlay */
+    transition: none !important; /* No transitions */
+    position: relative !important;
     min-height: 250px !important;
-    /* Use small viewport height for iOS sub-pages */
-    height: 50svh !important;
+    height: 50vh !important; /* Simple viewport height */
+    /* Override any fancy effects */
+    overflow: visible !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
   }
   
   /* Ensure hero content is above the background overlay */
@@ -1366,19 +1378,21 @@ body:not(.home-page) .navbar-small-logo {
     z-index: 1;
   }
   
-  /* When image is loaded, remove the color background */
-  @supports (-webkit-touch-callout: none) {
-    .hero.image-loaded {
-      background-color: transparent !important;
-      background-image: none !important;
-    }
-    
-    .contact-page .hero.image-loaded,
-    .privacy-page .hero.image-loaded {
-      background-color: transparent !important;
-      background-image: none !important;
-    }
+  /* When image is loaded, remove the color background (main page only) */
+  .hero.image-loaded {
+    background-color: transparent !important;
+    background-image: none !important;
   }
+}
+
+/* Contact and Privacy pages: SIMPLE CSS ONLY - no fancy effects (non-iOS) */
+.contact-page .hero,
+.privacy-page .hero {
+  /* Simple, fast background - no fancy effects */
+  background-attachment: scroll !important; /* Fast scrolling - no fixed attachment */
+  min-height: 250px !important;
+  height: 50vh !important; /* Simple viewport height */
+  transition: none !important; /* No transitions */
 }
 
 /* iOS background element visibility - outside @supports for broader compatibility */
@@ -3030,8 +3044,6 @@ body:has(.contact-page) .navbar-brand {
 .privacy-page .hero {
   margin-top: 0 !important;
   padding-top: 2rem !important;
-  min-height: auto !important;
-  height: auto !important;
 }
 
 .privacy-page .container {
@@ -3047,8 +3059,6 @@ body:has(.contact-page) .navbar-brand {
 .contact-page .hero {
   margin-top: 0 !important;
   padding-top: 2rem !important;
-  min-height: auto !important;
-  height: auto !important;
 }
 
 .contact-page .container {
