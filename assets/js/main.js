@@ -167,18 +167,14 @@ class PolarFlowsApp {
     const backgroundElement = document.createElement('div');
     backgroundElement.className = 'hero-background-ios';
     
-    // Set up the background element positioned within hero section
-    backgroundElement.style.position = 'absolute';
+    // Set up the background element positioned fixed to viewport
+    backgroundElement.style.position = 'fixed';
     backgroundElement.style.top = '0';
     backgroundElement.style.left = '0';
-    backgroundElement.style.width = '100%';
-    backgroundElement.style.height = '100%';
-    backgroundElement.style.zIndex = '10';
+    backgroundElement.style.width = '100vw';
+    backgroundElement.style.height = '100vh';
+    backgroundElement.style.zIndex = '-1';
     backgroundElement.style.pointerEvents = 'none';
-    backgroundElement.style.backgroundSize = 'cover';
-    backgroundElement.style.backgroundPosition = 'left center';
-    backgroundElement.style.backgroundRepeat = 'no-repeat';
-    backgroundElement.style.backgroundAttachment = 'fixed';
     backgroundElement.style.setProperty('opacity', '0', 'important');
     backgroundElement.style.setProperty('transition', 'opacity 0.5s ease-in-out', 'important');
     
@@ -209,21 +205,27 @@ class PolarFlowsApp {
     backgroundElement.appendChild(innerDiv);
     backgroundElement.appendChild(gradientOverlay);
     
-    // Insert background element inside hero section
-    hero.insertBefore(backgroundElement, hero.firstChild);
-    console.log('Background element inserted into hero section');
+    // Insert background element into document body (fixed to viewport)
+    document.body.appendChild(backgroundElement);
+    console.log('Background element inserted into document body');
+    
+    // Clip the background to only show in the hero section
+    const heroRect = hero.getBoundingClientRect();
+    const clipPath = `polygon(0 0, 100% 0, 100% ${heroRect.height}px, 0 ${heroRect.height}px)`;
+    backgroundElement.style.clipPath = clipPath;
+    console.log('Background clipped to hero section:', clipPath);
     
     // Ensure hero content is above the background
     const heroContent = hero.querySelector('.container');
     if (heroContent) {
       heroContent.style.position = 'relative';
-      heroContent.style.zIndex = '20';
-      console.log('Hero content z-index set to 20');
+      heroContent.style.zIndex = '10';
+      console.log('Hero content z-index set to 10');
     }
     
     // Also ensure hero itself has proper positioning
     hero.style.position = 'relative';
-    hero.style.zIndex = '1';
+    hero.style.zIndex = '5';
     console.log('Hero section positioning set');
     
     // Preload the image to check if it's cached
