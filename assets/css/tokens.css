@@ -12,34 +12,34 @@
   --pf-deep: #0140a8;
   
   /* ===== Semantic Colors ===== */
-  --pf-primary: var(--pf-blue);
-  --pf-primary-dark: var(--pf-navy);
-  --pf-primary-light: var(--pf-azure);
-  --pf-secondary: var(--pf-slate);
-  --pf-accent: var(--pf-deep);
+  --pf-primary: var(--pf-blue, #187ef9);
+  --pf-primary-dark: var(--pf-navy, #012d75);
+  --pf-primary-light: var(--pf-azure, #0665d8);
+  --pf-secondary: var(--pf-slate, #123456);
+  --pf-accent: var(--pf-deep, #0140a8);
   
   /* ===== Background Colors ===== */
-  --pf-bg-primary: var(--pf-white);
+  --pf-bg-primary: var(--pf-white, #ffffff);
   --pf-bg-secondary: #f8fafc;
-  --pf-bg-dark: var(--pf-navy);
-  --pf-bg-accent: var(--pf-blue);
+  --pf-bg-dark: var(--pf-navy, #012d75);
+  --pf-bg-accent: var(--pf-blue, #187ef9);
   
   /* ===== Text Colors ===== */
-  --pf-text-primary: var(--pf-navy);
-  --pf-text-secondary: var(--pf-slate);
-  --pf-text-light: var(--pf-white);
+  --pf-text-primary: var(--pf-navy, #012d75);
+  --pf-text-secondary: var(--pf-slate, #123456);
+  --pf-text-light: var(--pf-white, #ffffff);
   --pf-text-muted: #64748b;
   
   /* ===== Border Colors ===== */
   --pf-border-light: #e2e8f0;
   --pf-border-medium: #cbd5e1;
-  --pf-border-dark: var(--pf-slate);
+  --pf-border-dark: var(--pf-slate, #123456);
   
   /* ===== Status Colors ===== */
   --pf-success: #10b981;
   --pf-warning: #f59e0b;
   --pf-error: #ef4444;
-  --pf-info: var(--pf-blue);
+  --pf-info: var(--pf-blue, #187ef9);
   
   /* ===== Section Background Colors ===== */
   --pf-bg-section-blue: #d1e7ff;

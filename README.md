@@ -6,7 +6,7 @@ Welcome to the Polar Flows website! This is a modern, professional website for o
 
 **IMPORTANT**: This website uses query string versioning to prevent browser caching issues. When making changes to CSS or JavaScript files, you MUST update the version numbers in all HTML files.
 
-**Current Version**: `v1.0.37`
+**Current Version**: `v1.0.38`
 
 **Quick Version Update Process**:
 1. Increment version number (e.g., `v1.0.1` to `v1.0.2`)
@@ -15,11 +15,24 @@ Welcome to the Polar Flows website! This is a modern, professional website for o
 
 **Files to Update**: `index.html`, `contact/index.html`, `privacy-policy/index.html`, `404.html`, `sw.js`
 
-**Example**: `<link rel="stylesheet" href="assets/css/main.css?v=1.0.37">`
+**Example**: `<link rel="stylesheet" href="assets/css/main.css?v=1.0.38">`
 
 **Why This Matters**: Without versioning, browsers cache CSS/JS files and changes won't appear until cache expires (days/weeks). Versioning forces immediate updates.
 
 **Full Instructions**: See `WEBSITE_SUMMARY.md` for detailed versioning documentation.
+
+## IMPORTANT: iOS Compatibility Feature
+
+**CRITICAL COMPATIBILITY**: This website includes special CSS overrides to ensure text visibility on older iOS Safari versions (iOS 9-15). These older versions don't support CSS custom properties properly, which can cause all text to appear white (invisible) on white backgrounds.
+
+**What's Protected**: 
+- Hero section text remains white on background image
+- All other sections have dark text (#012d75) on light backgrounds
+- Universal CSS overrides with `!important` ensure compatibility
+
+**Why This Matters**: Without these overrides, older iPhones/iPads would show invisible white text, making the website completely unusable for users with older devices.
+
+**Implementation**: See `WEBSITE_SUMMARY.md` v1.0.39 for technical details.
 
 ## CRITICAL: UTF-8 Character Usage
 

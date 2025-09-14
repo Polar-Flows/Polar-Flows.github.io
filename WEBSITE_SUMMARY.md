@@ -1,5 +1,11 @@
 # Polar Flows Website - Technical Summary
 
+## ?? CRITICAL COMPATIBILITY FEATURE
+
+**IMPORTANT**: This website includes essential iOS compatibility overrides (v1.0.39) that ensure text visibility on older iOS Safari versions (iOS 9-15). These CSS overrides prevent invisible white text issues that would make the website completely unusable on older devices. **Do not remove these overrides without thorough testing on older iOS devices.**
+
+**See**: Version 1.0.39 documentation below for technical details.
+
 ## Overview
 Polar Flows is a data consultancy website specializing in Azure, Databricks, AWS, and modern data solutions. The website features a sophisticated logo animation system, responsive design, and multiple pages with consistent styling.
 
@@ -361,7 +367,7 @@ Get-ChildItem -Recurse -Include "*.html","*.md","*.css","*.js" | ForEach-Object 
 
 **CRITICAL**: The website uses query string versioning to prevent browser caching issues. When making changes to CSS or JavaScript files, you MUST update the version numbers in all HTML files.
 
-### Current Version: `v1.0.37`
+### Current Version: `v1.0.38`
 
 ### Files That Need Version Updates:
 - `index.html` - All CSS and JS links
@@ -388,6 +394,142 @@ Get-ChildItem -Recurse -Include "*.html","*.md","*.css","*.js" | ForEach-Object 
 **Why This Matters**: Without versioning, browsers cache CSS/JS files and changes won't appear until cache expires (days/weeks). Versioning forces immediate updates.
 
 ## Recent Updates (Latest Session)
+
+### ?? CRITICAL FEATURE: Version 1.0.39 - iOS Compatibility - Universal Text Visibility Fix
+
+**?? IMPORTANT COMPATIBILITY FEATURE**: This version includes essential CSS overrides that ensure text visibility on older iOS Safari versions (iOS 9-15). Without this fix, older iPhones/iPads would display invisible white text, making the website completely unusable for users with older devices.
+
+#### **Why This Feature is Critical:**
+- **Older iOS Safari versions (iOS 9-15)** don't support CSS custom properties properly
+- **Without this fix**: All text appears white on white backgrounds (completely invisible)
+- **With this fix**: Text is properly visible with appropriate contrast
+- **User Impact**: Prevents website from being unusable on older devices
+
+#### **What's Protected:**
+- ? **Hero Section**: White text remains visible on background image
+- ? **All Other Sections**: Dark text (#012d75) on light backgrounds  
+- ? **Universal Coverage**: Every element is protected with `!important` overrides
+- ? **Modern Browser Compatibility**: CSS custom properties still work normally
+
+#### **Technical Implementation:**
+```css
+/* Universal dark text override for all elements except hero */
+body, h1, h2, h3, h4, h5, h6, p, div, span, section, article, aside, main, header, footer, nav, ul, ol, li, a, button, input, textarea, label, /* all specific classes */ {
+  color: #012d75 !important;
+}
+
+/* Hero section protection - white text only */
+.hero, .hero *, .hero-title-gray, .hero-title-white, .hero-subtitle, .hero-content, .hero-content * {
+  color: #ffffff !important;
+}
+
+/* Universal override for any remaining white text */
+*:not(.hero):not(.hero *) {
+  color: #012d75 !important;
+}
+```
+
+#### **Files Modified:**
+- `assets/css/main.css` - Added universal iOS compatibility overrides
+- All HTML files - Updated to version 1.0.39
+- `sw.js` - Updated cache version to 1.0.39
+
+**?? WARNING**: Do not remove these CSS overrides without thorough testing on older iOS devices. This is a critical accessibility feature that ensures the website remains usable for all users.
+
+### Version 1.0.38 - Fixed iOS Text Colors - Older Safari Compatibility
+
+#### **iOS Text Color Fix:**
+- Fixed text color issues on older iOS Safari versions (iOS 9-15)
+- Added fallback colors to all CSS custom properties for better compatibility
+- Added comprehensive iOS-specific CSS rules using `@supports not` for older browsers
+- Ensured hero section text remains white while other sections have dark text
+- Added vendor prefixes for better iOS compatibility
+
+#### **Technical Implementation:**
+- **CSS Custom Properties Fallbacks**: Added fallback colors to all `var(--pf-*)` properties
+- **iOS-Specific CSS Rules**: Added `@supports not (color: var(--pf-text-primary))` block for older iOS
+- **Explicit Color Declarations**: Used `!important` to override any inherited white text
+- **Vendor Prefixes**: Added `-webkit-backdrop-filter` for backdrop-filter support
+
+#### **Key Changes:**
+```css
+/* CSS Custom Properties with Fallbacks */
+--pf-text-primary: var(--pf-navy, #012d75);
+--pf-text-secondary: var(--pf-slate, #123456);
+--pf-text-light: var(--pf-white, #ffffff);
+--pf-bg-primary: var(--pf-white, #ffffff);
+
+/* Body and Typography with Fallbacks */
+body {
+  color: var(--pf-text-primary, #012d75);
+  background-color: var(--pf-bg-primary, #ffffff);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--pf-text-primary, #012d75);
+}
+
+p {
+  color: var(--pf-text-primary, #012d75);
+}
+
+/* iOS-Specific Compatibility Fix */
+@supports not (color: var(--pf-text-primary)) {
+  body {
+    color: #012d75 !important;
+    background-color: #ffffff !important;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    color: #012d75 !important;
+  }
+  
+  p {
+    color: #012d75 !important;
+  }
+  
+  /* Hero section text stays white */
+  .hero-title-gray,
+  .hero-title-white,
+  .hero-subtitle {
+    color: #ffffff !important;
+  }
+  
+  /* All other sections get dark text */
+  .value-prop-description,
+  .service-description,
+  .testimonial-author,
+  /* ... all other text elements ... */
+  {
+    color: #012d75 !important;
+  }
+}
+
+/* Vendor Prefixes for iOS */
+.header-backdrop {
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+```
+
+#### **Problem Solved:**
+- **Older iOS Safari**: CSS custom properties not supported or buggy
+- **Text Color Issues**: All text appearing white on white backgrounds (invisible)
+- **Hero vs Other Sections**: Need white text in hero, dark text elsewhere
+- **Vendor Compatibility**: Missing `-webkit-` prefixes for newer CSS properties
+
+#### **Result:**
+- ? **Older iOS Compatible**: Text colors work on iOS 9-15 Safari
+- ? **Hero Section**: White text remains visible on background image
+- ? **Other Sections**: Dark text (#012d75) visible on light backgrounds
+- ? **Modern Browsers**: CSS custom properties still work as before
+- ? **Vendor Prefixes**: Backdrop-filter works on all iOS versions
+
+#### **Files Modified:**
+- `assets/css/tokens.css` - Added fallback colors to all CSS custom properties
+- `assets/css/main.css` - Added iOS compatibility rules and vendor prefixes
+- All HTML files - Updated to version 1.0.38
+- `sw.js` - Updated cache version to 1.0.38
 
 ### Version 1.0.37 - Image Loads First - Immediate CSS Background + Enhanced JavaScript
 

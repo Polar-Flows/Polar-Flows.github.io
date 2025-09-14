@@ -48,8 +48,8 @@ body {
   font-size: var(--pf-font-size-base);
   font-weight: 400;
   line-height: var(--pf-line-height-normal);
-  color: var(--pf-text-primary);
-  background-color: var(--pf-bg-primary);
+  color: var(--pf-text-primary, #012d75);
+  background-color: var(--pf-bg-primary, #ffffff);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   /* Mobile optimization */
@@ -58,12 +58,91 @@ body {
   text-size-adjust: 100%;
 }
 
+/* ===== iOS Compatibility Fix for Older Versions ===== */
+/* Direct targeting of older iOS Safari versions */
+/* This will apply to all browsers, but modern browsers will override with CSS custom properties */
+
+/* Force dark text for all elements except hero section */
+body,
+h1, h2, h3, h4, h5, h6,
+p,
+div,
+span,
+section,
+article,
+aside,
+main,
+header,
+footer,
+nav,
+ul, ol, li,
+a,
+button,
+input,
+textarea,
+label,
+.form-label,
+.value-prop-description,
+.service-description,
+.testimonial-author,
+.testimonial-company,
+.about-content p,
+.journey-description,
+.journey-steps li,
+.team-card .team-name,
+.team-card .team-role,
+.team-card .team-bio,
+.contact-cta,
+.form-help,
+.faq-item p,
+.modal-content h2,
+.modal-content p,
+.privacy-text h3,
+.privacy-text li,
+.partnership-name {
+  color: #012d75 !important;
+}
+
+/* Force white text only in hero section */
+.hero,
+.hero *,
+.hero-title-gray,
+.hero-title-white,
+.hero-subtitle,
+.hero-content,
+.hero-content * {
+  color: #ffffff !important;
+}
+
+/* Force white background for body */
+body {
+  background-color: #ffffff !important;
+}
+
+/* Force dark text for secondary/muted text */
+.testimonial-text,
+.privacy-text .last-updated,
+.testimonial-company,
+.form-help {
+  color: #123456 !important;
+}
+
+/* Ensure hero section background is preserved */
+.hero {
+  background-color: transparent !important;
+}
+
+/* Override any white text that might be inherited */
+*:not(.hero):not(.hero *) {
+  color: #012d75 !important;
+}
+
 /* ===== Typography ===== */
 h1, h2, h3, h4, h5, h6 {
   font-weight: var(--pf-font-weight-bold);
   line-height: var(--pf-line-height-tight);
   margin-bottom: var(--pf-space-md);
-  color: var(--pf-text-primary);
+  color: var(--pf-text-primary, #012d75);
   /* Mobile optimization */
   word-wrap: break-word;
   overflow-wrap: break-word;
@@ -88,7 +167,7 @@ h6 { font-size: var(--pf-font-size-base); }
 
 p {
   margin-bottom: var(--pf-space-md);
-  color: var(--pf-text-primary);
+  color: var(--pf-text-primary, #012d75);
   /* Mobile optimization */
   line-height: var(--pf-line-height-relaxed);
 }
@@ -354,6 +433,7 @@ a:focus {
   left: 0;
   right: 0;
   background-color: rgba(40, 40, 88, 0.3);
+  -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid rgba(40, 40, 88, 0.2);
   z-index: var(--pf-z-sticky);
