@@ -18,6 +18,16 @@ class PolarFlowsApp {
   constructor() {
     this.components = new Map();
     this.isInitialized = false;
+    this.debug = false; // Set to true for development debugging
+  }
+
+  /**
+   * Debug logging method
+   */
+  debugLog(message) {
+    if (this.debug) {
+      console.log(message);
+    }
   }
 
   /**
@@ -58,7 +68,7 @@ class PolarFlowsApp {
       // Dispatch ready event
       this.dispatchEvent('app:ready');
       
-      console.log('Polar Flows website initialized successfully');
+      this.debugLog('Polar Flows website initialized successfully');
       
     } catch (error) {
       console.error('Failed to initialize Polar Flows website:', error);
@@ -82,7 +92,7 @@ class PolarFlowsApp {
       try {
         const component = await init();
         this.components.set(name, component);
-        console.log(`Component "${name}" initialized`);
+        this.debugLog(`Component "${name}" initialized`);
       } catch (error) {
         console.error(`Failed to initialize component "${name}":`, error);
         // Continue with other components
@@ -126,10 +136,11 @@ class PolarFlowsApp {
     
     if (isIOS) {
       // For iOS only: Use color background with image fade-in
+      console.log('iOS detected - calling initIOSBackground');
       this.initIOSBackground(hero);
     } else {
       // For all other devices: CSS handles everything
-      console.log('Background handled by CSS - no JavaScript needed');
+      this.debugLog('Non-iOS device - Background handled by CSS - no JavaScript needed');
     }
   }
 
@@ -138,24 +149,135 @@ class PolarFlowsApp {
    * Initialize iOS background with smooth color-to-image transition
    */
   initIOSBackground(hero) {
+    console.log('=== iOS BACKGROUND INITIALIZATION STARTED ===');
     console.log('Initializing iOS background with smooth transition...');
     
     // Determine the correct path based on current page location
     const isSubPage = window.location.pathname.includes('/contact/') || window.location.pathname.includes('/privacy-policy/');
     const imagePath = isSubPage ? '../../assets/img/polarflows/' : 'assets/img/polarflows/';
+    const imageUrl = `${imagePath}Stockholm_modif.avif`;
     
-    // Preload the best quality image first (AVIF)
-    const img = new Image();
-    img.onload = () => {
-      // Image loaded successfully - add class to trigger CSS transition
+    // Remove any existing iOS background
+    const existingBackground = hero.querySelector('.hero-background-ios');
+    if (existingBackground) {
+      existingBackground.remove();
+    }
+    
+    // Create fixed background element for iOS
+    const backgroundElement = document.createElement('div');
+    backgroundElement.className = 'hero-background-ios';
+    
+    // Set up the background element positioned within hero section
+    backgroundElement.style.position = 'absolute';
+    backgroundElement.style.top = '0';
+    backgroundElement.style.left = '0';
+    backgroundElement.style.width = '100%';
+    backgroundElement.style.height = '100%';
+    backgroundElement.style.zIndex = '10';
+    backgroundElement.style.pointerEvents = 'none';
+    backgroundElement.style.backgroundSize = 'cover';
+    backgroundElement.style.backgroundPosition = 'left center';
+    backgroundElement.style.backgroundRepeat = 'no-repeat';
+    backgroundElement.style.backgroundAttachment = 'fixed';
+    backgroundElement.style.setProperty('opacity', '0', 'important');
+    backgroundElement.style.setProperty('transition', 'opacity 0.5s ease-in-out', 'important');
+    
+    // Create inner div with background image (Stack Overflow solution)
+    const innerDiv = document.createElement('div');
+    innerDiv.style.position = 'absolute';
+    innerDiv.style.top = '0px';
+    innerDiv.style.left = '0px';
+    innerDiv.style.width = '100%';
+    innerDiv.style.height = '100%';
+    innerDiv.style.right = '0px';
+    innerDiv.style.bottom = '0px';
+    innerDiv.style.backgroundImage = `url('${imagePath}Stockholm_modif.avif'), url('${imagePath}Stockholm_modif.webp'), url('${imagePath}Stockholm_modif.jpg')`;
+    innerDiv.style.backgroundRepeat = 'no-repeat';
+    innerDiv.style.backgroundPosition = 'left center';
+    innerDiv.style.backgroundSize = 'cover';
+    
+    // Add gradient overlay
+    const gradientOverlay = document.createElement('div');
+    gradientOverlay.style.position = 'absolute';
+    gradientOverlay.style.top = '0';
+    gradientOverlay.style.left = '0';
+    gradientOverlay.style.width = '100%';
+    gradientOverlay.style.height = '100%';
+    gradientOverlay.style.background = 'linear-gradient(135deg, rgba(1, 45, 117, 0.3) 0%, rgba(14, 30, 58, 0.3) 100%)';
+    gradientOverlay.style.zIndex = '2';
+    
+    backgroundElement.appendChild(innerDiv);
+    backgroundElement.appendChild(gradientOverlay);
+    
+    // Insert background element inside hero section
+    hero.insertBefore(backgroundElement, hero.firstChild);
+    console.log('Background element inserted into hero section');
+    
+    // Ensure hero content is above the background
+    const heroContent = hero.querySelector('.container');
+    if (heroContent) {
+      heroContent.style.position = 'relative';
+      heroContent.style.zIndex = '20';
+      console.log('Hero content z-index set to 20');
+    }
+    
+    // Also ensure hero itself has proper positioning
+    hero.style.position = 'relative';
+    hero.style.zIndex = '1';
+    console.log('Hero section positioning set');
+    
+    // Preload the image to check if it's cached
+    const testImg = new Image();
+    testImg.src = `${imagePath}Stockholm_modif.avif`;
+    
+    // Check if image is already loaded (cached), show it immediately
+    if (testImg.complete && testImg.naturalHeight !== 0) {
+      console.log('iOS background image already cached - showing immediately');
+      // Set opacity directly instead of using CSS classes
+      backgroundElement.style.opacity = '1';
       hero.classList.add('image-loaded');
-      console.log('iOS background image loaded successfully');
+      console.log('Background element opacity set to 1, color background removed');
+      
+      // Debug: Check if background element is actually visible
+      setTimeout(() => {
+        const computedStyle = window.getComputedStyle(backgroundElement);
+        console.log('Background element debug:', {
+          opacity: computedStyle.opacity,
+          zIndex: computedStyle.zIndex,
+          position: computedStyle.position,
+          width: computedStyle.width,
+          height: computedStyle.height,
+          backgroundImage: computedStyle.backgroundImage
+        });
+      }, 100);
+      return;
+    }
+    
+    // Image not cached, load it
+    testImg.onload = () => {
+      console.log('iOS background image loaded successfully, setting opacity to 1');
+      // Set opacity directly instead of using CSS classes
+      backgroundElement.style.opacity = '1';
+      hero.classList.add('image-loaded');
+      console.log('Background element opacity set to 1, color background removed');
+      
+      // Debug: Check if background element is actually visible
+      setTimeout(() => {
+        const computedStyle = window.getComputedStyle(backgroundElement);
+        console.log('Background element debug:', {
+          opacity: computedStyle.opacity,
+          zIndex: computedStyle.zIndex,
+          position: computedStyle.position,
+          width: computedStyle.width,
+          height: computedStyle.height,
+          backgroundImage: computedStyle.backgroundImage
+        });
+      }, 100);
     };
-    img.onerror = () => {
-      // Image failed to load - keep the color background
+    testImg.onerror = () => {
       console.log('iOS background image failed to load - keeping color background');
     };
-    img.src = `${imagePath}Stockholm_modif.avif`;
+    console.log('Loading image from: ' + testImg.src);
     
     console.log('iOS background initialized with color fallback');
   }
@@ -377,7 +499,7 @@ class PolarFlowsApp {
           height: window.innerHeight
         });
         
-        console.log('Resize handling complete');
+        this.debugLog('Resize handling complete');
       }, CONFIG.ANIMATION.RESIZE_DEBOUNCE);
     };
 
@@ -415,7 +537,7 @@ class PolarFlowsApp {
       // Use a small tolerance to account for floating point precision
       if (currentProgress >= CONFIG.ANIMATION.PROGRESS_THRESHOLD) {
         // Animation is complete - position logo directly in navbar
-        console.log('Animation complete during resize - positioning logo in navbar');
+        this.debugLog('Animation complete during resize - positioning logo in navbar');
         
         // Get final logo properties for navbar position
         const globalLogoProps = window.getFinalLogoProperties();
@@ -438,7 +560,7 @@ class PolarFlowsApp {
         transitionLogo.style.width = `${finalSize}%`;
         transitionLogo.style.height = 'auto';
         
-        console.log(`Logo positioned in navbar during resize - size: ${finalSize.toFixed(1)}%`);
+        this.debugLog(`Logo positioned in navbar during resize - size: ${finalSize.toFixed(1)}%`);
         return;
       }
       
@@ -488,7 +610,7 @@ class PolarFlowsApp {
       transitionLogo.style.width = `${finalSize}%`;
       transitionLogo.style.height = 'auto';
       
-      console.log(`Logo position updated during resize - progress: ${currentProgress.toFixed(2)}, size: ${finalSize.toFixed(1)}%`);
+      this.debugLog(`Logo position updated during resize - progress: ${currentProgress.toFixed(2)}, size: ${finalSize.toFixed(1)}%`);
     });
   }
 
@@ -566,7 +688,7 @@ class PolarFlowsApp {
     this.components.clear();
     this.isInitialized = false;
     
-    console.log('Polar Flows website destroyed');
+    this.debugLog('Polar Flows website destroyed');
   }
 
   /**
@@ -626,11 +748,11 @@ class PolarFlowsApp {
    * Initialize logo transformation effect
    */
   initLogoTransformation() {
-    console.log('Initializing logo transformation...');
+    this.debugLog('Initializing logo transformation...');
     
     // Only apply to main page
     if (!document.body.classList.contains('home-page')) {
-      console.log('Not home page, skipping logo transformation');
+      this.debugLog('Not home page, skipping logo transformation');
       return;
     }
 
@@ -644,12 +766,12 @@ class PolarFlowsApp {
     // Make finalLogoProperties accessible to createTempLogo
     window.finalLogoProperties = finalLogoProperties;
     
-    console.log('Transition logo found:', !!transitionLogo);
-    console.log('Navbar logo found:', !!navbarLogo);
-    console.log('Navbar brand found:', !!navbarBrand);
+    this.debugLog('Transition logo found:', !!transitionLogo);
+    this.debugLog('Navbar logo found:', !!navbarLogo);
+    this.debugLog('Navbar brand found:', !!navbarBrand);
     
     if (!transitionLogo || !navbarLogo || !navbarBrand) {
-      console.log('Missing logo elements, skipping transformation');
+      this.debugLog('Missing logo elements, skipping transformation');
       return;
     }
 
@@ -719,7 +841,7 @@ class PolarFlowsApp {
       const logoPositionInSafeArea = 0.75; // 75% down in the safe area
       const safeTop = safeAreaTop + (safeAreaHeight * logoPositionInSafeArea);
       
-      console.log(`Dynamic positioning: Hero height: ${heroSectionHeight}px, Navbar bottom: ${navbarBottom}px, Text top: ${textTopWithPadding}px, Safe area: ${safeAreaHeight}px, Logo position: ${safeTop}px`);
+      this.debugLog(`Dynamic positioning: Hero height: ${heroSectionHeight}px, Navbar bottom: ${navbarBottom}px, Text top: ${textTopWithPadding}px, Safe area: ${safeAreaHeight}px, Logo position: ${safeTop}px`);
       
       return {
         top: safeTop, // Positioned in bottom part of safe area
@@ -768,16 +890,16 @@ class PolarFlowsApp {
       // Check if we should pause animation (menu is open and progress = 1)
       if (window.menuOpen && scrollProgress >= 1.00 && !window.menuAnimationPaused) {
         window.menuAnimationPaused = true;
-        console.log('Animation paused - menu open and progress reached 1.00');
+        this.debugLog('Animation paused - menu open and progress reached 1.00');
       }
       
       if (scrollY > 0 && !isTransforming) {
-        console.log('Starting transformation');
+        this.debugLog('Starting transformation');
         isTransforming = true;
         navbarLogo.style.opacity = '0';
         navbarLogo.style.visibility = 'hidden';
       } else if (scrollY <= 0 && isTransforming) {
-        console.log('Stopping transformation');
+        this.debugLog('Stopping transformation');
         isTransforming = false;
         navbarLogo.style.opacity = '0';
         navbarLogo.style.visibility = 'hidden';
@@ -852,11 +974,11 @@ class PolarFlowsApp {
         };
         // Update the global reference
         window.finalLogoProperties = finalLogoProperties;
-        console.log('Stored final logo properties using global function:', finalLogoProperties);
+        this.debugLog('Stored final logo properties using global function:', finalLogoProperties);
       }
       
       // Log the size information with CSS debugging
-      console.log(`Scroll: ${scrollY}px, Progress: ${scrollProgress.toFixed(2)}, MaxScroll: ${maxScroll}px, Size: ${finalSize.toFixed(1)}%`);
+      this.debugLog(`Scroll: ${scrollY}px, Progress: ${scrollProgress.toFixed(2)}, MaxScroll: ${maxScroll}px, Size: ${finalSize.toFixed(1)}%`);
       
       // Apply size with more specific CSS overrides
       transitionLogo.style.width = `${finalSize}%`;
@@ -886,7 +1008,7 @@ class PolarFlowsApp {
       const currentScrollY = Math.max(0, window.scrollY);
       const currentScrollProgress = Math.min(currentScrollY / maxScroll, 1);
       
-      console.log(`Initial scroll: ${currentScrollY}px, Progress: ${currentScrollProgress.toFixed(2)}`);
+      this.debugLog(`Initial scroll: ${currentScrollY}px, Progress: ${currentScrollProgress.toFixed(2)}`);
       
       if (currentScrollProgress > 0) {
         // Page was refreshed while scrolled - hide navbar logo and position transition logo
@@ -945,10 +1067,10 @@ class PolarFlowsApp {
         transitionLogo.style.flexShrink = '0'; // Prevent flex shrinking
         transitionLogo.style.flexGrow = '0'; // Prevent flex growing
         
-        console.log('Initial position set based on scroll position');
+        this.debugLog('Initial position set based on scroll position');
       } else {
         // Page loaded at top - use calculated position (same as progress=0.00)
-        console.log('Page loaded at top - using calculated position');
+        this.debugLog('Page loaded at top - using calculated position');
         
         // Calculate the same position as progress=0.00 in handleScroll
         const heroSection = document.querySelector('.hero-section');
@@ -975,8 +1097,8 @@ class PolarFlowsApp {
     // Prevent scrolling and resizing when navbar menu is open
     this.preventScrollAndResizeWhenMenuOpen();
     
-    console.log('Logo transformation initialized successfully');
-    console.log(`Hero height: ${heroSectionHeight}px, Navbar height: ${navbarHeight}px, Total height: ${totalHeight}px, Max scroll: ${maxScroll}px`);
+    this.debugLog('Logo transformation initialized successfully');
+    this.debugLog(`Hero height: ${heroSectionHeight}px, Navbar height: ${navbarHeight}px, Total height: ${totalHeight}px, Max scroll: ${maxScroll}px`);
     
   }
 
@@ -1040,7 +1162,7 @@ class PolarFlowsApp {
             // Store original scroll position for restoration
             window.menuOriginalScrollY = Math.max(0, window.scrollY);
             
-            console.log('Menu opened - checking scroll state');
+            this.debugLog('Menu opened - checking scroll state');
             
             // 1. Menu is already active from the button click, keep it that way
             // The CSS will handle the slide-in animation when active class is present
@@ -1063,7 +1185,7 @@ class PolarFlowsApp {
               const currentScrollY = Math.max(0, window.scrollY);
               const currentProgress = Math.min(currentScrollY / heroHeight, 1);
               
-              console.log('Current scroll state:', {
+              this.debugLog('Current scroll state:', {
                 currentScrollY: currentScrollY,
                 heroHeight: heroHeight,
                 currentProgress: currentProgress
@@ -1083,9 +1205,9 @@ class PolarFlowsApp {
                     top: targetScrollY,
                     behavior: 'smooth'
                   });
-                  console.log('Scrolling to About section title at position:', targetScrollY);
+                  this.debugLog('Scrolling to About section title at position:', targetScrollY);
                 } else {
-                  console.log('User is already at or below About section, no scrolling needed');
+                  this.debugLog('User is already at or below About section, no scrolling needed');
                 }
               } else {
                 // Fallback to progress = 1 if About section not found
@@ -1099,26 +1221,26 @@ class PolarFlowsApp {
                     top: targetScrollY,
                     behavior: 'smooth'
                   });
-                  console.log('About section not found, scrolling to progress = 1 at position:', targetScrollY);
+                  this.debugLog('About section not found, scrolling to progress = 1 at position:', targetScrollY);
                 } else {
-                  console.log('Progress is already 1, no scrolling needed');
+                  this.debugLog('Progress is already 1, no scrolling needed');
                 }
               }
             }
             
             // Set menu open flag for animation system to detect
             window.menuOpen = true;
-            console.log('Menu opened - scroll and slide animations starting simultaneously');
+            this.debugLog('Menu opened - scroll and slide animations starting simultaneously');
             
             // Menu is already active, CSS will handle the slide-in animation
-            console.log('Menu options sliding in from right');
+            this.debugLog('Menu options sliding in from right');
           } else if (!isActive && isMenuOpen) {
             // Menu just closed - set flag to prevent further observer reactions
             isUpdatingMenuClass = true;
             isMenuOpen = false; // Set this immediately to prevent re-triggering
             
             // Start slide-out animation for menu options
-            console.log('Menu options sliding out to right');
+            this.debugLog('Menu options sliding out to right');
             
             // Start logo animation immediately (simultaneously with slide-out)
             // Restore logo's original z-index only
@@ -1127,19 +1249,19 @@ class PolarFlowsApp {
             if (transitionLogo) {
               transitionLogo.style.removeProperty('z-index');
               // Don't remove opacity and visibility - let animation system control them
-              console.log('Logo z-index restored, opacity/visibility left to animation system');
+              this.debugLog('Logo z-index restored, opacity/visibility left to animation system');
             }
             
             // Resume animation system when menu is closed
             window.menuOpen = false;
             window.menuAnimationPaused = false;
-            console.log('Menu closed - animation system resumed');
+            this.debugLog('Menu closed - animation system resumed');
             
             // Trigger recalculation of logo position and scroll to top immediately
             setTimeout(() => {
               // Trigger a scroll event to recalculate logo position
               window.dispatchEvent(new Event('scroll'));
-              console.log('Logo position recalculated after menu close');
+              this.debugLog('Logo position recalculated after menu close');
               
               // Only scroll up if user is above About section (with padding)
               const aboutSection = document.getElementById('about');
@@ -1154,9 +1276,9 @@ class PolarFlowsApp {
                     top: 0,
                     behavior: 'smooth'
                   });
-                  console.log('Menu closed - scrolling to top (user was above About section with padding)');
+                  this.debugLog('Menu closed - scrolling to top (user was above About section with padding)');
                 } else {
-                  console.log('Menu closed - no scrolling needed (user is at or below About section with padding)');
+                  this.debugLog('Menu closed - no scrolling needed (user is at or below About section with padding)');
                 }
               } else {
                 // Fallback: scroll to top if About section not found
@@ -1164,13 +1286,13 @@ class PolarFlowsApp {
                   top: 0,
                   behavior: 'smooth'
                 });
-                console.log('Menu closed - scrolling to top (About section not found, fallback)');
+                this.debugLog('Menu closed - scrolling to top (About section not found, fallback)');
               }
             }, 50);
             
             // Wait for slide-out animation to complete before re-enabling observer
             setTimeout(() => {
-              console.log('Menu closed and cleanup completed');
+              this.debugLog('Menu closed and cleanup completed');
               isUpdatingMenuClass = false; // Re-enable observer
             }, 300); // Wait for slide-out animation to complete (CSS transition is 0.3s)
           }
@@ -1256,8 +1378,8 @@ window.getFinalLogoProperties = function() {
   // Cache the result for reuse
   window.finalLogoProperties = result;
   
-  console.log('getFinalLogoProperties calculated and cached:', result);
-  console.log('Logo rect:', logoRect, 'Actual navbar height:', actualNavbarHeight, 'Logo height:', logoHeight);
+  // this.debugLog('getFinalLogoProperties calculated and cached:', result);
+  // this.debugLog('Logo rect:', logoRect, 'Actual navbar height:', actualNavbarHeight, 'Logo height:', logoHeight);
   
   return result;
 };
@@ -1265,14 +1387,14 @@ window.getFinalLogoProperties = function() {
 // Function to clear the cached logo properties (useful for window resize)
 window.clearFinalLogoProperties = function() {
   window.finalLogoProperties = null;
-  console.log('Final logo properties cache cleared');
+  // this.debugLog('Final logo properties cache cleared');
 };
 
 // Function to force recalculation of logo properties (bypasses cache)
 window.recalculateFinalLogoProperties = function() {
   window.finalLogoProperties = null; // Clear cache first
   const result = window.getFinalLogoProperties(); // Force recalculation
-  console.log('Final logo properties recalculated:', result);
+  // this.debugLog('Final logo properties recalculated:', result);
   return result;
 };
 
