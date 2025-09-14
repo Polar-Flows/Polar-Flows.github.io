@@ -154,12 +154,12 @@ class PolarFlowsApp {
       existingBackground.remove();
     }
     
-    // Create fixed positioned background element
+    // Create simple background element - much faster approach
     const backgroundElement = document.createElement('div');
     backgroundElement.className = 'hero-background-ios';
     
-    // For iOS: Use fixed positioning with proper clipping to hero section
-    backgroundElement.style.position = 'fixed';
+    // Simple approach: absolute positioned within hero section
+    backgroundElement.style.position = 'absolute';
     backgroundElement.style.top = '0';
     backgroundElement.style.left = '0';
     backgroundElement.style.width = '100%';
@@ -171,20 +171,15 @@ class PolarFlowsApp {
     backgroundElement.style.backgroundRepeat = 'no-repeat';
     backgroundElement.style.backgroundAttachment = 'scroll';
     
-    // Calculate hero section bounds for clipping
-    const heroRect = hero.getBoundingClientRect();
-    const heroTop = heroRect.top;
-    const heroBottom = heroRect.bottom;
-    const viewportHeight = window.innerHeight;
+    // Preload images for faster loading
+    const preloadImage = (src) => {
+      const img = new Image();
+      img.src = src;
+    };
     
-    // Clip the background to only show in hero section
-    const clipTop = Math.max(0, heroTop);
-    const clipBottom = Math.min(viewportHeight, heroBottom);
-    const clipHeight = clipBottom - clipTop;
-    
-    backgroundElement.style.clip = `rect(${clipTop}px, auto, ${clipBottom}px, 0)`;
-    backgroundElement.style.webkitClipPath = `inset(${clipTop}px 0 ${viewportHeight - clipBottom}px 0)`;
-    backgroundElement.style.clipPath = `inset(${clipTop}px 0 ${viewportHeight - clipBottom}px 0)`;
+    preloadImage(`${imagePath}Stockholm_modif.avif`);
+    preloadImage(`${imagePath}Stockholm_modif.webp`);
+    preloadImage(`${imagePath}Stockholm_modif.jpg`);
     
     // Set background image with fallbacks
     const backgroundImage = `linear-gradient(135deg, rgba(1, 45, 117, 0.3) 0%, rgba(14, 30, 58, 0.3) 100%), url('${imagePath}Stockholm_modif.avif'), url('${imagePath}Stockholm_modif.webp'), url('${imagePath}Stockholm_modif.jpg')`;
@@ -204,29 +199,7 @@ class PolarFlowsApp {
     hero.style.position = 'relative';
     hero.style.zIndex = '1';
     
-    // Add scroll event listener to update clipping
-    const updateClipping = () => {
-      const heroRect = hero.getBoundingClientRect();
-      const heroTop = heroRect.top;
-      const heroBottom = heroRect.bottom;
-      const viewportHeight = window.innerHeight;
-      
-      const clipTop = Math.max(0, heroTop);
-      const clipBottom = Math.min(viewportHeight, heroBottom);
-      
-      backgroundElement.style.clip = `rect(${clipTop}px, auto, ${clipBottom}px, 0)`;
-      backgroundElement.style.webkitClipPath = `inset(${clipTop}px 0 ${viewportHeight - clipBottom}px 0)`;
-      backgroundElement.style.clipPath = `inset(${clipTop}px 0 ${viewportHeight - clipBottom}px 0)`;
-    };
-    
-    // Update clipping on scroll and resize
-    window.addEventListener('scroll', updateClipping, { passive: true });
-    window.addEventListener('resize', updateClipping, { passive: true });
-    
-    // Store reference for cleanup
-    backgroundElement._updateClipping = updateClipping;
-    
-    console.log('Mobile background initialized with fixed positioning and clipping');
+    console.log('Mobile background initialized with simple approach');
     console.log('Background element created:', backgroundElement);
   }
 
