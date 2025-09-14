@@ -159,26 +159,57 @@ class PolarFlowsApp {
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || 
                   (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
     
-    // Find existing background elements (created in HTML)
-    const mobileBackground = hero.querySelector('.hero-background-mobile:not(.hero-background-ios)');
-    const iosBackground = hero.querySelector('.hero-background-ios');
-    
     // Determine the correct path based on current page location
     const isSubPage = window.location.pathname.includes('/contact/') || window.location.pathname.includes('/privacy-policy/');
     const imagePath = isSubPage ? '../assets/img/polarflows/' : 'assets/img/polarflows/';
     
-    if (isIOS && iosBackground) {
-      // For iOS: Background-image is already set in CSS, no JavaScript needed
-      // iOS background is immediately visible and static
-    } else if (mobileBackground) {
-      // For non-iOS: Show mobile background element and set background-image
-      mobileBackground.style.display = 'block';
-      mobileBackground.style.backgroundImage = `
-        url('${imagePath}Stockholm_modif.avif'), 
-        url('${imagePath}Stockholm_modif.webp'), 
-        url('${imagePath}Stockholm_modif.jpg');
+    // Create background element dynamically
+    const backgroundElement = document.createElement('div');
+    backgroundElement.className = 'hero-background-mobile';
+    
+    if (isIOS) {
+      // For iOS: Use scroll attachment for better compatibility
+      backgroundElement.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: 
+          linear-gradient(135deg, rgba(1, 45, 117, 0.3) 0%, rgba(14, 30, 58, 0.3) 100%), 
+          url('${imagePath}Stockholm_modif.avif'), 
+          url('${imagePath}Stockholm_modif.webp'), 
+          url('${imagePath}Stockholm_modif.jpg');
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-attachment: scroll;
+        z-index: 0;
+        pointer-events: none;
+      `;
+    } else {
+      // For non-iOS: Use fixed attachment
+      backgroundElement.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: 
+          url('${imagePath}Stockholm_modif.avif'), 
+          url('${imagePath}Stockholm_modif.webp'), 
+          url('${imagePath}Stockholm_modif.jpg');
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        z-index: 0;
+        pointer-events: none;
       `;
     }
+    
+    // Insert background element at the beginning of hero
+    hero.insertBefore(backgroundElement, hero.firstChild);
     
     // Ensure hero content is above background
     const heroContent = hero.querySelector('.container');

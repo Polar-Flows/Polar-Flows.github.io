@@ -361,7 +361,7 @@ Get-ChildItem -Recurse -Include "*.html","*.md","*.css","*.js" | ForEach-Object 
 
 **CRITICAL**: The website uses query string versioning to prevent browser caching issues. When making changes to CSS or JavaScript files, you MUST update the version numbers in all HTML files.
 
-### Current Version: `v1.0.33`
+### Current Version: `v1.0.34`
 
 ### Files That Need Version Updates:
 - `index.html` - All CSS and JS links
@@ -388,6 +388,107 @@ Get-ChildItem -Recurse -Include "*.html","*.md","*.css","*.js" | ForEach-Object 
 **Why This Matters**: Without versioning, browsers cache CSS/JS files and changes won't appear until cache expires (days/weeks). Versioning forces immediate updates.
 
 ## Recent Updates (Latest Session)
+
+### Version 1.0.34 - Comprehensive Visual Fix - Restored All Section Functionality
+
+#### **Comprehensive Visual Fix:**
+- Fixed visual issues across all sections caused by problematic CSS and HTML elements
+- Removed overly broad `@supports (-webkit-touch-callout: none)` block that was affecting entire site
+- Removed always-present background elements from HTML that were interfering with other sections
+- Implemented cleaner JavaScript-only solution for hero background functionality
+- Restored proper section backgrounds and visual consistency
+
+#### **Root Causes Fixed:**
+- **Overly Broad CSS**: `@supports (-webkit-touch-callout: none)` was applying to all iOS devices globally
+- **CSS Specificity Issues**: `!important` declarations were overriding styles across entire site
+- **DOM Interference**: Always-present background elements were affecting layout and stacking context
+- **Image Path Problems**: Hardcoded paths were causing 404 errors and loading issues
+
+#### **Technical Implementation:**
+- **Removed Problematic CSS**: Eliminated `@supports` block with global `!important` rules
+- **Clean HTML Structure**: Removed background elements from HTML, back to original structure
+- **Dynamic JavaScript**: Background elements created only when needed, not always present
+- **Targeted CSS**: Mobile-specific rules only apply to hero background, not entire site
+- **Proper Isolation**: Hero background functionality isolated from other sections
+
+#### **Key Changes:**
+```css
+/* Before: Problematic global CSS affecting entire site */
+@supports (-webkit-touch-callout: none) {
+  .hero { /* Global rules with !important */ }
+  .hero-background-mobile { /* Global rules with !important */ }
+  .hero-background-ios { /* Global rules with !important */ }
+}
+
+/* After: Clean, targeted CSS only for mobile hero background */
+@media (max-width: 1030px) {
+  .hero-background-mobile {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+  }
+}
+```
+
+```html
+<!-- Before: Always-present background elements -->
+<section class="hero">
+  <div class="hero-background-mobile"></div>
+  <div class="hero-background-mobile hero-background-ios"></div>
+  <div class="container">
+
+<!-- After: Clean HTML structure -->
+<section class="hero">
+  <div class="container">
+```
+
+```javascript
+// Clean JavaScript: Creates background element only when needed
+initMobileParallax(hero) {
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || 
+                (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  
+  // Create background element dynamically
+  const backgroundElement = document.createElement('div');
+  backgroundElement.className = 'hero-background-mobile';
+  
+  if (isIOS) {
+    // iOS-specific styling with scroll attachment
+  } else {
+    // Non-iOS styling with fixed attachment
+  }
+  
+  // Insert only when needed
+  hero.insertBefore(backgroundElement, hero.firstChild);
+}
+```
+
+#### **Visual Result:**
+- **All Sections Restored**: Services, team, value props, and other sections display correctly
+- **Hero Background Working**: Static background still works on mobile and iOS
+- **No Visual Interference**: Background elements don't affect other sections
+- **Clean Performance**: No unnecessary DOM elements or CSS conflicts
+- **Proper Isolation**: Hero functionality isolated from rest of site
+
+#### **Files Modified:**
+- `assets/css/main.css` - Removed problematic `@supports` block, added clean mobile-specific CSS
+- `assets/js/main.js` - Implemented clean JavaScript-only solution for hero background
+- `index.html` - Removed background elements from HTML
+- `contact/index.html` - Removed background elements from HTML
+- `privacy-policy/index.html` - Removed background elements from HTML
+- All HTML files - Updated to version 1.0.34
+- `sw.js` - Updated cache version to 1.0.34
 
 ### Version 1.0.33 - True iOS Static Background - Zero JavaScript Dependency
 

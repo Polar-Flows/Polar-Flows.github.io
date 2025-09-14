@@ -1178,69 +1178,24 @@ body:not(.home-page) .navbar-small-logo {
   }
 }
 
-/* iOS Safari specific fixes */
-@supports (-webkit-touch-callout: none) {
-  .hero {
-    /* Keep the CSS background for immediate visibility */
-    background-attachment: scroll !important;
-    background-size: cover !important;
-    background-position: center center !important;
-    -webkit-background-size: cover !important;
-    -moz-background-size: cover !important;
-    -o-background-size: cover !important;
-  }
-  
+/* Mobile-specific hero background handling */
+@media (max-width: 1030px) {
   .hero-background-mobile {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    z-index: 0 !important;
-    pointer-events: none !important;
-    background-size: cover !important;
-    background-position: center center !important;
-    background-repeat: no-repeat !important;
-    background-attachment: fixed !important;
-    -webkit-background-size: cover !important;
-    -moz-background-size: cover !important;
-    -o-background-size: cover !important;
-    display: none !important; /* Hide by default, show via JavaScript */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
   }
-  
-  .hero-background-ios {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    z-index: 0 !important;
-    pointer-events: none !important;
-    background-attachment: scroll !important;
-    background-size: cover !important;
-    background-position: center center !important;
-    background-repeat: no-repeat !important;
-    -webkit-background-size: cover !important;
-    -moz-background-size: cover !important;
-    -o-background-size: cover !important;
-    display: block !important; /* Show iOS background immediately */
-    /* Set background-image directly in CSS for immediate static positioning */
-    background-image: 
-      linear-gradient(135deg, rgba(1, 45, 117, 0.3) 0%, rgba(14, 30, 58, 0.3) 100%), 
-      url('../assets/img/polarflows/Stockholm_modif.avif'), 
-      url('../assets/img/polarflows/Stockholm_modif.webp'), 
-      url('../assets/img/polarflows/Stockholm_modif.jpg');
-  }
-}
-
-/* iOS background for sub-pages (contact, privacy-policy) */
-.contact-page .hero-background-ios,
-.privacy-page .hero-background-ios {
-  background-image: 
-    linear-gradient(135deg, rgba(1, 45, 117, 0.3) 0%, rgba(14, 30, 58, 0.3) 100%), 
-    url('../../assets/img/polarflows/Stockholm_modif.avif'), 
-    url('../../assets/img/polarflows/Stockholm_modif.webp'), 
-    url('../../assets/img/polarflows/Stockholm_modif.jpg');
 }
 
 /* Additional mobile device fixes */
