@@ -163,7 +163,7 @@ class PolarFlowsApp {
     const isSubPage = window.location.pathname.includes('/contact/') || window.location.pathname.includes('/privacy-policy/');
     const imagePath = isSubPage ? '../assets/img/polarflows/' : 'assets/img/polarflows/';
     
-    // Create background element dynamically
+    // Create background element for all mobile devices (iOS and non-iOS)
     const backgroundElement = document.createElement('div');
     backgroundElement.className = 'hero-background-mobile';
     

@@ -78,9 +78,9 @@ export const VALIDATION_CONFIG = {
 };
 
 export const SERVICE_WORKER_CONFIG = {
-  CACHE_VERSION: 'v1.0.34',
-  STATIC_CACHE_NAME: 'polar-flows-static-v1.0.34',
-  DYNAMIC_CACHE_NAME: 'polar-flows-dynamic-v1.0.34',
+  CACHE_VERSION: 'v1.0.36',
+  STATIC_CACHE_NAME: 'polar-flows-static-v1.0.36',
+  DYNAMIC_CACHE_NAME: 'polar-flows-dynamic-v1.0.36',
 };
 
 export const CONTACT_CONFIG = {
