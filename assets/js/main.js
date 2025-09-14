@@ -235,46 +235,14 @@ class PolarFlowsApp {
     // Check if image is already loaded (cached), show it immediately
     if (testImg.complete && testImg.naturalHeight !== 0) {
       console.log('iOS background image already cached - showing immediately');
-      // Set opacity directly instead of using CSS classes
-      backgroundElement.style.opacity = '1';
-      hero.classList.add('image-loaded');
-      console.log('Background element opacity set to 1, color background removed');
-      
-      // Debug: Check if background element is actually visible
-      setTimeout(() => {
-        const computedStyle = window.getComputedStyle(backgroundElement);
-        console.log('Background element debug:', {
-          opacity: computedStyle.opacity,
-          zIndex: computedStyle.zIndex,
-          position: computedStyle.position,
-          width: computedStyle.width,
-          height: computedStyle.height,
-          backgroundImage: computedStyle.backgroundImage
-        });
-      }, 100);
+      this.smoothTransition(backgroundElement, hero);
       return;
     }
     
     // Image not cached, load it
     testImg.onload = () => {
-      console.log('iOS background image loaded successfully, setting opacity to 1');
-      // Set opacity directly instead of using CSS classes
-      backgroundElement.style.opacity = '1';
-      hero.classList.add('image-loaded');
-      console.log('Background element opacity set to 1, color background removed');
-      
-      // Debug: Check if background element is actually visible
-      setTimeout(() => {
-        const computedStyle = window.getComputedStyle(backgroundElement);
-        console.log('Background element debug:', {
-          opacity: computedStyle.opacity,
-          zIndex: computedStyle.zIndex,
-          position: computedStyle.position,
-          width: computedStyle.width,
-          height: computedStyle.height,
-          backgroundImage: computedStyle.backgroundImage
-        });
-      }, 100);
+      console.log('iOS background image loaded successfully, starting smooth transition');
+      this.smoothTransition(backgroundElement, hero);
     };
     testImg.onerror = () => {
       console.log('iOS background image failed to load - keeping color background');
@@ -282,6 +250,31 @@ class PolarFlowsApp {
     console.log('Loading image from: ' + testImg.src);
     
     console.log('iOS background initialized with color fallback');
+  }
+
+  /**
+   * Smooth transition from color background to image background
+   */
+  smoothTransition(backgroundElement, hero) {
+    // Start the image fade-in
+    backgroundElement.style.opacity = '1';
+    
+    // Gradually fade out the hero's background color
+    let opacity = 1;
+    const fadeOutInterval = setInterval(() => {
+      opacity -= 0.05; // Reduce opacity by 5% each frame
+      
+      if (opacity <= 0) {
+        // Transition complete
+        opacity = 0;
+        hero.classList.add('image-loaded');
+        clearInterval(fadeOutInterval);
+        console.log('Smooth transition completed');
+      }
+      
+      // Set the hero's background color with current opacity
+      hero.style.setProperty('background-color', `rgba(40, 40, 88, ${opacity})`, 'important');
+    }, 25); // 25ms intervals for smooth 60fps animation
   }
 
 
