@@ -361,7 +361,7 @@ Get-ChildItem -Recurse -Include "*.html","*.md","*.css","*.js" | ForEach-Object 
 
 **CRITICAL**: The website uses query string versioning to prevent browser caching issues. When making changes to CSS or JavaScript files, you MUST update the version numbers in all HTML files.
 
-### Current Version: `v1.0.28`
+### Current Version: `v1.0.33`
 
 ### Files That Need Version Updates:
 - `index.html` - All CSS and JS links
@@ -388,6 +388,337 @@ Get-ChildItem -Recurse -Include "*.html","*.md","*.css","*.js" | ForEach-Object 
 **Why This Matters**: Without versioning, browsers cache CSS/JS files and changes won't appear until cache expires (days/weeks). Versioning forces immediate updates.
 
 ## Recent Updates (Latest Session)
+
+### Version 1.0.33 - True iOS Static Background - Zero JavaScript Dependency
+
+#### **True iOS Static Background Fix:**
+- Fixed iOS background still not being truly static despite previous attempts
+- Eliminated JavaScript dependency entirely for iOS background positioning
+- Background-image now set directly in CSS for immediate static positioning
+- iOS background is completely static from the very first frame of page load
+
+#### **Technical Implementation:**
+- **CSS-Only iOS Background**: Background-image set directly in CSS, not JavaScript
+- **Zero JavaScript Dependency**: iOS background works even if JavaScript fails to load
+- **Immediate Static Positioning**: Background is static from page load start
+- **Path-Specific CSS**: Different CSS rules for main page vs sub-pages (contact, privacy-policy)
+
+#### **Key Changes:**
+```css
+/* iOS background with background-image set in CSS */
+.hero-background-ios {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+  background-attachment: scroll !important;
+  background-size: cover !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
+  -webkit-background-size: cover !important;
+  -moz-background-size: cover !important;
+  -o-background-size: cover !important;
+  display: block !important;
+  /* Background-image set directly in CSS for immediate static positioning */
+  background-image: 
+    linear-gradient(135deg, rgba(1, 45, 117, 0.3) 0%, rgba(14, 30, 58, 0.3) 100%), 
+    url('../assets/img/polarflows/Stockholm_modif.avif'), 
+    url('../assets/img/polarflows/Stockholm_modif.webp'), 
+    url('../assets/img/polarflows/Stockholm_modif.jpg');
+}
+
+/* Sub-pages get different image paths */
+.contact-page .hero-background-ios,
+.privacy-page .hero-background-ios {
+  background-image: 
+    linear-gradient(135deg, rgba(1, 45, 117, 0.3) 0%, rgba(14, 30, 58, 0.3) 100%), 
+    url('../../assets/img/polarflows/Stockholm_modif.avif'), 
+    url('../../assets/img/polarflows/Stockholm_modif.webp'), 
+    url('../../assets/img/polarflows/Stockholm_modif.jpg');
+}
+```
+
+```javascript
+// iOS: No JavaScript needed - background-image already set in CSS
+if (isIOS && iosBackground) {
+  // For iOS: Background-image is already set in CSS, no JavaScript needed
+  // iOS background is immediately visible and static
+} else if (mobileBackground) {
+  // Non-iOS: Still uses JavaScript for background-image
+  mobileBackground.style.display = 'block';
+  mobileBackground.style.backgroundImage = `url('${imagePath}...')`;
+}
+```
+
+#### **Visual Result:**
+- **iOS**: Background completely static from first frame, zero JavaScript dependency
+- **Non-iOS**: Background shows when JavaScript runs, also static
+- **Immediate Static**: Background stays fixed in place from page load start
+- **Reliability**: Works even if JavaScript fails to load on iOS
+
+#### **Files Modified:**
+- `assets/css/main.css` - Added background-image directly to iOS CSS rules for main and sub-pages
+- `assets/js/main.js` - Removed JavaScript background-image setting for iOS
+- All HTML files - Updated to version 1.0.33
+- `sw.js` - Updated cache version to 1.0.33
+
+### Version 1.0.32 - Fixed iOS Static Positioning While Maintaining Immediate Styling
+
+#### **iOS Static Positioning Fix:**
+- Fixed iOS background position no longer being static after previous changes
+- Maintained immediate styling while restoring static background positioning for iOS
+- iOS background element now visible and static from page load start
+- Non-iOS background element remains hidden until JavaScript runs
+
+#### **Technical Implementation:**
+- **iOS-Specific Visibility**: iOS background element (`hero-background-ios`) now visible by default
+- **Non-iOS Hidden**: Regular mobile background element remains hidden until JavaScript shows it
+- **Static Positioning**: iOS background uses `position: fixed` with `background-attachment: scroll` for true static behavior
+- **Immediate Styling**: All styling properties applied via CSS from page load start
+
+#### **Key Changes:**
+```css
+/* iOS background visible immediately with static positioning */
+.hero-background-ios {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+  background-attachment: scroll !important;  /* Key for iOS static positioning */
+  background-size: cover !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
+  -webkit-background-size: cover !important;
+  -moz-background-size: cover !important;
+  -o-background-size: cover !important;
+  display: block !important; /* Show iOS background immediately */
+}
+
+/* Non-iOS background hidden until JavaScript shows it */
+.hero-background-mobile {
+  /* ... same positioning properties ... */
+  display: none !important; /* Hide by default, show via JavaScript */
+}
+```
+
+```javascript
+// iOS: Background already visible, just set background-image
+if (isIOS && iosBackground) {
+  iosBackground.style.backgroundImage = `url('${imagePath}...')`;
+} else if (mobileBackground) {
+  // Non-iOS: Show background and set background-image
+  mobileBackground.style.display = 'block';
+  mobileBackground.style.backgroundImage = `url('${imagePath}...')`;
+}
+```
+
+#### **Visual Result:**
+- **iOS**: Background visible immediately with static positioning (doesn't scroll with content)
+- **Non-iOS**: Background shows when JavaScript runs, also with static positioning
+- **Immediate Styling**: All styling applied from page load start, no visual delays
+- **Static Behavior**: Background stays fixed in place while content scrolls over it
+
+#### **Files Modified:**
+- `assets/css/main.css` - Made iOS background visible by default with static positioning
+- `assets/js/main.js` - Simplified iOS handling to only set background-image
+- All HTML files - Updated to version 1.0.32
+- `sw.js` - Updated cache version to 1.0.32
+
+### Version 1.0.31 - Fixed iOS Styling Delay - True Immediate Styling
+
+#### **iOS Styling Delay Fix:**
+- Fixed styling still being applied later, especially on iOS devices
+- Eliminated JavaScript dependency for background element creation
+- Background elements now exist in HTML from page load start
+- CSS styling applies immediately when page loads, not after JavaScript execution
+
+#### **Technical Implementation:**
+- **HTML-First Approach**: Background elements added directly to HTML in all pages
+- **Immediate CSS Styling**: All background styling properties applied via CSS from page load
+- **JavaScript Simplification**: JavaScript only shows appropriate element and sets background-image
+- **No Element Creation**: Eliminated dynamic element creation that caused styling delays
+
+#### **Key Changes:**
+```html
+<!-- Added to all hero sections in HTML -->
+<section class="hero" aria-labelledby="hero-title">
+  <!-- Background elements for immediate styling -->
+  <div class="hero-background-mobile"></div>
+  <div class="hero-background-mobile hero-background-ios"></div>
+  <div class="container">
+```
+
+```css
+/* Background elements hidden by default, shown by JavaScript */
+.hero-background-mobile {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+  background-size: cover !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
+  background-attachment: fixed !important;
+  -webkit-background-size: cover !important;
+  -moz-background-size: cover !important;
+  -o-background-size: cover !important;
+  display: none !important; /* Hidden by default, shown via JavaScript */
+}
+```
+
+```javascript
+// Before: Created elements dynamically causing styling delay
+const backgroundElement = document.createElement('div');
+backgroundElement.className = 'hero-background-mobile';
+backgroundElement.style.cssText = `position: fixed; ...`;
+hero.insertBefore(backgroundElement, hero.firstChild);
+
+// After: Use existing HTML elements, just show and set background-image
+const mobileBackground = hero.querySelector('.hero-background-mobile:not(.hero-background-ios)');
+mobileBackground.style.display = 'block';
+mobileBackground.style.backgroundImage = `url('${imagePath}...')`;
+```
+
+#### **Visual Result:**
+- **Before**: Page loads ? JavaScript creates element ? CSS styling applied ? Visual delay
+- **After**: Page loads ? CSS styling already applied ? JavaScript shows element ? Immediate display
+- **iOS Performance**: Eliminated iOS-specific styling delays completely
+- **Immediate Styling**: Background appears with correct styling from the very first frame
+
+#### **Files Modified:**
+- `index.html` - Added background elements to hero section
+- `contact/index.html` - Added background elements to hero section  
+- `privacy-policy/index.html` - Added background elements to hero section
+- `assets/css/main.css` - Added `display: none` to background elements, styling applied immediately
+- `assets/js/main.js` - Simplified to use existing HTML elements instead of creating new ones
+- All HTML files - Updated to version 1.0.31
+- `sw.js` - Updated cache version to 1.0.31
+
+### Version 1.0.30 - Fixed Background Styling Delay and Visual Jump
+
+#### **Background Styling Fix:**
+- Fixed background image loading then getting resized/styled after JavaScript execution
+- Eliminated visual "jump" where image appears, then gets additional styling rules applied
+- Moved all background styling rules from JavaScript to CSS for immediate application
+- Background now displays with correct styling from the moment it appears
+
+#### **Technical Implementation:**
+- **CSS-First Approach**: All background styling now applied immediately via CSS
+- **JavaScript Simplification**: JavaScript only sets background-image, CSS handles all other properties
+- **Immediate Styling**: Background displays with correct size, position, and attachment from start
+- **No Visual Changes**: Eliminated the resize/styling step that caused visual inconsistency
+
+#### **Key Changes:**
+```css
+/* Added to .hero-background-mobile for immediate styling */
+.hero-background-mobile {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+  background-size: cover !important;           /* Now applied immediately */
+  background-position: center center !important; /* Now applied immediately */
+  background-repeat: no-repeat !important;      /* Now applied immediately */
+  background-attachment: fixed !important;      /* Now applied immediately */
+  -webkit-background-size: cover !important;    /* Now applied immediately */
+  -moz-background-size: cover !important;       /* Now applied immediately */
+  -o-background-size: cover !important;         /* Now applied immediately */
+}
+```
+
+```javascript
+// Before: JavaScript applied all styling causing visual jump
+backgroundElement.style.cssText = `
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('...');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  z-index: 0;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+`;
+
+// After: JavaScript only sets background-image, CSS handles everything else
+backgroundElement.style.cssText = `
+  background-image: url('...');
+`;
+```
+
+#### **Visual Result:**
+- **Before**: Image loads ? JavaScript applies styling ? Visual jump/resize occurs
+- **After**: Image loads with correct styling immediately ? No visual changes
+- **Performance**: Smoother visual experience with no styling delays
+- **Consistency**: Background appears exactly as intended from the first frame
+
+#### **Files Modified:**
+- `assets/css/main.css` - Added all background styling properties to `.hero-background-mobile`
+- `assets/js/main.js` - Simplified to only set background-image, removed redundant styling
+- All HTML files - Updated to version 1.0.30
+- `sw.js` - Updated cache version to 1.0.30
+
+### Version 1.0.29 - Fixed Background Loading Delay and Visual Inconsistency
+
+#### **Background Loading Fix:**
+- Fixed background image rendering last, causing visual inconsistency on page load
+- Background now visible immediately when page loads, not after JavaScript execution
+- Changed approach from replacing CSS background to enhancing it with JavaScript
+- Maintained static background behavior while ensuring immediate visibility
+
+#### **Technical Implementation:**
+- **CSS Background**: Kept CSS background as fallback for immediate visibility
+- **JavaScript Enhancement**: JavaScript now enhances rather than replaces the CSS background
+- **No Background Removal**: Removed `hero.style.background = 'none'` to preserve immediate loading
+- **Layered Approach**: CSS background loads first, JavaScript adds fixed positioning layer
+
+#### **Key Changes:**
+```javascript
+// Before: Removed CSS background causing delay
+hero.style.background = 'none';
+
+// After: Keep CSS background for immediate visibility
+// Don't remove the CSS background - keep it as fallback for immediate visibility
+// Just enhance it with JavaScript for better static positioning
+```
+
+```css
+/* iOS CSS now preserves background for immediate loading */
+.hero {
+  /* Keep the CSS background for immediate visibility */
+  background-attachment: scroll !important;
+  background-size: cover !important;
+}
+```
+
+#### **Visual Result:**
+- **Before**: Background appeared after JavaScript loaded, causing visual delay
+- **After**: Background visible immediately on page load, no visual inconsistency
+- **Performance**: Faster perceived loading time with immediate background display
+- **Reliability**: CSS background ensures visibility even if JavaScript fails to load
+
+#### **Files Modified:**
+- `assets/js/main.js` - Removed background removal, kept CSS background as fallback
+- `assets/css/main.css` - Ensured CSS background remains for immediate visibility
+- All HTML files - Updated to version 1.0.29
+- `sw.js` - Updated cache version to 1.0.29
 
 ### Version 1.0.28 - Made iOS Background Truly Static (Fixed Position)
 
