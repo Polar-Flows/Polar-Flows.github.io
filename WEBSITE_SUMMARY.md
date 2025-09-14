@@ -361,7 +361,7 @@ Get-ChildItem -Recurse -Include "*.html","*.md","*.css","*.js" | ForEach-Object 
 
 **CRITICAL**: The website uses query string versioning to prevent browser caching issues. When making changes to CSS or JavaScript files, you MUST update the version numbers in all HTML files.
 
-### Current Version: `v1.0.36`
+### Current Version: `v1.0.37`
 
 ### Files That Need Version Updates:
 - `index.html` - All CSS and JS links
@@ -388,6 +388,113 @@ Get-ChildItem -Recurse -Include "*.html","*.md","*.css","*.js" | ForEach-Object 
 **Why This Matters**: Without versioning, browsers cache CSS/JS files and changes won't appear until cache expires (days/weeks). Versioning forces immediate updates.
 
 ## Recent Updates (Latest Session)
+
+### Version 1.0.37 - Image Loads First - Immediate CSS Background + Enhanced JavaScript
+
+#### **Image Loads First Fix:**
+- Ensured background image loads first by setting it in CSS immediately
+- Background element exists in HTML from page start, not created by JavaScript
+- CSS sets background-image immediately when page loads, before JavaScript runs
+- JavaScript only enhances existing background element with device-specific properties
+- Combined preloading + immediate CSS loading for fastest possible image display
+
+#### **Technical Implementation:**
+- **HTML Background Element**: Added `<div class="hero-background-mobile"></div>` to all hero sections
+- **CSS Immediate Loading**: Background-image set in CSS for instant loading when CSS loads
+- **JavaScript Enhancement**: JavaScript finds existing element and enhances it, doesn't create new one
+- **Path-Specific CSS**: Different image paths for main page vs sub-pages
+- **Device-Specific Enhancement**: iOS gets gradient overlay and scroll attachment, non-iOS keeps fixed
+
+#### **Key Changes:**
+```html
+<!-- Background element exists from page start -->
+<section class="hero">
+  <div class="hero-background-mobile"></div>
+  <div class="container">
+```
+
+```css
+/* CSS sets background-image immediately when CSS loads */
+@media (max-width: 1030px) {
+  .hero-background-mobile {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    /* Background-image loads immediately with CSS */
+    background-image: 
+      url('../assets/img/polarflows/Stockholm_modif.avif'), 
+      url('../assets/img/polarflows/Stockholm_modif.webp'), 
+      url('../assets/img/polarflows/Stockholm_modif.jpg');
+  }
+  
+  /* Sub-pages get different image paths */
+  .contact-page .hero-background-mobile,
+  .privacy-page .hero-background-mobile {
+    background-image: 
+      url('../../assets/img/polarflows/Stockholm_modif.avif'), 
+      url('../../assets/img/polarflows/Stockholm_modif.webp'), 
+      url('../../assets/img/polarflows/Stockholm_modif.jpg');
+  }
+}
+```
+
+```javascript
+// JavaScript enhances existing element, doesn't create new one
+initMobileParallax(hero) {
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || 
+                (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  
+  // Find existing background element (created in HTML)
+  const backgroundElement = hero.querySelector('.hero-background-mobile');
+  
+  if (backgroundElement) {
+    if (isIOS) {
+      // For iOS: Enhance with gradient overlay and scroll attachment
+      backgroundElement.style.backgroundImage = `
+        linear-gradient(135deg, rgba(1, 45, 117, 0.3) 0%, rgba(14, 30, 58, 0.3) 100%), 
+        url('../assets/img/polarflows/Stockholm_modif.avif'), 
+        url('../assets/img/polarflows/Stockholm_modif.webp'), 
+        url('../assets/img/polarflows/Stockholm_modif.jpg');
+      `;
+      backgroundElement.style.backgroundAttachment = 'scroll';
+    } else {
+      // For non-iOS: Keep fixed attachment (already set in CSS)
+      backgroundElement.style.backgroundAttachment = 'fixed';
+    }
+  }
+}
+```
+
+#### **Loading Sequence:**
+1. **HTML Loads**: Background element exists immediately
+2. **CSS Loads**: Background-image set immediately, starts loading
+3. **Images Preload**: `<link rel="preload">` helps browser prioritize images
+4. **JavaScript Enhances**: Adds device-specific properties when JavaScript runs
+5. **Result**: Image loads first, before any JavaScript execution
+
+#### **Performance Result:**
+- ? **Image Loads First**: Background image starts loading immediately with CSS
+- ? **No JavaScript Delay**: Image doesn't wait for JavaScript to create element
+- ? **Preloading Benefit**: Browser prioritizes images due to preload hints
+- ? **Device-Specific Enhancement**: iOS gets gradient overlay, non-iOS keeps fixed positioning
+- ? **Immediate Display**: Background appears as soon as CSS loads, not when JavaScript runs
+
+#### **Files Modified:**
+- `index.html` - Added background element to hero section
+- `contact/index.html` - Added background element to hero section
+- `privacy-policy/index.html` - Added background element to hero section
+- `assets/css/main.css` - Set background-image immediately in CSS for all pages
+- `assets/js/main.js` - Enhanced to find and enhance existing background element
+- All HTML files - Updated to version 1.0.37
+- `sw.js` - Updated cache version to 1.0.37
 
 ### Version 1.0.36 - Fixed iOS Image Not Loading - Reverted CSS Approach
 

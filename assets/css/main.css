@@ -1195,6 +1195,20 @@ body:not(.home-page) .navbar-small-logo {
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
+    /* Set background-image immediately for faster loading */
+    background-image: 
+      url('../img/polarflows/Stockholm_modif.avif'), 
+      url('../img/polarflows/Stockholm_modif.webp'), 
+      url('../img/polarflows/Stockholm_modif.jpg');
+  }
+  
+  /* Sub-pages get different image paths */
+  .contact-page .hero-background-mobile,
+  .privacy-page .hero-background-mobile {
+    background-image: 
+      url('../../assets/img/polarflows/Stockholm_modif.avif'), 
+      url('../../assets/img/polarflows/Stockholm_modif.webp'), 
+      url('../../assets/img/polarflows/Stockholm_modif.jpg');
   }
 }
 

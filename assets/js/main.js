@@ -161,55 +161,26 @@ class PolarFlowsApp {
     
     // Determine the correct path based on current page location
     const isSubPage = window.location.pathname.includes('/contact/') || window.location.pathname.includes('/privacy-policy/');
-    const imagePath = isSubPage ? '../assets/img/polarflows/' : 'assets/img/polarflows/';
+    const imagePath = isSubPage ? '../../assets/img/polarflows/' : '../img/polarflows/';
     
-    // Create background element for all mobile devices (iOS and non-iOS)
-    const backgroundElement = document.createElement('div');
-    backgroundElement.className = 'hero-background-mobile';
+    // Find existing background element (created in HTML)
+    const backgroundElement = hero.querySelector('.hero-background-mobile');
     
-    if (isIOS) {
-      // For iOS: Use scroll attachment for better compatibility
-      backgroundElement.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-image: 
+    if (backgroundElement) {
+      if (isIOS) {
+        // For iOS: Enhance existing background with scroll attachment and gradient
+        backgroundElement.style.backgroundImage = `
           linear-gradient(135deg, rgba(1, 45, 117, 0.3) 0%, rgba(14, 30, 58, 0.3) 100%), 
           url('${imagePath}Stockholm_modif.avif'), 
           url('${imagePath}Stockholm_modif.webp'), 
           url('${imagePath}Stockholm_modif.jpg');
-        background-size: cover;
-        background-position: center center;
-        background-repeat: no-repeat;
-        background-attachment: scroll;
-        z-index: 0;
-        pointer-events: none;
-      `;
-    } else {
-      // For non-iOS: Use fixed attachment
-      backgroundElement.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-image: 
-          url('${imagePath}Stockholm_modif.avif'), 
-          url('${imagePath}Stockholm_modif.webp'), 
-          url('${imagePath}Stockholm_modif.jpg');
-        background-size: cover;
-        background-position: center center;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-        z-index: 0;
-        pointer-events: none;
-      `;
+        `;
+        backgroundElement.style.backgroundAttachment = 'scroll';
+      } else {
+        // For non-iOS: Keep fixed attachment (already set in CSS)
+        backgroundElement.style.backgroundAttachment = 'fixed';
+      }
     }
-    
-    // Insert background element at the beginning of hero
-    hero.insertBefore(backgroundElement, hero.firstChild);
     
     // Ensure hero content is above background
     const heroContent = hero.querySelector('.container');

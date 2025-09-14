@@ -35,7 +35,7 @@
     <link rel="manifest" href="../manifest.webmanifest">
     
     <!-- Preload critical resources -->
-    <link rel="preload" href="../assets/css/main.css?v=1.0.36" as="style">
+    <link rel="preload" href="../assets/css/main.css?v=1.0.37" as="style">
     
     <!-- Preload critical hero background images for faster loading -->
     <link rel="preload" href="../assets/img/polarflows/Stockholm_modif.avif" as="image">
@@ -49,7 +49,7 @@
     
     <!-- Stylesheets -->
     <link rel="stylesheet" href="../assets/css/tokens.css?v=1.0.1">
-    <link rel="stylesheet" href="../assets/css/main.css?v=1.0.36">
+    <link rel="stylesheet" href="../assets/css/main.css?v=1.0.37">
     
     <!-- Structured Data -->
     <script type="application/ld+json">
@@ -80,6 +80,8 @@
     <main id="main-content" class="contact-page">
         <!-- Contact Hero Section -->
         <section class="hero" aria-labelledby="contact-hero-title">
+            <!-- Background element for immediate loading -->
+            <div class="hero-background-mobile"></div>
             <div class="container">
                 <!-- Logo at top of hero section -->
                 <div class="hero-logo-container">
@@ -304,13 +306,12 @@
     </div>
     
     <!-- JavaScript -->
-    <script type="module" src="../assets/js/main.js?v=1.0.36"></script>
+    <script type="module" src="../assets/js/main.js?v=1.0.37"></script>
     
     <!-- Contact Form Submission Script -->
     <script>
-    // Import constants for configuration
-    import { CONFIG } from '../assets/js/constants.js';
-    const LOGIC_APP_URL = CONFIG.CONTACT.LOGIC_APP_URL;
+    // Use the Logic App URL directly (constants are loaded in main.js)
+    const LOGIC_APP_URL = "https://prod-129.westeurope.logic.azure.com:443/workflows/c7b3bf9aade34af395b1675e1df507ea/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=wcTbcjNOz3OHrqhvXcr90GkvI8ri7GPOfueMuuC5UyM";
 
     // Custom notification function
     function showFormNotification(message, type = 'info') {
