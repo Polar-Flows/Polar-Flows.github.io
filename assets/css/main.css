@@ -2220,10 +2220,33 @@ body:not(.home-page) .navbar-small-logo {
   }
 }
 
-/* Desktop footer */
-@media (min-width: 768px) {
+/* Medium footer - 2 columns */
+@media (min-width: 850px) and (max-width: 1000px) {
   .footer-content {
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--pf-space-lg);
+    margin-bottom: var(--pf-space-lg);
+  }
+  
+  .footer-section h3 {
+    font-size: var(--pf-font-size-base);
+    margin-bottom: var(--pf-space-sm);
+  }
+  
+  .footer-section p,
+  .footer-section a {
+    margin-bottom: var(--pf-space-xs);
+  }
+  
+  .footer-bottom {
+    padding-top: var(--pf-space-sm);
+  }
+}
+
+/* Large desktop footer - 4 columns */
+@media (min-width: 1001px) {
+  .footer-content {
+    grid-template-columns: repeat(4, 1fr);
     gap: var(--pf-space-md);
     margin-bottom: var(--pf-space-md);
   }
