@@ -2303,6 +2303,37 @@ body:not(.home-page) .navbar-small-logo {
   }
 }
 
+/* Small tablet footer - 2 columns with smaller text */
+@media (min-width: 770px) and (max-width: 849px) {
+  .footer-content {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--pf-space-sm);
+    margin-bottom: var(--pf-space-sm);
+  }
+  
+  .footer-section h3 {
+    font-size: var(--pf-font-size-sm);
+    margin-bottom: var(--pf-space-xs);
+  }
+  
+  .footer-section p,
+  .footer-section a {
+    font-size: var(--pf-font-size-xs);
+    margin-bottom: 2px;
+    line-height: 1.3;
+  }
+  
+  .footer .contact-item span {
+    font-size: var(--pf-font-size-xs);
+    line-height: 1.3;
+  }
+  
+  .footer-bottom {
+    padding-top: var(--pf-space-xs);
+    font-size: var(--pf-font-size-xs);
+  }
+}
+
 /* Medium footer - 2 columns */
 @media (min-width: 850px) and (max-width: 1000px) {
   .footer-content {
