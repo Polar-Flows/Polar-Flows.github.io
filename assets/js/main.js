@@ -155,36 +155,76 @@ class PolarFlowsApp {
    * Initialize mobile parallax effect using transform
    */
   initMobileParallax(hero) {
-    // For mobile, we'll override the CSS background and use a more reliable approach
-    // Remove any existing background from the hero element
-    hero.style.background = 'none';
+    // Detect iOS devices
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || 
+                  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
     
-    // Create a static background element for mobile
-    const backgroundElement = document.createElement('div');
-    backgroundElement.className = 'hero-background-mobile';
-    // Determine the correct path based on current page location
-    const isSubPage = window.location.pathname.includes('/contact/') || window.location.pathname.includes('/privacy-policy/');
-    const imagePath = isSubPage ? '../assets/img/polarflows/' : 'assets/img/polarflows/';
-    
-    backgroundElement.style.cssText = `
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image: url('${imagePath}Stockholm_modif.avif'), url('${imagePath}Stockholm_modif.webp'), url('${imagePath}Stockholm_modif.jpg');
-      background-size: cover;
-      background-position: center center;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      z-index: 0;
-      -webkit-background-size: cover;
-      -moz-background-size: cover;
-      -o-background-size: cover;
-    `;
-    
-    // Insert background element at the beginning of hero
-    hero.insertBefore(backgroundElement, hero.firstChild);
+    if (isIOS) {
+      // For iOS: Use a fixed positioned element that doesn't move with scroll
+      hero.style.background = 'none';
+      
+      // Create a fixed background element for iOS
+      const backgroundElement = document.createElement('div');
+      backgroundElement.className = 'hero-background-mobile hero-background-ios';
+      // Determine the correct path based on current page location
+      const isSubPage = window.location.pathname.includes('/contact/') || window.location.pathname.includes('/privacy-policy/');
+      const imagePath = isSubPage ? '../assets/img/polarflows/' : 'assets/img/polarflows/';
+      
+      backgroundElement.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: 
+          linear-gradient(135deg, rgba(1, 45, 117, 0.3) 0%, rgba(14, 30, 58, 0.3) 100%), 
+          url('${imagePath}Stockholm_modif.avif'), 
+          url('${imagePath}Stockholm_modif.webp'), 
+          url('${imagePath}Stockholm_modif.jpg');
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-attachment: scroll;
+        z-index: 0;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        pointer-events: none;
+      `;
+      
+      // Insert background element at the beginning of hero
+      hero.insertBefore(backgroundElement, hero.firstChild);
+    } else {
+      // For non-iOS: Use fixed positioning for truly static background
+      hero.style.background = 'none';
+      
+      // Create a static background element for non-iOS mobile
+      const backgroundElement = document.createElement('div');
+      backgroundElement.className = 'hero-background-mobile';
+      // Determine the correct path based on current page location
+      const isSubPage = window.location.pathname.includes('/contact/') || window.location.pathname.includes('/privacy-policy/');
+      const imagePath = isSubPage ? '../assets/img/polarflows/' : 'assets/img/polarflows/';
+      
+      backgroundElement.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('${imagePath}Stockholm_modif.avif'), url('${imagePath}Stockholm_modif.webp'), url('${imagePath}Stockholm_modif.jpg');
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        z-index: 0;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+      `;
+      
+      // Insert background element at the beginning of hero
+      hero.insertBefore(backgroundElement, hero.firstChild);
+    }
     
     // Ensure hero content is above background
     const heroContent = hero.querySelector('.container');

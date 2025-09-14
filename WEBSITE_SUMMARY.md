@@ -361,7 +361,7 @@ Get-ChildItem -Recurse -Include "*.html","*.md","*.css","*.js" | ForEach-Object 
 
 **CRITICAL**: The website uses query string versioning to prevent browser caching issues. When making changes to CSS or JavaScript files, you MUST update the version numbers in all HTML files.
 
-### Current Version: `v1.0.26`
+### Current Version: `v1.0.28`
 
 ### Files That Need Version Updates:
 - `index.html` - All CSS and JS links
@@ -388,6 +388,90 @@ Get-ChildItem -Recurse -Include "*.html","*.md","*.css","*.js" | ForEach-Object 
 **Why This Matters**: Without versioning, browsers cache CSS/JS files and changes won't appear until cache expires (days/weeks). Versioning forces immediate updates.
 
 ## Recent Updates (Latest Session)
+
+### Version 1.0.28 - Made iOS Background Truly Static (Fixed Position)
+
+#### **iOS Static Background Fix:**
+- Fixed iOS background scrolling with content instead of staying fixed in place
+- Changed iOS approach from CSS background to fixed positioned element
+- iOS now uses `position: fixed` element with `background-attachment: scroll` for true static positioning
+- Background stays completely static while content scrolls over it on iOS devices
+
+#### **Technical Implementation:**
+- **iOS Method**: Now uses fixed positioned div (same as non-iOS) but with `background-attachment: scroll`
+- **Fixed Positioning**: `position: fixed` ensures the background element doesn't move with scroll
+- **Pointer Events**: Added `pointer-events: none` to prevent background from interfering with interactions
+- **CSS Updates**: iOS-specific CSS rules for proper fixed positioning
+
+#### **Key Changes:**
+```javascript
+// iOS now uses fixed positioned element
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-attachment: scroll;
+pointer-events: none;
+```
+
+```css
+/* iOS-specific CSS */
+.hero-background-mobile {
+  position: fixed !important;
+  pointer-events: none !important;
+}
+```
+
+#### **Visual Result:**
+- **Before**: iOS background scrolled with content
+- **After**: iOS background stays completely static (fixed position)
+- **Consistent**: Same static behavior across all platforms (iOS and non-iOS)
+- **Reliable**: Uses `position: fixed` which works reliably on iOS for static positioning
+
+#### **Files Modified:**
+- `assets/js/main.js` - Updated iOS method to use fixed positioned element
+- `assets/css/main.css` - Added iOS-specific CSS for fixed positioning
+- All HTML files - Updated to version 1.0.28
+- `sw.js` - Updated cache version to 1.0.28
+
+### Version 1.0.27 - Fixed iOS Background Visibility After Static Background Fix
+
+#### **iOS Background Visibility Fix:**
+- Fixed background not visible on iOS devices after implementing static background fix
+- Created hybrid approach: different methods for iOS vs non-iOS devices
+- iOS devices now use CSS background with `background-attachment: scroll`
+- Non-iOS devices continue to use fixed positioning for truly static background
+- Maintained static background behavior across all platforms
+
+#### **Technical Implementation:**
+- **iOS Detection**: Added comprehensive iOS detection using user agent and touch points
+- **iOS Method**: Uses CSS background with scroll attachment (reliable on iOS)
+- **Non-iOS Method**: Uses fixed positioning div with `background-attachment: fixed`
+- **CSS Updates**: iOS-specific CSS rules to hide mobile background div and use hero background
+
+#### **iOS Detection Logic:**
+```javascript
+const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || 
+              (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+```
+
+#### **Dual Approach:**
+- **iOS Devices**: Direct CSS background with `background-attachment: scroll`
+- **Non-iOS Devices**: Fixed positioning div with `background-attachment: fixed`
+- **CSS Support**: `@supports (-webkit-touch-callout: none)` for iOS-specific rules
+
+#### **Visual Result:**
+- **Before**: Background not visible on iOS devices after static background fix
+- **After**: Background visible and static on all devices including iOS
+- **Cross-Platform**: Consistent static background behavior across all platforms
+- **Reliability**: Uses most reliable method for each platform
+
+#### **Files Modified:**
+- `assets/js/main.js` - Added iOS detection and dual approach for mobile parallax
+- `assets/css/main.css` - Updated iOS-specific CSS rules
+- All HTML files - Updated to version 1.0.27
+- `sw.js` - Updated cache version to 1.0.27
 
 ### Version 1.0.26 - Fixed Static Background on All Screen Sizes
 
