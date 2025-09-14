@@ -1073,11 +1073,11 @@ body:not(.home-page) .navbar-small-logo {
 }
 
 /* Mobile responsiveness for hero logo */
-@media (max-width: 768px) {
+@media (max-width: 1030px) {
   .hero {
     min-height: var(--pf-hero-content-max-width);
-    /* Remove background-attachment: fixed for mobile (doesn't work reliably) */
-    background-attachment: scroll;
+    /* Keep background-attachment: fixed for static background */
+    background-attachment: fixed;
     /* Ensure background is visible on mobile */
     background-size: cover;
     background-position: center center;
@@ -1103,7 +1103,7 @@ body:not(.home-page) .navbar-small-logo {
   .hero {
     min-height: var(--pf-hero-content-max-width);
     /* iOS Safari specific fixes */
-    background-attachment: scroll;
+    background-attachment: fixed;
     background-size: cover;
     background-position: center center;
     -webkit-background-size: cover;
@@ -1154,7 +1154,7 @@ body:not(.home-page) .navbar-small-logo {
 }
 
 /* Mobile adjustments for contact and privacy pages */
-@media (max-width: 768px) {
+@media (max-width: 1030px) {
   .contact-page .hero,
   .privacy-page .hero {
     height: 50vh;
@@ -1181,7 +1181,7 @@ body:not(.home-page) .navbar-small-logo {
 /* iOS Safari specific fixes */
 @supports (-webkit-touch-callout: none) {
   .hero {
-    background-attachment: scroll !important;
+    background-attachment: fixed !important;
     background-size: cover !important;
     background-position: center center !important;
     -webkit-background-size: cover !important;
@@ -1191,7 +1191,7 @@ body:not(.home-page) .navbar-small-logo {
   }
   
   .hero-background-mobile {
-    background-attachment: scroll !important;
+    background-attachment: fixed !important;
     background-size: cover !important;
     background-position: center center !important;
     -webkit-background-size: cover !important;
@@ -1199,21 +1199,22 @@ body:not(.home-page) .navbar-small-logo {
     -o-background-size: cover !important;
     display: block !important;
     visibility: visible !important;
+    position: fixed !important;
   }
 }
 
 /* Additional mobile device fixes */
-@media (max-width: 1024px) and (orientation: portrait) {
+@media (max-width: 1030px) and (orientation: portrait) {
   .hero {
-    background-attachment: scroll;
+    background-attachment: fixed;
     background-size: cover;
     background-position: center center;
   }
 }
 
-@media (max-width: 1024px) and (orientation: landscape) {
+@media (max-width: 1030px) and (orientation: landscape) {
   .hero {
-    background-attachment: scroll;
+    background-attachment: fixed;
     background-size: cover;
     background-position: center center;
   }

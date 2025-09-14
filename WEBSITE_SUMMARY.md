@@ -361,7 +361,7 @@ Get-ChildItem -Recurse -Include "*.html","*.md","*.css","*.js" | ForEach-Object 
 
 **CRITICAL**: The website uses query string versioning to prevent browser caching issues. When making changes to CSS or JavaScript files, you MUST update the version numbers in all HTML files.
 
-### Current Version: `v1.0.25`
+### Current Version: `v1.0.26`
 
 ### Files That Need Version Updates:
 - `index.html` - All CSS and JS links
@@ -388,6 +388,51 @@ Get-ChildItem -Recurse -Include "*.html","*.md","*.css","*.js" | ForEach-Object 
 **Why This Matters**: Without versioning, browsers cache CSS/JS files and changes won't appear until cache expires (days/weeks). Versioning forces immediate updates.
 
 ## Recent Updates (Latest Session)
+
+### Version 1.0.26 - Fixed Static Background on All Screen Sizes
+
+#### **Static Background Fix:**
+- Fixed background image moving with scroll on smaller widths (< 1030px)
+- Updated mobile breakpoint from 768px to 1030px for consistent behavior
+- Ensured background stays completely static (doesn't move with scroll) on all screen sizes
+- Applied fixes to all pages: main page, contact page, and privacy policy page
+
+#### **Technical Implementation:**
+- **JavaScript**: Changed mobile breakpoint from `window.innerWidth <= 768` to `window.innerWidth <= 1030`
+- **Mobile Parallax**: Updated to use `position: fixed` and `background-attachment: fixed` for static background
+- **CSS Media Queries**: Updated all hero-related breakpoints from 768px to 1030px
+- **Cross-Page**: Applied consistent behavior across main, contact, and privacy pages
+
+#### **Key Changes:**
+```javascript
+// Updated mobile detection
+const isMobile = window.innerWidth <= 1030;
+
+// Updated mobile parallax positioning
+position: fixed;
+background-attachment: fixed;
+```
+
+```css
+/* Updated media queries */
+@media (max-width: 1030px) {
+  .hero {
+    background-attachment: fixed;
+  }
+}
+```
+
+#### **Visual Result:**
+- **Before**: Background moved with scroll on screens < 1030px
+- **After**: Background stays completely static on all screen sizes
+- **Consistent**: Same static background behavior across all devices and pages
+- **Cross-Platform**: Works reliably on desktop, tablet, and mobile browsers
+
+#### **Files Modified:**
+- `assets/js/main.js` - Updated mobile breakpoint and parallax positioning
+- `assets/css/main.css` - Updated media queries and background-attachment settings
+- All HTML files - Updated to version 1.0.26
+- `sw.js` - Updated cache version to 1.0.26
 
 ### Version 1.0.25 - Fixed iOS/iPhone Display Issues
 

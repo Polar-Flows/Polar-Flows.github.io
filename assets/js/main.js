@@ -117,8 +117,8 @@ class PolarFlowsApp {
     const hero = document.querySelector('.hero');
     if (!hero) return;
 
-    // Check if we're on mobile (where background-attachment: fixed doesn't work)
-    const isMobile = window.innerWidth <= 768;
+    // Check if we're on mobile (where background-attachment: fixed doesn't work reliably)
+    const isMobile = window.innerWidth <= 1030;
     
     if (isMobile) {
       // For mobile: Use transform-based parallax effect
@@ -130,7 +130,7 @@ class PolarFlowsApp {
 
     // Reinitialize on resize to handle orientation changes
     window.addEventListener('resize', () => {
-      const newIsMobile = window.innerWidth <= 768;
+      const newIsMobile = window.innerWidth <= 1030;
       if (newIsMobile !== isMobile) {
         // Reinitialize with appropriate method
         if (newIsMobile) {
@@ -167,7 +167,7 @@ class PolarFlowsApp {
     const imagePath = isSubPage ? '../assets/img/polarflows/' : 'assets/img/polarflows/';
     
     backgroundElement.style.cssText = `
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
       width: 100%;
@@ -176,7 +176,7 @@ class PolarFlowsApp {
       background-size: cover;
       background-position: center center;
       background-repeat: no-repeat;
-      background-attachment: scroll;
+      background-attachment: fixed;
       z-index: 0;
       -webkit-background-size: cover;
       -moz-background-size: cover;
