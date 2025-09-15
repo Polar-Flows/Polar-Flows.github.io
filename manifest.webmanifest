@@ -1,0 +1,31 @@
+{
+  "name": "Polar Flows",
+  "short_name": "PolarFlows",
+  "description": "Azure & Databricks specialists helping you ship value fast",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#187ef9",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "assets/img/polarflows/Polarflows-logo.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/img/polarflows/Polarflows-logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/img/polarflows/Polarflows-logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["business", "productivity", "utilities"],
+  "lang": "en",
+  "dir": "ltr"
+}

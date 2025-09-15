@@ -1,0 +1,62 @@
+
+### Project Rules for React & TypeScript Web Application
+
+**General Guidelines:**
+
+* Use React for UI components and TypeScript for type safety.
+* Avoid unnecessary third-party dependencies; rely on native browser APIs and React’s built-in capabilities.
+* Ensure code is clean, well-organized, and adheres to industry best practices.
+
+---
+
+### Code Structure & Organization:
+
+**Directory Structure:**
+
+* `/src`: Contains all source code.
+
+  * `/components`: Reusable React components.
+  * `/pages`: Top-level pages or views.
+  * `/hooks`: Custom React hooks.
+  * `/services`: API calls and business logic.
+  * `/styles`: Global and component-level styles (e.g., CSS modules, SASS).
+  * `/utils`: Utility functions and helpers.
+
+**File Naming:**
+
+* Use **PascalCase** for React component files (e.g., `UserProfile.tsx`).
+* Use **camelCase** for non-component files (e.g., `apiService.ts`).
+* Ensure file names match the exported component or module name for clarity.
+
+---
+
+### Coding Standards:
+
+**React:**
+
+* Write functional components using hooks instead of class-based components.
+* Keep component logic concise; split complex components into smaller, reusable ones.
+* Ensure all components are fully typed with TypeScript, using interfaces or type aliases.
+
+**TypeScript:**
+
+* Use strict typing; avoid using `any` unless absolutely necessary.
+* Define clear interfaces for component props, state, and API responses.
+* Leverage TypeScript’s linting and type-checking to catch issues early.
+
+---
+
+### Formatting & Documentation:
+
+* Use a consistent code formatter (e.g., Prettier) to maintain a uniform code style.
+* Include inline comments to explain non-obvious logic.
+* Maintain a comprehensive `README.md` that explains the project structure, coding standards, and setup instructions.
+* Document component APIs, hooks, and utility functions using proper comments or TSDoc annotations.
+
+---
+
+### Quality Assurance:
+
+* Write unit tests using Jest and React Testing Library to ensure component functionality.
+* Enforce code quality through linting (e.g., ESLint) and type-checking before commits.
+* Regularly refactor code to improve modularity, readability, and performance.
