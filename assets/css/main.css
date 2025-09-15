@@ -2034,25 +2034,40 @@ body:not(.home-page) .navbar-small-logo {
 
 /* Big icons (28px) - Mobile: 1 line + remove text */
 @media (max-width: 899px) {
-  /* Hide text when icons get larger */
+  /* Hide text when icons get larger - but keep icons visible */
   .team-card .team-email,
   .team-card .team-linkedin {
+    /* Keep the link functional but hide text content */
+    color: transparent !important;
     font-size: 0 !important;
     line-height: 0 !important;
-    color: transparent !important;
     text-indent: -9999px !important;
     overflow: hidden !important;
+  }
+  
+  /* Ensure icons remain visible and centered */
+  .team-card .team-email .contact-icon,
+  .team-card .team-linkedin .contact-icon {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: 36px !important;
+    height: 36px !important;
+    color: initial !important;
+    font-size: initial !important;
+    line-height: initial !important;
+    text-indent: initial !important;
+    overflow: visible !important;
+    margin: 0 auto !important;
+    text-align: center !important;
   }
   
   .team-contact {
     display: flex !important;
     flex-direction: row !important;
-    gap: var(--pf-space-sm) !important;
-  }
-  
-  .team-card .contact-icon {
-    width: 40px !important;
-    height: 40px !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 0.25rem !important; /* Reduced from var(--pf-space-sm) which is 0.5rem */
   }
 }
 
