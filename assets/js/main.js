@@ -945,7 +945,7 @@ class PolarFlowsApp {
       const heroSection = document.querySelector('.hero-section');
       const heroSectionHeight = heroSection ? heroSection.offsetHeight : window.innerHeight;
       // Use fixed reference height for Y positioning to prevent wiggling during width changes
-      const referenceLogoHeight = 100; // Fixed reference height for consistent Y positioning
+      const referenceLogoHeight = 90; // Reduced from 100 for smaller initial logo
       const cssHeroTop = (heroSectionHeight * 0.15) + (referenceLogoHeight / 2); // CSS: top: 15% + half logo height
       const cssHeroLeft = viewportWidth * 0.5; // CSS: left: 50%
       
@@ -967,7 +967,7 @@ class PolarFlowsApp {
       
       // Calculate size based on linear scroll progress - smooth reduction from big to small
       // Start from the same size as CSS (100% with max-width constraint)
-      const maxWidthPx = Math.min(600, viewportWidth * 0.7); // Same as CSS: min(600px, 70vw)
+      const maxWidthPx = Math.min(450, viewportWidth * 0.55); // Same as CSS: min(450px, 55vw) - further reduced for larger screens
       const heroSize = (maxWidthPx / viewportWidth) * 100; // Convert to percentage
       
       // Use the same global function result for consistent final dimensions
@@ -1106,7 +1106,7 @@ class PolarFlowsApp {
         const heroSection = document.querySelector('.hero-section');
         const heroSectionHeight = heroSection ? heroSection.offsetHeight : window.innerHeight;
         // Use fixed reference height for Y positioning to prevent wiggling during width changes
-        const referenceLogoHeight = 100; // Fixed reference height for consistent Y positioning
+        const referenceLogoHeight = 90; // Reduced from 100 for smaller initial logo
         const cssHeroTop = (heroSectionHeight * 0.15) + (referenceLogoHeight / 2);
         const cssHeroLeft = window.innerWidth * 0.5;
         
