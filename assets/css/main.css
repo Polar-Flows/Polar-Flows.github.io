@@ -837,7 +837,7 @@ body:not(.home-page) .navbar-small-logo {
 
 .hero-logo-img {
   width: 100%;
-  max-width: min(600px, 70vw);
+  max-width: min(450px, 55vw); /* Further reduced for larger screens */
   min-width: 200px;
   height: auto;
   opacity: 0.95;
@@ -1129,7 +1129,7 @@ body:not(.home-page) .navbar-small-logo {
   }
   
   .hero-logo-img {
-    max-width: 600px;
+    max-width: 450px; /* Further reduced for medium screens */
   }
 }
 
@@ -1156,7 +1156,7 @@ body:not(.home-page) .navbar-small-logo {
   }
   
   .hero-logo-img {
-    max-width: 700px;
+    max-width: 550px; /* Further reduced for medium-large screens */
   }
 }
 
@@ -1183,7 +1183,7 @@ body:not(.home-page) .navbar-small-logo {
   }
   
   .hero-logo-img {
-    max-width: 750px;
+    max-width: 600px; /* Further reduced for large screens */
   }
 }
 
@@ -2977,14 +2977,16 @@ html, body {
   font-size: var(--pf-font-size-lg);
 }
 
-/* Contact page hero title - white color */
+/* Contact page hero title - white color and smaller size */
 .contact-page .hero-title {
   color: var(--pf-white);
+  font-size: var(--pf-font-size-3xl) !important; /* Reduced from 4xl */
 }
 
-/* Privacy page hero title - white color */
+/* Privacy page hero title - white color and smaller size */
 .privacy-page .hero-title {
   color: var(--pf-white);
+  font-size: var(--pf-font-size-3xl) !important; /* Reduced from 4xl */
 }
 
 /* Disable all logo animations on contact page */
@@ -3028,8 +3030,8 @@ html, body {
 
 .hero-logo-static {
   width: 100%;
-  max-width: min(500px, 60vw); /* Slightly smaller than main page logo */
-  min-width: 200px;
+  max-width: min(600px, 70vw); /* Increased size for better visibility */
+  min-width: 250px; /* Increased minimum size */
   height: auto;
   opacity: 1 !important; /* Force full opacity to match the visual appearance of main page logo */
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3)); /* Match main page logo shadow */
@@ -3039,7 +3041,7 @@ html, body {
 /* Make logo smaller and closer to top on large screens */
 @media (min-width: 1200px) {
   .hero-logo-static {
-    max-width: min(var(--pf-logo-mobile-min-width), 40vw); /* Smaller on large screens */
+    max-width: min(500px, 50vw); /* Better size for large screens */
   }
   
   .hero-logo-container {
@@ -3170,7 +3172,7 @@ html, body {
 /* Responsive adjustments for static hero logo */
 @media (max-width: 1200px) {
   .hero-logo-static {
-    max-width: min(450px, 55vw);
+    max-width: min(500px, 60vw); /* Increased for better visibility */
   }
 }
 
@@ -3181,8 +3183,14 @@ html, body {
   }
   
   .hero-logo-static {
-    min-width: 180px;
-    max-width: min(400px, 50vw);
+    min-width: 200px; /* Increased minimum */
+    max-width: min(450px, 60vw); /* Increased for better visibility */
+  }
+  
+  /* Smaller titles on mobile for contact and privacy pages */
+  .contact-page .hero-title,
+  .privacy-page .hero-title {
+    font-size: var(--pf-font-size-2xl) !important;
   }
 }
 
@@ -3193,8 +3201,14 @@ html, body {
   }
   
   .hero-logo-static {
-    min-width: 150px;
-    max-width: min(300px, 45vw);
+    min-width: 180px; /* Increased minimum */
+    max-width: min(350px, 55vw); /* Increased for better visibility */
+  }
+  
+  /* Even smaller titles on very small screens */
+  .contact-page .hero-title,
+  .privacy-page .hero-title {
+    font-size: var(--pf-font-size-xl) !important;
   }
 }
 
