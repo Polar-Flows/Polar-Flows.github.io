@@ -38,7 +38,7 @@
     <link rel="manifest" href="../manifest.webmanifest">
     
     <!-- Preload critical resources -->
-    <link rel="preload" href="../assets/css/main.css?v=1.4.1" as="style">
+    <link rel="preload" href="../assets/css/main.css?v=1.4.3" as="style">
     
     <!-- Preload critical hero background images for faster loading -->
     <link rel="preload" href="../assets/img/polarflows/Stockholm_modif.avif" as="image">
@@ -52,7 +52,26 @@
     
     <!-- Stylesheets -->
     <link rel="stylesheet" href="../assets/css/tokens.css?v=1.0.1">
-    <link rel="stylesheet" href="../assets/css/main.css?v=1.4.1">
+    <link rel="stylesheet" href="../assets/css/main.css?v=1.4.3">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-T4QYEHRGM4', {
+        page_title: 'Contact Us - Polar Flows',
+        page_location: 'https://polarflows.com/contact',
+        custom_map: {
+          'custom_parameter_1': 'contact_page',
+          'custom_parameter_2': 'data_consultancy_inquiry'
+        }
+      });
+    </script>
+    
+    <!-- Google Search Console -->
+    <meta name="google-site-verification" content="yCCy1cGCD9oIauTuR-KCShezjoicf8y1z6M8MoCzg3g" />
     
     <!-- Structured Data -->
     <script type="application/ld+json">
@@ -171,7 +190,7 @@
                     <!-- Contact Information -->
                     <div class="scroll-animate stagger-2">
                         <h2>Contact Information</h2>
-                        <p>Ready to start your data transformation journey? Here's how to reach us:</p>
+                        <p>Ready to start your data transformation journey? Our data consultancy team in Stockholm specializes in data solutions across the Nordic region. Here's how to reach us:</p>
                         
                         <div class="contact-info">
                             <div class="contact-item" style="position: relative;">
