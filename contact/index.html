@@ -375,13 +375,14 @@
     document.getElementById('contact-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       
-      // Get form data
-      const fullName = document.getElementById('fullName').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const company = document.getElementById('company').value.trim() || "";
-      const phone = document.getElementById('phone').value.trim() || "";
-      const service = document.getElementById('service').value || "";
-      const message = document.getElementById('message').value.trim();
+  // Get form data
+  const fullName = document.getElementById('fullName').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const company = document.getElementById('company').value.trim() || "";
+  const phone = document.getElementById('phone').value.trim() || "";
+  const service = document.getElementById('service').value || "";
+  const message = document.getElementById('message').value.trim();
+  const formSecret = document.querySelector('input[name="form_secret"]').value;
       
       // Enhanced validation - check for any existing error messages
       const hasErrors = document.querySelectorAll('.form-error').length > 0;
@@ -439,7 +440,8 @@
         company: company,
         phone: formattedPhone,
         service: service,
-        message: message
+        message: message,
+        form_secret: formSecret
       };
       
       try {
