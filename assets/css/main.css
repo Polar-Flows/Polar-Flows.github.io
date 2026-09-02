@@ -2347,7 +2347,9 @@ body:not(.home-page) .navbar-small-logo {
 
 /* ===== 5-member team layout =====
    The grid uses a fixed column count, so a 5th card would otherwise be
-   orphaned at the left edge of a new row. Centre it under the row above.
+   orphaned at the left edge of a new row. Narrow widths keep 2 + 2 + 1 and
+   just centre the last card; wide widths switch to a 3 + 2 pyramid so no
+   member stands alone. Either way the uneven bottom row is centred.
    Matched two ways: .layout-5-members (added by main.js initTeamGridLayout)
    and :nth-child(5):last-child, so the layout is correct even if JS is
    blocked or slow. */
@@ -2360,10 +2362,52 @@ body:not(.home-page) .navbar-small-logo {
 }
 
 @media (min-width: 1400px) {
-  /* 4-column grid: 4 + 1 */
-  .team-grid.layout-5-members .team-card:nth-child(5),
-  .team-grid .team-card:nth-child(5):last-child {
+  /* 3 + 2 instead of 4 + 1, so nobody is left standing alone on a row.
+     A 6-column track is what allows the bottom row of two to sit centred
+     beneath the top row of three. The capped width keeps every card the
+     same size and spacing it has in the 4-member layout (274px cells)
+     rather than letting three cards drift apart across the full 1168px. */
+  .team-grid.layout-5-members {
+    grid-template-columns: repeat(6, 1fr);
+    max-width: 870px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .team-grid.layout-5-members .team-card {
+    grid-column: span 2;
+  }
+
+  /* Bottom row: shift in by one track so the pair centres */
+  .team-grid.layout-5-members .team-card:nth-child(4) {
     grid-column: 2 / span 2;
+  }
+
+  .team-grid.layout-5-members .team-card:nth-child(5) {
+    grid-column: 4 / span 2;
+  }
+
+  /* The same layout without depending on main.js having run. Written as
+     separate rules on purpose: a selector list containing :has() is thrown
+     away wholesale by browsers that do not support it, which would take the
+     .layout-5-members rules above down with it. */
+  .team-grid:has(.team-card:nth-child(5):last-child) {
+    grid-template-columns: repeat(6, 1fr);
+    max-width: 870px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .team-grid:has(.team-card:nth-child(5):last-child) .team-card {
+    grid-column: span 2;
+  }
+
+  .team-grid:has(.team-card:nth-child(5):last-child) .team-card:nth-child(4) {
+    grid-column: 2 / span 2;
+  }
+
+  .team-grid:has(.team-card:nth-child(5):last-child) .team-card:nth-child(5) {
+    grid-column: 4 / span 2;
   }
 }
 
