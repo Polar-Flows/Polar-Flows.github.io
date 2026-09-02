@@ -976,6 +976,22 @@ body:not(.home-page) .navbar-small-logo {
   .hero-title-line {
     white-space: nowrap;
   }
+
+  /* The headline needs ~662px at this font size but .hero-content caps it at
+     618px (--pf-hero-content-max-width, 650px, less its 32px padding). Because
+     nowrap forbids a wrap, the line overflows its block, and an overflowing
+     line is anchored at the start edge rather than centred - so the whole 44px
+     of overflow lands on the right and the headline reads 22px right of the
+     centred subtitle. Sizing the h1 to its own text and centring that box puts
+     any overflow symmetrically on both sides, so the text centres on the same
+     axis as the subtitle. Font size and the single line are unchanged. */
+  .hero-title {
+    width: max-content;
+    max-width: none;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+  }
 }
 
 /* Controlled line break on smaller screens */
