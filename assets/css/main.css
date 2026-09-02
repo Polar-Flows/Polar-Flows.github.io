@@ -2345,6 +2345,28 @@ body:not(.home-page) .navbar-small-logo {
   }
 }
 
+/* ===== 5-member team layout =====
+   The grid uses a fixed column count, so a 5th card would otherwise be
+   orphaned at the left edge of a new row. Centre it under the row above.
+   Matched two ways: .layout-5-members (added by main.js initTeamGridLayout)
+   and :nth-child(5):last-child, so the layout is correct even if JS is
+   blocked or slow. */
+@media (min-width: 250px) and (max-width: 1399px) {
+  /* 2-column grid: 2 + 2 + 1 */
+  .team-grid.layout-5-members .team-card:nth-child(5),
+  .team-grid .team-card:nth-child(5):last-child {
+    grid-column: 1 / span 2;
+  }
+}
+
+@media (min-width: 1400px) {
+  /* 4-column grid: 4 + 1 */
+  .team-grid.layout-5-members .team-card:nth-child(5),
+  .team-grid .team-card:nth-child(5):last-child {
+    grid-column: 2 / span 2;
+  }
+}
+
 /* ===== Contact CTA ===== */
 .contact-cta {
   background-color: var(--pf-bg-section-light);
