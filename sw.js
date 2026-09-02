@@ -4,9 +4,9 @@
  */
 
 // Import constants (Note: Service workers can't use ES6 imports, so we'll define them here)
-const CACHE_VERSION = 'v1.2.2';
-const STATIC_CACHE_NAME = 'polar-flows-static-v1.2.2';
-const DYNAMIC_CACHE_NAME = 'polar-flows-dynamic-v1.2.2';
+const CACHE_VERSION = 'v1.3.7';
+const STATIC_CACHE_NAME = 'polar-flows-static-v1.3.7';
+const DYNAMIC_CACHE_NAME = 'polar-flows-dynamic-v1.3.7';
 
 // Files to cache immediately (critical resources)
 const STATIC_ASSETS = [
@@ -98,6 +98,39 @@ self.addEventListener('fetch', event => {
     return;
   }
   
+  // Network-first for HTML/navigation requests. Content edits (new team member,
+  // copy changes, etc.) then reach returning visitors on their next visit instead
+  // of being pinned to a stale cached page until CACHE_VERSION is bumped.
+  // Falls back to the cached copy, then the cached shell, when offline.
+  if (request.mode === 'navigate' || request.destination === 'document') {
+    // cache: 'no-cache' revalidates with the server instead of accepting a copy
+    // from the browser HTTP cache. GitHub Pages serves HTML with
+    // Cache-Control: max-age=600, so without this a deploy could still be up to
+    // 10 minutes stale. An ETag is sent, so an unchanged page costs only a 304.
+    event.respondWith(
+      fetch(request, { cache: 'no-cache' })
+        .then(response => {
+          // Only refresh the cache with a good response
+          if (response && response.status === 200 && response.type === 'basic') {
+            const responseToCache = response.clone();
+            caches.open(STATIC_CACHE_NAME)
+              .then(cache => {
+                cache.put(request, responseToCache);
+              });
+          }
+          return response;
+        })
+        .catch(error => {
+          console.log('Service Worker: Navigation offline, serving from cache', request.url, error);
+          return caches.match(request)
+            .then(cachedResponse => cachedResponse || caches.match('/index.html'));
+        })
+    );
+    return;
+  }
+  
+  // Everything else (CSS, JS, images, fonts) stays cache-first for speed;
+  // those URLs are versioned via ?v= query strings.
   event.respondWith(
     caches.match(request)
       .then(cachedResponse => {
